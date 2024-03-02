@@ -1,6 +1,21 @@
 <resources>
     <string name="app_name">FriendLocation</string>
-    <string name="sign_in">Войти</string>
-    <string name="back">Назад</string>
-    <string name="sign_up">Зарагистрироваться</string>
+
+    <string name="sign_in_ttl">Sign in</string>
+<!--    <string name="user_et_hint">nickname / mail</string>-->
+    <string name="user_et_hint">mail</string>
+    <string name="password_et_hint">********</string>
+    <string name="sign_in_btn">Login</string>
+    <string name="forgot_password_tv">Forgot password?</string>
+    <string name="go_to_sing_up_tv">Don’t have an account?</string>
+
+    <string name="sign_up_ttl">Sign up</string>
+    <string name="back_arrow">Go back in Sing in</string>
+    <string name="nickname_et_hint">nickname</string>
+    <string name="mail_et_hint">mail</string>
+    <string name="sign_up_btn">Registrate</string>
+    <string name="back">Back</string>
+    <string name="icon_description">icon</string>
+
+
 </resources>

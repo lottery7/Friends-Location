@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/nickname_lin"
+        android:id="@+id/username_lin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -52,14 +52,14 @@
             android:contentDescription="@string/icon_description" />
 
         <EditText
-            android:id="@+id/nickname_et"
+            android:id="@+id/username_et"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:backgroundTint="#D9FFFFFF"
             android:colorControlNormal="#D9FFFFFF"
             android:fontFamily="@font/roboto"
-            android:hint="@string/nickname_et_hint"
+            android:hint="@string/username_et_hint"
             android:inputType="textNoSuggestions"
             android:minHeight="48dp"
             android:singleLine="true"
@@ -70,17 +70,17 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/mail_lin"
+        android:id="@+id/email_lin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nickname_lin">
+        app:layout_constraintTop_toBottomOf="@+id/username_lin">
 
         <ImageView
-            android:id="@+id/mail_ico"
+            android:id="@+id/email_ico"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="8dp"
@@ -89,14 +89,14 @@
             android:contentDescription="@string/icon_description" />
 
         <EditText
-            android:id="@+id/mail_et"
+            android:id="@+id/email_et"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:backgroundTint="#D9FFFFFF"
             android:colorControlNormal="#D9FFFFFF"
             android:fontFamily="@font/roboto"
-            android:hint="@string/mail_et_hint"
+            android:hint="@string/email_et_hint"
             android:inputType="textNoSuggestions"
             android:minHeight="48dp"
             android:singleLine="true"
@@ -114,7 +114,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mail_lin">
+        app:layout_constraintTop_toBottomOf="@+id/email_lin">
 
         <ImageView
             android:id="@+id/password_ico"

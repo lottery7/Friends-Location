@@ -22,37 +22,50 @@ public class SignIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-//        setContentView(R.layout.activity_main_map);
 
         binding.signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (binding.userEt.getText().toString().isEmpty() || binding.passwordEt.getText().toString().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Empty fields are not allowed", Toast.LENGTH_SHORT).show();
-                } else {
-                    FirebaseAuth.getInstance().signInWithEmailAndPassword(binding.userEt.getText().toString(), binding.passwordEt.getText().toString())
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        startActivity(new Intent(SignIn.this, MainMap.class));
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                }
+                signInUser();
             }
         });
 
         binding.goToSingUpTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SignIn.this, SignUp.class));
+                goToSignUp();
             }
         });
 
-
     }
 
+    private void signInUser() {
+        String email = binding.userEt.getText().toString();
+        String password = binding.passwordEt.getText().toString();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Empty fields are not allowed", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            goToMainMap();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void goToSignUp() {
+        startActivity(new Intent(SignIn.this, SignUp.class));
+    }
+
+    private void goToMainMap() {
+        startActivity(new Intent(SignIn.this, MainMap.class));
+    }
 }

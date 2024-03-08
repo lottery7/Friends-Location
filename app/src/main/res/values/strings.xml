@@ -3,4 +3,5 @@
     <string name="sign_in">Войти</string>
     <string name="back">Назад</string>
     <string name="sign_up">Зарагистрироваться</string>
+    <string name="make_event">Создать событие</string>
 </resources>

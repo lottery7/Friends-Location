@@ -1,9 +1,13 @@
 package com.example.friendlocation;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,13 +26,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
 
-public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
+public class MainMap extends BaseMenu implements OnMapReadyCallback {
     private GoogleMap mMap;
     private PlacesClient placesClient;
     private boolean locationPermissionGranted;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private FusedLocationProviderClient fusedLocationProviderClient;
-
     private Location lastKnownLocation;
     private static final String TAG = MainMap.class.getSimpleName();
     private static final int DEFAULT_ZOOM = 15;
@@ -44,7 +47,6 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
         Places.initialize(getApplicationContext(), getString(R.string.MAPS_API_KEY));
         placesClient = Places.createClient(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);

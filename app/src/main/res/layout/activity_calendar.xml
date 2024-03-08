@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:verticalScrollbarPosition="defaultPosition"
+    tools:context=".Calendar">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="217dp">
+
+        <CalendarView
+            android:id="@+id/calendarView"
+            style="@android:style/Widget.DeviceDefault.CalendarView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:dateTextAppearance="@style/TextAppearance.AppCompat.Large"
+            android:onClick="viewEvents"
+            android:selectedDateVerticalBar="@null"
+            android:selectedWeekBackgroundColor="#000066FF"
+            android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="viewEvents"
+            android:text="@string/make_event" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:background="@color/main_menu"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/calendarButton"
+                android:layout_width="10dp"
+                android:layout_height="75dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/main_menu"
+                android:onClick="goToCalendar"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/calendar" />
+
+            <ImageButton
+                android:id="@+id/chatButton"
+                android:layout_width="10dp"
+                android:layout_height="75dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/main_menu"
+                android:onClick="goToChats"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/chat" />
+
+            <ImageButton
+                android:id="@+id/mapButton"
+                android:layout_width="10dp"
+                android:layout_height="75dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/main_menu"
+                android:onClick="goToMap"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/map" />
+
+            <ImageButton
+                android:id="@+id/friendsButton"
+                android:layout_width="10dp"
+                android:layout_height="75dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/main_menu"
+                android:onClick="goToFriends"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/friends" />
+
+            <ImageButton
+                android:id="@+id/settingButton"
+                android:layout_width="10dp"
+                android:layout_height="75dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/main_menu"
+                android:onClick="goToSetting"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/setting" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,7 @@
     <string name="app_name">FriendLocation</string>
 
     <string name="sign_in_ttl">Sign in</string>
-<!--    <string name="user_et_hint">username / email</string>-->
+    <!--    <string name="user_et_hint">username / email</string>-->
     <string name="user_et_hint">email</string>
     <string name="password_et_hint">********</string>
     <string name="sign_in_btn">Login</string>

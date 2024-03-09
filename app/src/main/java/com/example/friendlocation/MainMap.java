@@ -11,11 +11,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private FloatingActionButton allChatsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,11 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        allChatsButton = findViewById(R.id.all_chats_button);
+        allChatsButton.setOnClickListener(view -> {
+            startActivity(new Intent(MainMap.this, AllChats.class));
+        });
     }
 
     @Override

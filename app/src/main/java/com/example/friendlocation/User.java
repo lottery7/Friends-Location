@@ -1,15 +1,13 @@
 package com.example.friendlocation;
 
 public class User {
-    public String id, name, email, password;
+    public String name, email;
 
     public User() {
     }
 
-    public User(String id, String name, String email, String password) {
-        this.id = id;
+    public User(String name, String email) {
         this.name = name;
         this.email = email;
-        this.password = password;
     }
 }

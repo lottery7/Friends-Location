@@ -1,5 +1,7 @@
 package com.example.friendlocation;
 
+import static com.example.friendlocation.utils.Config.dateFormat;
+
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -17,25 +22,53 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.example.friendlocation.databinding.ActivityMakingEventBinding;
+import com.example.friendlocation.utils.Event;
+import com.example.friendlocation.utils.FirebaseUtils;
+import com.example.friendlocation.utils.User;
+import com.example.friendlocation.utils.UsersAdapter;
+
+import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MakingEvent extends AppCompatActivity {
 
-    TextView currentDateTime;
+    private ActivityMakingEventBinding binding;
     Calendar dateAndTime = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_making_event);
-        currentDateTime = findViewById(R.id.date);
+        binding = ActivityMakingEventBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         setInitialDateTime();
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        ArrayList<User> users = new ArrayList<>();
+        users.add(new User ("Егор", "yes@mail.ru"));
+        users.add(new User ("Егор2", "yes@mail.ru"));
+        users.add(new User ("Егор3", "yes@mail.ru"));
+        users.add(new User ("Егор4", "yes@mail.ru"));
+        UsersAdapter adapter = new UsersAdapter(this, users);
+        binding.usersList.setAdapter(adapter);
+
+        binding.usersList.setLayoutManager(new LinearLayoutManager(this));
+
+    }
+
+    public void addEvent(View v) {
+        Event ev = new Event();
+        ev.name = binding.eventNameEd.getText().toString();
+        ev.date = dateFormat.format(dateAndTime.getTime());
+        ev.description = binding.eventDescriptionEd.getText().toString();
+        if (ev.name.isEmpty() || ev.date.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Empty fields are not allowed", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        FirebaseUtils.addEvent(ev);
     }
 
     public void setDate(View v) {
@@ -54,7 +87,7 @@ public class MakingEvent extends AppCompatActivity {
     }
 
     private void setInitialDateTime() {
-        currentDateTime.setText(DateUtils.formatDateTime(this,
+        binding.eventDateEd.setText(DateUtils.formatDateTime(this,
                 dateAndTime.getTimeInMillis(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR
                         | DateUtils.FORMAT_SHOW_TIME));

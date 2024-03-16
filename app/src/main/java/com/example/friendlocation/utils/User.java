@@ -1,4 +1,4 @@
-package com.example.friendlocation;
+package com.example.friendlocation.utils;
 
 public class User {
     public String name;

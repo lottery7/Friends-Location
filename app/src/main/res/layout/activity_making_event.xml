@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|center_vertical"
-            android:text="Новое событие"
+            android:text="Event"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="#DA0101"
             android:textStyle="bold"
@@ -28,7 +28,7 @@
             app:autoSizeTextType="uniform" />
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/eventNameEd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -36,7 +36,8 @@
             android:inputType="text" />
 
         <EditText
-            android:id="@+id/date"
+            android:id="@+id/eventDateEd"
+            android:hint="Date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -66,13 +67,14 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/editTextTextMultiLine"
+            android:id="@+id/eventDescriptionEd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Описание"
             android:gravity="start|top"
-            android:inputType="textMultiLine" />
+            android:hint="Описание"
+            android:inputType="textMultiLine"
+            android:maxHeight="200dp" />
 
         <Button
             android:id="@+id/button4"
@@ -80,23 +82,17 @@
             android:layout_height="wrap_content"
             android:text="Пригласить участника" />
 
-        <ScrollView
-            android:layout_weight="1"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/usersList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-            </LinearLayout>
-        </ScrollView>
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
 
         <Button
-            android:id="@+id/button6"
+            android:id="@+id/createEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="addEvent"
             android:text="Создать" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

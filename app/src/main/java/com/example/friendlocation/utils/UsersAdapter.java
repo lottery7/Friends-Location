@@ -25,7 +25,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
     @Override
     public UsersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = inflater.inflate(R.layout.events_list_item, parent, false);
+        View view = inflater.inflate(R.layout.event_search_user_recycler, parent, false);
         return new ViewHolder(view);
     }
 
@@ -35,8 +35,24 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
         holder.userIconView.setImageResource(R.drawable.ic_launcher_foreground);
         holder.nameView.setText(user.name);
         holder.mailView.setText(user.email);
+        holder.deleteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < users.size(); i++) {
+                    if (users.get(i).uid.equals(user.uid)) {
+                        users.remove(i);
+                        notifyItemRemoved(i);
+                        return;
+                    }
+                }
+            }
+        });
     }
 
+    public void addUser(User user) {
+        users.add(user);
+        notifyItemInserted(users.size());
+    }
     @Override
     public int getItemCount() {
         return users.size();

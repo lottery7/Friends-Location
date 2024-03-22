@@ -24,7 +24,7 @@ public class Calendar extends BaseMenu {
         });
     }
 
-    public void viewEvents(View v) {
+    public void makeEvents(View v) {
         Intent intent = new Intent(this, MakingEvent.class);
         startActivity(intent);
     }

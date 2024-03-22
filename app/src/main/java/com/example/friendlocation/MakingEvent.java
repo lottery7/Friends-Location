@@ -3,6 +3,7 @@ package com.example.friendlocation;
 import static com.example.friendlocation.utils.Config.dateFormat;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -48,10 +49,10 @@ public class MakingEvent extends AppCompatActivity {
         setInitialDateTime();
 
         ArrayList<User> users = new ArrayList<>();
-        users.add(new User ("Егор", "yes@mail.ru"));
-        users.add(new User ("Егор2", "yes@mail.ru"));
-        users.add(new User ("Егор3", "yes@mail.ru"));
-        users.add(new User ("Егор4", "yes@mail.ru"));
+        users.add(new User ("Егор", "yes@mail.ru", "uid1"));
+        users.add(new User ("Егор2", "yes@mail.ru", "uid2"));
+        users.add(new User ("Егор3", "yes@mail.ru", "uid3"));
+        users.add(new User ("Егор4", "yes@mail.ru", "uid4"));
         UsersAdapter adapter = new UsersAdapter(this, users);
         binding.usersList.setAdapter(adapter);
 
@@ -109,4 +110,20 @@ public class MakingEvent extends AppCompatActivity {
             setInitialDateTime();
         }
     };
+
+    public void addUser(View v) {
+        Intent intent = new Intent(this, SearchUser.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {return;}
+        User user = new User();
+        user.name = data.getStringExtra("name");
+        user.email = data.getStringExtra("mail");
+        user.uid = data.getStringExtra("uid");
+        UsersAdapter adapter = (UsersAdapter) binding.usersList.getAdapter();
+        adapter.addUser(user);
+    }
 }

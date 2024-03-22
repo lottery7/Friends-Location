@@ -9,6 +9,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseUtils {
+    public static FirebaseDatabase getDatabase() {
+        return FirebaseDatabase.getInstance(
+                "https://friendloc-e7399-default-rtdb.europe-west1.firebasedatabase.app/"
+        );
+    }
+
     public static String getCurrentUserUID() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
@@ -31,4 +37,9 @@ public class FirebaseUtils {
         mDatabase.child(event.uid).setValue(event);
         return true;
     }
+
+    public static DatabaseReference getUsersCollection() {
+        return getDatabase().getReference("users");
+    }
+
 }

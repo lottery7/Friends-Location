@@ -50,7 +50,13 @@ public class SearchUser extends AppCompatActivity {
 
         FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions
                 .Builder<User>()
-                .setQuery(query, User.class)
+                .setQuery(query, snapshot -> {
+                    User user = snapshot.getValue(User.class);
+                    if (user != null) {
+                        user.uid = snapshot.getKey(); // Присваиваем uid из ключа snapshot'а
+                    }
+                    return user;
+                })
                 .build();
 
         adapter = new SearchUserRecyclerAdapter(options);

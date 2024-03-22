@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.R;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
 
@@ -51,7 +53,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
 
     public void addUser(User user) {
         users.add(user);
-        notifyItemInserted(users.size());
+        notifyItemInserted(users.size()-1);
+    }
+
+    public ArrayList<String> getUsersUID() {
+        return (ArrayList<String>) users.stream().map((v)->v.uid).collect(Collectors.toList());
     }
     @Override
     public int getItemCount() {

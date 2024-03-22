@@ -69,7 +69,10 @@ public class MakingEvent extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Empty fields are not allowed", Toast.LENGTH_SHORT).show();
             return;
         }
+        UsersAdapter adapter = (UsersAdapter) binding.usersList.getAdapter();
+        ev.membersUID = adapter.getUsersUID();
         FirebaseUtils.addEvent(ev);
+        finish();
     }
 
     public void setDate(View v) {
@@ -113,12 +116,15 @@ public class MakingEvent extends AppCompatActivity {
 
     public void addUser(View v) {
         Intent intent = new Intent(this, SearchUser.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) {return;}
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {
+            return;
+        }
         User user = new User();
         user.name = data.getStringExtra("name");
         user.email = data.getStringExtra("mail");

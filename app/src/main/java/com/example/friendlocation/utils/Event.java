@@ -7,7 +7,7 @@ public class Event {
     public String name;
     public String date;
     public String description;
-    public ArrayList<User> membersUID;
+    public ArrayList<String> membersUID;
 
     public Event() {
     }

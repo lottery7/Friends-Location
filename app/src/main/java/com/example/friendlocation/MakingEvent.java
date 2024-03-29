@@ -1,6 +1,7 @@
 package com.example.friendlocation;
 
 import static com.example.friendlocation.utils.Config.dateFormat;
+import static com.example.friendlocation.utils.FirebaseUtils.addEventToUser;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import com.example.friendlocation.databinding.ActivityMakingEventBinding;
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.FirebaseUtils;
+import com.example.friendlocation.utils.Pair;
 import com.example.friendlocation.utils.User;
 import com.example.friendlocation.utils.UsersAdapter;
 
@@ -35,6 +37,7 @@ import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 
 public class MakingEvent extends AppCompatActivity {
 
@@ -47,12 +50,7 @@ public class MakingEvent extends AppCompatActivity {
         binding = ActivityMakingEventBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setInitialDateTime();
-
         ArrayList<User> users = new ArrayList<>();
-        users.add(new User ("Егор", "yes@mail.ru", "uid1"));
-        users.add(new User ("Егор2", "yes@mail.ru", "uid2"));
-        users.add(new User ("Егор3", "yes@mail.ru", "uid3"));
-        users.add(new User ("Егор4", "yes@mail.ru", "uid4"));
         UsersAdapter adapter = new UsersAdapter(this, users);
         binding.usersList.setAdapter(adapter);
 
@@ -71,6 +69,8 @@ public class MakingEvent extends AppCompatActivity {
         }
         UsersAdapter adapter = (UsersAdapter) binding.usersList.getAdapter();
         ev.membersUID = adapter.getUsersUID();
+        Random rd = new Random();
+        ev.coordinates = new Pair<>(rd.nextFloat()*180-90, rd.nextFloat()*360-180);
         FirebaseUtils.addEvent(ev);
         finish();
     }

@@ -20,21 +20,26 @@ public class FirebaseUtils {
     }
 
     public static DatabaseReference getCurrentUserDetails(){
-        return FirebaseDatabase
-                .getInstance("https://friendloc-e7399-default-rtdb.europe-west1.firebasedatabase.app/")
-                .getReference("users")
+        return getDatabase().getReference("users")
                 .child(getCurrentUserUID());
     }
 
     public static boolean addEvent(Event event) {
-        DatabaseReference mDatabase = FirebaseDatabase
-                .getInstance("https://friendloc-e7399-default-rtdb.europe-west1.firebasedatabase.app/")
-                .getReference("events");
+        DatabaseReference mDatabase = getDatabase().getReference("events");
         event.uid = mDatabase.push().getKey();
         if (event.uid == null) {
             return false;
         }
         mDatabase.child(event.uid).setValue(event);
+        for (String userUID : event.membersUID){
+            addEventToUser(event.uid, userUID);
+        }
+        return true;
+    }
+
+    public static boolean addEventToUser(String eventUID, String userUID) {
+        DatabaseReference mDatabase = getDatabase().getReference("users");
+        mDatabase.child(userUID).child("events").child(eventUID).setValue(true);
         return true;
     }
 

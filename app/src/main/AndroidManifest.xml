@@ -32,6 +32,9 @@
             android:name=".SignUp"
             android:exported="false" />
         <activity
+            android:name=".RestorePassword"
+            android:exported="false" />
+        <activity
             android:name=".SignIn"
             android:exported="true">
             <intent-filter>

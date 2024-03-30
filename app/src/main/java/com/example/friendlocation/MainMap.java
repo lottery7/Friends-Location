@@ -25,6 +25,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainMap extends BaseMenu implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -47,6 +49,13 @@ public class MainMap extends BaseMenu implements OnMapReadyCallback {
         Places.initialize(getApplicationContext(), getString(R.string.MAPS_API_KEY));
         placesClient = Places.createClient(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // If user is not sign in yet, we kick him in "SignIn" menu
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            startActivity(new Intent(MainMap.this, SignIn.class));
+        }
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);

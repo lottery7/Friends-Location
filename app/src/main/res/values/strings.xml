@@ -1,8 +1,31 @@
 <resources>
     <string name="app_name">FriendLocation</string>
     <string name="sign_in">Войти</string>
-    <string name="back">Назад</string>
     <string name="sign_up">Зарагистрироваться</string>
     <string name="make_event">Создать событие</string>
     <string name="name">Название</string>
+    <string name="default_web_client_id" translatable="false">637810907853-nilrq2ibqc4s516t52pvr3dna4vif9kr.apps.googleusercontent.com</string>
+
+    <string name="sign_in_ttl">Sign in</string>
+    <!--    <string name="user_et_hint">username / email</string>-->
+    <string name="user_et_hint">email</string>
+    <string name="password_et_hint">********</string>
+    <string name="sign_in_btn">Login</string>
+    <string name="forgot_password_tv">Forgot password?</string>
+    <string name="go_to_sing_up_tv">Don’t have an account?</string>
+
+    <string name="sign_up_ttl">Sign up</string>
+    <string name="back_arrow">Go back in Sing in</string>
+    <string name="username_et_hint">nickname</string>
+    <string name="email_et_hint">email</string>
+    <string name="sign_up_btn">Registrate</string>
+    <string name="back">Back</string>
+    <string name="icon_description">icon</string>
+    <string name="google_btn">Continue with Google</string>
+    <string name="or_you_may">or you may</string>
+    <string name="restore_password">Restore password</string>
+    <string name="restore_password_btn">Send mail</string>
+    <string name="restore_password_tv">Enter the email you specified during registration and we will send you a recovery mail</string>
+
+
 </resources>

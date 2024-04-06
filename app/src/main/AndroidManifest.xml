@@ -20,7 +20,7 @@
             android:name=".SearchUser"
             android:exported="false" />
         <activity
-            android:name=".MakingEvent"
+            android:name=".CreateEvent"
             android:exported="false" />
         <activity
             android:name=".Setting"
@@ -29,7 +29,7 @@
             android:name=".Friends"
             android:exported="false" />
         <activity
-            android:name=".Calendar"
+            android:name=".Events"
             android:exported="false" />
         <activity
             android:name=".ParticularChat"

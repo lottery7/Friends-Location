@@ -1,53 +1,50 @@
 package com.example.friendlocation;
 
 import static com.example.friendlocation.utils.Config.dateFormat;
-import static com.example.friendlocation.utils.FirebaseUtils.addEventToUser;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.os.Bundle;
 import android.text.format.DateUtils;
-import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.friendlocation.databinding.ActivityMakingEventBinding;
+import com.example.friendlocation.databinding.ActivityCreateEventBinding;
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.Pair;
 import com.example.friendlocation.utils.User;
 import com.example.friendlocation.utils.UsersAdapter;
 
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.Random;
 
-public class MakingEvent extends AppCompatActivity {
+public class CreateEvent extends AppCompatActivity {
 
-    private ActivityMakingEventBinding binding;
+    private static final int PLACE_REQUEST_CODE = 666;
+    private static final int USER_REQUEST_CODE = 999;
+    private ActivityCreateEventBinding binding;
+    private String place = "default";
+    private String TAG = "CreateEventTag";
     Calendar dateAndTime = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMakingEventBinding.inflate(getLayoutInflater());
+        binding = ActivityCreateEventBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setInitialDateTime();
         ArrayList<User> users = new ArrayList<>();
@@ -56,13 +53,20 @@ public class MakingEvent extends AppCompatActivity {
 
         binding.usersList.setLayoutManager(new LinearLayoutManager(this));
 
+        binding.backToEventsImgbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backToEvents();
+            }
+        });
+
     }
 
     public void addEvent(View v) {
         Event ev = new Event();
-        ev.name = binding.eventNameEd.getText().toString();
+        ev.name = binding.titleEt.getText().toString();
         ev.date = dateFormat.format(dateAndTime.getTime());
-        ev.description = binding.eventDescriptionEd.getText().toString();
+        ev.description = binding.descriptionEt.getText().toString();
         if (ev.name.isEmpty() || ev.date.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Empty fields are not allowed", Toast.LENGTH_SHORT).show();
             return;
@@ -76,7 +80,7 @@ public class MakingEvent extends AppCompatActivity {
     }
 
     public void setDate(View v) {
-        new DatePickerDialog(MakingEvent.this, d,
+        new DatePickerDialog(CreateEvent.this, d,
                 dateAndTime.get(Calendar.YEAR),
                 dateAndTime.get(Calendar.MONTH),
                 dateAndTime.get(Calendar.DAY_OF_MONTH))
@@ -84,14 +88,14 @@ public class MakingEvent extends AppCompatActivity {
     }
 
     public void setTime(View v) {
-        new TimePickerDialog(MakingEvent.this, t,
+        new TimePickerDialog(CreateEvent.this, t,
                 dateAndTime.get(Calendar.HOUR_OF_DAY),
                 dateAndTime.get(Calendar.MINUTE), true)
                 .show();
     }
 
     private void setInitialDateTime() {
-        binding.eventDateEd.setText(DateUtils.formatDateTime(this,
+        binding.dateEt.setText(DateUtils.formatDateTime(this,
                 dateAndTime.getTimeInMillis(),
                 DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR
                         | DateUtils.FORMAT_SHOW_TIME));
@@ -116,20 +120,43 @@ public class MakingEvent extends AppCompatActivity {
 
     public void addUser(View v) {
         Intent intent = new Intent(this, SearchUser.class);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, USER_REQUEST_CODE);
     }
 
+
+    public void selectPlace(View v) {
+        Intent intent = new Intent(this, MainMap.class);
+        intent.putExtra("MAP_MODE", "select_place");
+        startActivityForResult(intent, PLACE_REQUEST_CODE);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data == null) {
-            return;
+
+        if (requestCode == USER_REQUEST_CODE && resultCode == Activity.RESULT_OK) { // Проверка результата для SearchUser
+            if (data == null) {
+                return;
+            }
+            User user = new User();
+            user.name = data.getStringExtra("name");
+            user.email = data.getStringExtra("mail");
+            user.uid = data.getStringExtra("uid");
+            UsersAdapter adapter = (UsersAdapter) binding.usersList.getAdapter();
+            adapter.addUser(user);
         }
-        User user = new User();
-        user.name = data.getStringExtra("name");
-        user.email = data.getStringExtra("mail");
-        user.uid = data.getStringExtra("uid");
-        UsersAdapter adapter = (UsersAdapter) binding.usersList.getAdapter();
-        adapter.addUser(user);
+        else if (requestCode == PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) { // Проверка результата для MainMap
+            if (data != null) {
+                if (data != null) {
+                    place = data.getStringExtra("PLACE");
+                    binding.placeEt.setText(place);
+                    Log.w(TAG, "Place: " + place);
+                }
+            }
+        }
     }
+
+    private void backToEvents() {
+        finish();
+    }
+
 }

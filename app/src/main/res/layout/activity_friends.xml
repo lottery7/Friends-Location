@@ -8,6 +8,7 @@
     tools:context=".Friends">
 
     <LinearLayout
+        android:id="@+id/bottom_bar_ll"
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:background="@color/main_menu"
@@ -17,17 +18,17 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
-            android:id="@+id/calendarButton"
+            android:id="@+id/events_imgbtn"
             android:layout_width="10dp"
             android:layout_height="75dp"
             android:layout_weight="1"
             android:backgroundTint="@color/main_menu"
-            android:onClick="goToCalendar"
+            android:onClick="goToEvents"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/calendar" />
 
         <ImageButton
-            android:id="@+id/chatButton"
+            android:id="@+id/chats_imgbtn"
             android:layout_width="10dp"
             android:layout_height="75dp"
             android:layout_weight="1"
@@ -37,7 +38,7 @@
             app:srcCompat="@drawable/chat" />
 
         <ImageButton
-            android:id="@+id/mapButton"
+            android:id="@+id/map_imgbtn"
             android:layout_width="10dp"
             android:layout_height="75dp"
             android:layout_weight="1"
@@ -47,7 +48,7 @@
             app:srcCompat="@drawable/map" />
 
         <ImageButton
-            android:id="@+id/friendsButton"
+            android:id="@+id/friends_imgbtn"
             android:layout_width="10dp"
             android:layout_height="75dp"
             android:layout_weight="1"
@@ -57,7 +58,7 @@
             app:srcCompat="@drawable/friends" />
 
         <ImageButton
-            android:id="@+id/settingButton"
+            android:id="@+id/setting_imgbtn"
             android:layout_width="10dp"
             android:layout_height="75dp"
             android:layout_weight="1"
@@ -67,4 +68,5 @@
             app:srcCompat="@drawable/setting" />
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

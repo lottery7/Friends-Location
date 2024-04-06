@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.User;
+import com.example.friendlocation.utils.UserAdapterSearch;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.Query;
 
@@ -18,8 +19,7 @@ public class SearchUser extends AppCompatActivity {
     private EditText searchInput;
     private ImageButton searchButton;
     private RecyclerView recyclerView;
-    private SearchUserRecyclerAdapter adapter;
-    public Intent resultIntent = new Intent();
+    private UserAdapterSearch adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +59,8 @@ public class SearchUser extends AppCompatActivity {
                 })
                 .build();
 
-        adapter = new SearchUserRecyclerAdapter(options);
-        adapter.setOnUserClickListener(new SearchUserRecyclerAdapter.OnUserClickListener() {
+        adapter = new UserAdapterSearch(options);
+        adapter.setOnUserClickListener(new UserAdapterSearch.OnUserClickListener() {
             @Override
             public void onUserClick(User user) {
                 Intent resultIntent = new Intent();

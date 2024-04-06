@@ -7,7 +7,8 @@ public class Event {
     public String name;
     public String date;
     public String description;
-    public Pair<Float, Float> coordinates;
+
+    public Place place;
     public ArrayList<String> membersUID;
 
     public Event() {
@@ -20,17 +21,12 @@ public class Event {
     }
 
     public Event(String uid, String name, String date, String description) {
+        this(name, date, description);
         this.uid = uid;
-        this.name = name;
-        this.date = date;
-        this.description = description;
     }
 
-    public Event(String uid, String name, String date, String description, Pair<Float, Float> coordinates) {
-        this.uid = uid;
-        this.name = name;
-        this.date = date;
-        this.description = description;
-        this.coordinates = coordinates;
+    public Event(String uid, String name, String date, String description, Place place) {
+        this(uid, name, date, description);
+        this.place = place;
     }
 }

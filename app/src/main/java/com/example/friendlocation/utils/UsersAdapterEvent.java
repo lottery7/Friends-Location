@@ -15,29 +15,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
+public class UsersAdapterEvent extends RecyclerView.Adapter<UsersAdapterEvent.ViewHolder>{
 
     private final LayoutInflater inflater;
     private final List<User> users;
 
-    public UsersAdapter(Context context, List<User> users) {
+    public UsersAdapterEvent(Context context, List<User> users) {
         this.users = users;
         this.inflater = LayoutInflater.from(context);
     }
     @Override
-    public UsersAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public UsersAdapterEvent.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = inflater.inflate(R.layout.event_search_user_recycler, parent, false);
+        View view = inflater.inflate(R.layout.user_adapter, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(UsersAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(UsersAdapterEvent.ViewHolder holder, int position) {
         User user = users.get(position);
         holder.userIconView.setImageResource(R.drawable.ic_launcher_foreground);
         holder.nameView.setText(user.name);
         holder.mailView.setText(user.email);
-        holder.deleteView.setOnClickListener(new View.OnClickListener() {
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 for (int i = 0; i < users.size(); i++) {
@@ -52,6 +52,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
     }
 
     public void addUser(User user) {
+        if (users.stream().anyMatch((v)->v.uid.equals(user.uid))) {
+            return;
+        }
         users.add(user);
         notifyItemInserted(users.size()-1);
     }
@@ -67,13 +70,13 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView userIconView;
         final TextView nameView, mailView;
-        final ImageButton deleteView;
+        final ImageButton deleteBtn;
         ViewHolder(View view){
             super(view);
-            userIconView = view.findViewById(R.id.userIcon);
-            nameView = view.findViewById(R.id.userName);
-            mailView = view.findViewById(R.id.userEmail);
-            deleteView = view.findViewById(R.id.deleteUser);
+            userIconView = view.findViewById(R.id.userIcon_imgv);
+            nameView = view.findViewById(R.id.userName_tv);
+            mailView = view.findViewById(R.id.userEmail_tv);
+            deleteBtn = view.findViewById(R.id.deleteUser_imgbtn);
         }
     }
 }

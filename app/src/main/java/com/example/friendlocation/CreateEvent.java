@@ -1,6 +1,7 @@
 package com.example.friendlocation;
 
 import static com.example.friendlocation.utils.Config.dateFormat;
+import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserUID;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -14,9 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.TimePickerDialog;
 import android.text.format.DateUtils;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -24,8 +23,9 @@ import com.example.friendlocation.databinding.ActivityCreateEventBinding;
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.Pair;
+import com.example.friendlocation.utils.Place;
 import com.example.friendlocation.utils.User;
-import com.example.friendlocation.utils.UsersAdapter;
+import com.example.friendlocation.utils.UsersAdapterEvent;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,7 +37,7 @@ public class CreateEvent extends AppCompatActivity {
     private static final int PLACE_REQUEST_CODE = 666;
     private static final int USER_REQUEST_CODE = 999;
     private ActivityCreateEventBinding binding;
-    private String place = "default";
+    private Place place = new Place("default");
     private String TAG = "CreateEventTag";
     Calendar dateAndTime = Calendar.getInstance();
 
@@ -48,7 +48,7 @@ public class CreateEvent extends AppCompatActivity {
         setContentView(binding.getRoot());
         setInitialDateTime();
         ArrayList<User> users = new ArrayList<>();
-        UsersAdapter adapter = new UsersAdapter(this, users);
+        UsersAdapterEvent adapter = new UsersAdapterEvent(this, users);
         binding.usersList.setAdapter(adapter);
 
         binding.usersList.setLayoutManager(new LinearLayoutManager(this));
@@ -71,10 +71,10 @@ public class CreateEvent extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Empty fields are not allowed", Toast.LENGTH_SHORT).show();
             return;
         }
-        UsersAdapter adapter = (UsersAdapter) binding.usersList.getAdapter();
+        UsersAdapterEvent adapter = (UsersAdapterEvent) binding.usersList.getAdapter();
         ev.membersUID = adapter.getUsersUID();
-        Random rd = new Random();
-        ev.coordinates = new Pair<>(rd.nextFloat()*180-90, rd.nextFloat()*360-180);
+        ev.membersUID.add(getCurrentUserUID());
+        ev.place = place;
         FirebaseUtils.addEvent(ev);
         finish();
     }
@@ -141,16 +141,18 @@ public class CreateEvent extends AppCompatActivity {
             user.name = data.getStringExtra("name");
             user.email = data.getStringExtra("mail");
             user.uid = data.getStringExtra("uid");
-            UsersAdapter adapter = (UsersAdapter) binding.usersList.getAdapter();
+            UsersAdapterEvent adapter = (UsersAdapterEvent) binding.usersList.getAdapter();
             adapter.addUser(user);
         }
         else if (requestCode == PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) { // Проверка результата для MainMap
             if (data != null) {
-                if (data != null) {
-                    place = data.getStringExtra("PLACE");
-                    binding.placeEt.setText(place);
-                    Log.w(TAG, "Place: " + place);
-                }
+                place.description = data.getStringExtra("PLACE_DESCRIPTION");
+                String lt = data.getStringExtra("PLACE_LATITUDE");
+                String lg = data.getStringExtra("PLACE_LONGITUDE");
+                place.coordinates = new Pair<>(Double.valueOf(Objects.requireNonNull(lt)),
+                        Double.valueOf(Objects.requireNonNull(lg)));
+                binding.placeEt.setText(place.description);
+                Log.w(TAG, "Place: " + place);
             }
         }
     }

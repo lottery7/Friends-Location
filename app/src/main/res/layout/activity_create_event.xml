@@ -116,8 +116,6 @@
 
     </LinearLayout>
 
-
-
     <EditText
         android:id="@+id/place_et"
         android:layout_width="match_parent"
@@ -125,6 +123,7 @@
         android:backgroundTint="#BF155F"
         android:colorControlNormal="#BF155F"
         android:ems="10"
+        android:enabled="false"
         android:fontFamily="@font/roboto"
         android:gravity="start|top"
         android:hint="Place"

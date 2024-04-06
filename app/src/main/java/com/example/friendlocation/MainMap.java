@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.friendlocation.utils.Pair;
+import com.example.friendlocation.utils.Place;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -41,7 +43,7 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
     private PlacesClient placesClient;
     private String TAG = "MainMapTag";
     private String mapMode = "default";
-    private String place = "place";
+    private Place place = new Place("place");
     private boolean locationPermissionGranted;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -60,12 +62,6 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
         placesClient = Places.createClient(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // ЗАЧЕМ НАМ НУЖЕН ЭТОТ КУСОК?
-//        // If user is not sign in yet, we kick him in "SignIn" menu
-//        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-//            startActivity(new Intent(SelectPlace.this, SignIn.class));
-//        }
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -75,7 +71,7 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if(extras == null) {
+            if (extras == null) {
                 mapMode = null;
             } else {
                 mapMode = extras.getString("MAP_MODE");
@@ -116,11 +112,13 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
                     try {
                         List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
                         if (addresses != null && addresses.size() > 0) {
-                            place = addresses.get(0).getAddressLine(0);
-                            Toast.makeText(getApplicationContext(), place, Toast.LENGTH_SHORT).show();
+                            Address curAddress = addresses.get(0);
+                            place.description = curAddress.getAddressLine(0);
+                            place.coordinates = new Pair<>(curAddress.getLatitude(), curAddress.getLongitude());
+                            Toast.makeText(getApplicationContext(), place.description, Toast.LENGTH_SHORT).show();
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Log.e("Exception: %s", e.getMessage());
                     }
                 }
             });
@@ -191,8 +189,13 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
     }
 
     public void acceptPlace(View v) {
+        if (place.coordinates == null) {
+            return;
+        }
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("PLACE", place);
+        resultIntent.putExtra("PLACE_DESCRIPTION", place.description);
+        resultIntent.putExtra("PLACE_LATITUDE", place.coordinates.getFirst().toString());
+        resultIntent.putExtra("PLACE_LONGITUDE", place.coordinates.getSecond().toString());
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }

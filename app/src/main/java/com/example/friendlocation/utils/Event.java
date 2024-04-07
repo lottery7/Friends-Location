@@ -14,6 +14,10 @@ public class Event {
     public Event() {
     }
 
+    public Event(String uid) {
+        this.uid = uid;
+    }
+
     public Event(String name, String date, String description) {
         this.name = name;
         this.date = date;

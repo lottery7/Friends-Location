@@ -1,5 +1,7 @@
 package com.example.friendlocation;
 
+import static com.example.friendlocation.utils.FirebaseUtils.makeEventsMarkers;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -40,7 +42,6 @@ import java.util.Objects;
 public class MainMap extends BottomBar implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private PlacesClient placesClient;
     private String TAG = "MainMapTag";
     private String mapMode = "default";
     private Place place = new Place("place");
@@ -59,7 +60,6 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_map);
         Places.initialize(getApplicationContext(), getString(R.string.MAPS_API_KEY));
-        placesClient = Places.createClient(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -97,6 +97,7 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
         mMap = googleMap;
         updateLocationUI();
         getDeviceLocation();
+        makeMapMarkers();
 
         // Select location mode
         if (Objects.equals(mapMode, "select_place")) {
@@ -124,6 +125,10 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
             });
         }
         // Selection end
+    }
+
+    private void makeMapMarkers() {
+        makeEventsMarkers(mMap);
     }
 
     private void getLocationPermission() {

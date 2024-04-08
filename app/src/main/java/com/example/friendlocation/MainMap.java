@@ -28,11 +28,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,7 +40,7 @@ import java.util.Objects;
 public class MainMap extends BottomBar implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private String TAG = "MainMapTag";
+    private final String TAG = "MainMapTag";
     private String mapMode = "default";
     private Place place = new Place("place");
     private boolean locationPermissionGranted;
@@ -93,7 +91,7 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
 
     }
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         updateLocationUI();
         getDeviceLocation();
@@ -101,26 +99,23 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
 
         // Select location mode
         if (Objects.equals(mapMode, "select_place")) {
-            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
-                    mMap.clear();
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(latLng);
-                    mMap.addMarker(markerOptions);
+            mMap.setOnMapClickListener(latLng -> {
+                mMap.clear();
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                mMap.addMarker(markerOptions);
 
-                    Geocoder geocoder = new Geocoder(MainMap.this, Locale.getDefault());
-                    try {
-                        List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                        if (addresses != null && addresses.size() > 0) {
-                            Address curAddress = addresses.get(0);
-                            place.description = curAddress.getAddressLine(0);
-                            place.coordinates = new Pair<>(curAddress.getLatitude(), curAddress.getLongitude());
-                            Toast.makeText(getApplicationContext(), place.description, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (IOException e) {
-                        Log.e("Exception: %s", e.getMessage());
+                Geocoder geocoder = new Geocoder(MainMap.this, Locale.getDefault());
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                    if (addresses != null && !addresses.isEmpty()) {
+                        Address curAddress = addresses.get(0);
+                        place.description = curAddress.getAddressLine(0);
+                        place.coordinates = new Pair<>(curAddress.getLatitude(), curAddress.getLongitude());
+                        Toast.makeText(getApplicationContext(), place.description, Toast.LENGTH_SHORT).show();
                     }
+                } catch (IOException e) {
+                    Log.e("Exception: %s", Objects.requireNonNull(e.getMessage()));
                 }
             });
         }
@@ -159,7 +154,7 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
                 getLocationPermission();
             }
         } catch (SecurityException e)  {
-            Log.e("Exception: %s", e.getMessage());
+            Log.e("Exception: %s", Objects.requireNonNull(e.getMessage()));
         }
     }
 
@@ -167,24 +162,21 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
         try {
             if (locationPermissionGranted) {
                 Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-                            lastKnownLocation = task.getResult();
-                            if (lastKnownLocation != null) {
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                        new LatLng(lastKnownLocation.getLatitude(),
-                                                lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-                            }
-                        } else {
-                            Log.d(TAG, "Current location is null. Using defaults.");
-                            Log.e(TAG, "Exception: %s", task.getException());
-                            mMap.moveCamera(CameraUpdateFactory
-                                    .newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
-                            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                locationResult.addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Set the map's camera position to the current location of the device.
+                        lastKnownLocation = task.getResult();
+                        if (lastKnownLocation != null) {
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(lastKnownLocation.getLatitude(),
+                                            lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
                         }
+                    } else {
+                        Log.d(TAG, "Current location is null. Using defaults.");
+                        Log.e(TAG, "Exception: %s", task.getException());
+                        mMap.moveCamera(CameraUpdateFactory
+                                .newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
+                        mMap.getUiSettings().setMyLocationButtonEnabled(false);
                     }
                 });
             }

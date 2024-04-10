@@ -1,4 +1,4 @@
-package com.example.friendlocation.utils;
+package com.example.friendlocation.util;
 
 public class Place {
     public String description;

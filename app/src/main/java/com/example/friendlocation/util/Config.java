@@ -1,4 +1,4 @@
-package com.example.friendlocation.utils;
+package com.example.friendlocation.util;
 
 import android.annotation.SuppressLint;
 

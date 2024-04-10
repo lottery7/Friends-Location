@@ -4,52 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".SearchUser">
 
     <RelativeLayout
+        android:id="@+id/search_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="#FF69B4"
-        android:padding="10dp"
-        android:id="@+id/search_header">
+        android:elevation="8dp"
+        android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
+            android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
-            android:layout_centerVertical="true"/>
+            android:text="Search"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/search_user_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/search_header"
-        android:layout_margin="10dp"
-        android:id="@+id/search_user_layout">
+        android:layout_below="@id/search_header">
 
         <EditText
+            android:id="@+id/search_user_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:padding="10dp"
-            android:hint="Username"
             android:layout_toStartOf="@id/search_user_button"
-            android:id="@+id/search_user_input"/>
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:hint="Username"
+            android:padding="10dp"
+            android:textColor="@color/light_dark_text"
+            android:textColorHint="@color/cardview_shadow_start_color" />
 
         <ImageButton
+            android:id="@+id/search_user_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/baseline_search_24"
-            android:id="@+id/search_user_button"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Search" />
+            android:contentDescription="Search"
+            android:src="@drawable/baseline_search_24" />
 
     </RelativeLayout>
 
@@ -57,11 +63,6 @@
         android:id="@+id/search_user_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/search_user_layout"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:padding="10dp" />
+        android:layout_below="@id/search_user_layout" />
 
 </RelativeLayout>

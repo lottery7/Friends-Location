@@ -1,5 +1,6 @@
 package com.example.friendlocation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -8,16 +9,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.friendlocation.adapters.SearchUserRecyclerAdapter;
 import com.example.friendlocation.util.FirebaseUtil;
+import com.example.friendlocation.util.User;
+import com.example.friendlocation.adapters.UserAdapterSearch;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.Query;
 
-public class SearchUser extends AppCompatActivity {
+public class SearchUserForEvent extends AppCompatActivity {
     private EditText searchInput;
     private ImageButton searchButton;
     private RecyclerView recyclerView;
-    private SearchUserRecyclerAdapter adapter;
+    private UserAdapterSearch adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +53,44 @@ public class SearchUser extends AppCompatActivity {
                 .setQuery(query, User.class)
                 .build();
 
-        adapter = new SearchUserRecyclerAdapter(options, getApplicationContext());
+        adapter = new UserAdapterSearch(options);
+        adapter.setOnUserClickListener(new UserAdapterSearch.OnUserClickListener() {
+            @Override
+            public void onUserClick(User user) {
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("name", user.name);
+                resultIntent.putExtra("mail", user.email);
+                resultIntent.putExtra("uid", user.uid);
+                setResult(RESULT_OK, resultIntent);
+                finish();
+            }
+        });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         adapter.startListening();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (adapter != null) {
+            adapter.startListening();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (adapter != null) {
+            adapter.stopListening();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adapter != null) {
+            adapter.startListening();
+        }
     }
 }

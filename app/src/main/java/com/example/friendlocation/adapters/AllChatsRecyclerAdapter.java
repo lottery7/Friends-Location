@@ -6,10 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.Chatroom;
@@ -84,7 +84,7 @@ public class AllChatsRecyclerAdapter extends FirestoreRecyclerAdapter<ChatroomMo
         TextView textBeforeLastMessage;
         TextView lastMessageText;
         TextView lastMessageTime;
-        CardView profilePic;
+        RelativeLayout profilePic;
 
         public ChatroomViewHolder(@NonNull View itemView) {
             super(itemView);

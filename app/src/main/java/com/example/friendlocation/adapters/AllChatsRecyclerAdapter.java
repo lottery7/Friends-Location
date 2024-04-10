@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.friendlocation.ChatroomModel;
 import com.example.friendlocation.Chatroom;
+import com.example.friendlocation.ChatroomModel;
 import com.example.friendlocation.R;
 import com.example.friendlocation.User;
 import com.example.friendlocation.util.FirebaseUtil;
@@ -60,6 +60,14 @@ public class AllChatsRecyclerAdapter extends FirestoreRecyclerAdapter<ChatroomMo
 
         holder.lastMessageText.setText(chatroomModel.lastMessageText);
 
+        if (chatroomModel.lastMessageSenderId.equals(FirebaseUtil.getCurrentUserID())) {
+            holder.textBeforeLastMessage.setText("You:");
+            holder.textBeforeLastMessage.setTextColor(context.getColor(R.color.primary));
+            holder.textBeforeLastMessage.setVisibility(View.VISIBLE);
+        } else {
+            holder.textBeforeLastMessage.setVisibility(View.GONE);
+        }
+
     }
 
     @NonNull
@@ -73,6 +81,7 @@ public class AllChatsRecyclerAdapter extends FirestoreRecyclerAdapter<ChatroomMo
 
     static class ChatroomViewHolder extends RecyclerView.ViewHolder {
         TextView usernameText;
+        TextView textBeforeLastMessage;
         TextView lastMessageText;
         TextView lastMessageTime;
         CardView profilePic;
@@ -80,6 +89,7 @@ public class AllChatsRecyclerAdapter extends FirestoreRecyclerAdapter<ChatroomMo
         public ChatroomViewHolder(@NonNull View itemView) {
             super(itemView);
             usernameText = itemView.findViewById(R.id.chat_preview_username);
+            textBeforeLastMessage = itemView.findViewById(R.id.chat_preview_text_before_message);
             lastMessageText = itemView.findViewById(R.id.chat_preview_last_message);
             lastMessageTime = itemView.findViewById(R.id.chat_preview_last_message_time);
             profilePic = itemView.findViewById(R.id.chat_preview_profile_pic);

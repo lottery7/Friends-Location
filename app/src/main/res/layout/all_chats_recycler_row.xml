@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:backgroundTint="@color/primary"
     android:padding="10dp">
 
     <include
@@ -10,43 +11,63 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp" />
 
-    <TextView
-        android:id="@+id/chat_preview_username"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/chat_preview_profile_pic"
-        android:layout_marginBottom="4sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:text="Username"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/light_dark_text" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/chat_preview_last_message"
+        <TextView
+            android:id="@+id/chat_preview_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="4sp"
+            android:text="Username"
+            android:textColor="@color/light_dark_text"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/chat_preview_text_before_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4sp"
+                android:text="You:"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/chat_preview_last_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Last message..."
+                android:textColor="@color/light_dark_text"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/chat_preview_profile_pic"
-        android:layout_below="@id/chat_preview_username"
-        android:layout_marginStart="10dp"
-        android:text="Last message..."
-        android:textSize="16sp"
-        android:textStyle="normal"
-        android:textColor="@color/light_dark_text" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/chat_preview_last_message_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="HH:mm"
-        android:textSize="16sp"
-        android:textStyle="normal"
-        android:textColor="@color/light_dark_text" />
+        <TextView
+            android:id="@+id/chat_preview_last_message_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="HH:mm"
+            android:textColor="@color/light_dark_text"
+            android:textSize="16sp"
+            android:textStyle="normal" />
+    </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

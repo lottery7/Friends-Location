@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.friendlocation.databinding.ActivitySignUpBinding;
-import com.example.friendlocation.utils.FirebaseUtils;
+import com.example.friendlocation.util.FirebaseUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -55,8 +55,8 @@ public class SignUp extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            User user = new User(username, email);
-                            FirebaseUtils.getCurrentUserDetails().setValue(user);
+                            User user = new User(username, email, FirebaseUtil.getCurrentUserID());
+                            FirebaseUtil.getCurrentUserDetails().setValue(user);
                             goToMainMap();
                         } else {
                             Toast.makeText(getApplicationContext(), "There was an error during registration", Toast.LENGTH_SHORT).show();

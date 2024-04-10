@@ -8,7 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.friendlocation.utils.FirebaseUtils;
+import com.example.friendlocation.adapters.SearchUserRecyclerAdapter;
+import com.example.friendlocation.util.FirebaseUtil;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.Query;
 
@@ -39,7 +40,7 @@ public class SearchUser extends AppCompatActivity {
     }
 
     private void setupSearchRecyclerView(String searchTerm) {
-        Query query = FirebaseUtils
+        Query query = FirebaseUtil
                 .getUsersCollection()
                 .orderByChild("name")
                 .startAt(searchTerm)
@@ -50,33 +51,9 @@ public class SearchUser extends AppCompatActivity {
                 .setQuery(query, User.class)
                 .build();
 
-        adapter = new SearchUserRecyclerAdapter(options);
+        adapter = new SearchUserRecyclerAdapter(options, getApplicationContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         adapter.startListening();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (adapter != null) {
-            adapter.startListening();
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (adapter != null) {
-            adapter.stopListening();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (adapter != null) {
-            adapter.startListening();
-        }
     }
 }

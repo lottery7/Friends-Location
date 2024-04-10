@@ -5,7 +5,7 @@
     android:padding="10dp">
 
     <include
-        android:id="@+id/search_profile_pic"
+        android:id="@+id/chat_preview_profile_pic"
         layout="@layout/profile_picture_view"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -13,10 +13,10 @@
         android:layout_margin="10dp"/>
 
     <TextView
-        android:id="@+id/search_user_row_username"
+        android:id="@+id/chat_preview_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/search_profile_pic"
+        android:layout_toEndOf="@id/chat_preview_profile_pic"
         android:layout_marginBottom="4sp"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
@@ -26,13 +26,25 @@
         android:textColor="@color/light_dark_text" />
 
     <TextView
-        android:id="@+id/search_user_row_email"
+        android:id="@+id/chat_preview_last_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/search_profile_pic"
-        android:layout_below="@id/search_user_row_username"
+        android:layout_toEndOf="@id/chat_preview_profile_pic"
+        android:layout_below="@id/chat_preview_username"
         android:layout_marginStart="10dp"
-        android:text="email"
+        android:text="Last message..."
+        android:textSize="16sp"
+        android:textStyle="normal"
+        android:textColor="@color/light_dark_text" />
+
+    <TextView
+        android:id="@+id/chat_preview_last_message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="HH:mm"
         android:textSize="16sp"
         android:textStyle="normal"
         android:textColor="@color/light_dark_text" />

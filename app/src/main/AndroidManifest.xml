@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
 
-
-    
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -20,6 +17,21 @@
         android:theme="@style/Theme.FriendLocation"
         tools:targetApi="31">
         <activity
+            android:name=".SearchUser"
+            android:exported="false" />
+        <activity
+            android:name=".CreateEvent"
+            android:exported="false" />
+        <activity
+            android:name=".Setting"
+            android:exported="false" />
+        <activity
+            android:name=".Friends"
+            android:exported="false" />
+        <activity
+            android:name=".Events"
+            android:exported="false" />
+        <activity
             android:name=".ParticularChat"
             android:exported="false" />
         <activity
@@ -30,6 +42,9 @@
             android:exported="false" />
         <activity
             android:name=".SignUp"
+            android:exported="false" />
+        <activity
+            android:name=".RestorePassword"
             android:exported="false" />
         <activity
             android:name=".SignIn"
@@ -44,6 +59,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}"/>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

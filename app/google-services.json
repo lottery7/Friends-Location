@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "637810907853",
+    "project_id": "friendloc-e7399",
+    "storage_bucket": "friendloc-e7399.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637810907853:android:25965b5f4948ef7317e784",
+        "android_client_info": {
+          "package_name": "com.example.friendlocation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTxNE4J_tDCXx0EqUJ9zR_pK-L3-gPubc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

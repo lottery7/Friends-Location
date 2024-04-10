@@ -1,10 +1,8 @@
 package com.example.friendlocation;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
-public class AllChats extends AppCompatActivity {
+public class AllChats extends BottomBar {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

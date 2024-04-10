@@ -1,36 +1,34 @@
 package com.example.friendlocation;
 
-import static com.example.friendlocation.utils.Config.dateFormat;
-import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserUID;
+import static com.example.friendlocation.util.Config.dateFormat;
+import static com.example.friendlocation.util.FirebaseUtil.getCurrentUserUID;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.app.TimePickerDialog;
-import android.text.format.DateUtils;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.friendlocation.databinding.ActivityCreateEventBinding;
-import com.example.friendlocation.utils.Event;
-import com.example.friendlocation.utils.FirebaseUtils;
-import com.example.friendlocation.utils.Pair;
-import com.example.friendlocation.utils.Place;
-import com.example.friendlocation.utils.User;
-import com.example.friendlocation.utils.UsersAdapterEvent;
+import com.example.friendlocation.util.Event;
+import com.example.friendlocation.util.FirebaseUtil;
+import com.example.friendlocation.util.Pair;
+import com.example.friendlocation.util.Place;
+import com.example.friendlocation.util.User;
+import com.example.friendlocation.adapters.UsersAdapterEvent;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
-import java.util.Random;
 
 public class CreateEvent extends AppCompatActivity {
 
@@ -75,7 +73,7 @@ public class CreateEvent extends AppCompatActivity {
         ev.membersUID = adapter.getUsersUID();
         ev.membersUID.add(getCurrentUserUID());
         ev.place = place;
-        FirebaseUtils.addEvent(ev);
+        FirebaseUtil.addEvent(ev);
         finish();
     }
 
@@ -101,7 +99,7 @@ public class CreateEvent extends AppCompatActivity {
                         | DateUtils.FORMAT_SHOW_TIME));
     }
 
-    TimePickerDialog.OnTimeSetListener t=new TimePickerDialog.OnTimeSetListener() {
+    TimePickerDialog.OnTimeSetListener t = new TimePickerDialog.OnTimeSetListener() {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
             dateAndTime.set(Calendar.MINUTE, minute);
@@ -109,7 +107,7 @@ public class CreateEvent extends AppCompatActivity {
         }
     };
 
-    DatePickerDialog.OnDateSetListener d=new DatePickerDialog.OnDateSetListener() {
+    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             dateAndTime.set(Calendar.YEAR, year);
             dateAndTime.set(Calendar.MONTH, monthOfYear);
@@ -119,7 +117,7 @@ public class CreateEvent extends AppCompatActivity {
     };
 
     public void addUser(View v) {
-        Intent intent = new Intent(this, SearchUser.class);
+        Intent intent = new Intent(this, SearchUserForEvent.class);
         startActivityForResult(intent, USER_REQUEST_CODE);
     }
 
@@ -129,6 +127,7 @@ public class CreateEvent extends AppCompatActivity {
         intent.putExtra("MAP_MODE", "select_place");
         startActivityForResult(intent, PLACE_REQUEST_CODE);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -143,8 +142,7 @@ public class CreateEvent extends AppCompatActivity {
             user.uid = data.getStringExtra("uid");
             UsersAdapterEvent adapter = (UsersAdapterEvent) binding.usersList.getAdapter();
             adapter.addUser(user);
-        }
-        else if (requestCode == PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) { // Проверка результата для MainMap
+        } else if (requestCode == PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) { // Проверка результата для MainMap
             if (data != null) {
                 place.description = data.getStringExtra("PLACE_DESCRIPTION");
                 String lt = data.getStringExtra("PLACE_LATITUDE");

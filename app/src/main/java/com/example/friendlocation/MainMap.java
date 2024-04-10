@@ -1,6 +1,6 @@
 package com.example.friendlocation;
 
-import static com.example.friendlocation.utils.FirebaseUtils.makeEventsMarkers;
+import static com.example.friendlocation.util.FirebaseUtil.makeEventsMarkers;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,8 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.friendlocation.utils.Pair;
-import com.example.friendlocation.utils.Place;
+import com.example.friendlocation.util.Pair;
+import com.example.friendlocation.util.Place;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -79,7 +79,7 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
         }
         Log.w(TAG, "Mode: " + mapMode);
 
-        if (Objects.equals(mapMode, "select_place")){
+        if (Objects.equals(mapMode, "select_place")) {
             Button selectPlaceBtn = findViewById(R.id.select_place_btn);
             selectPlaceBtn.setVisibility(View.VISIBLE);
 
@@ -90,6 +90,7 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
         //   /--- new features for select mode ---/
 
     }
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
@@ -153,7 +154,7 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
                 lastKnownLocation = null;
                 getLocationPermission();
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", Objects.requireNonNull(e.getMessage()));
         }
     }
@@ -180,7 +181,7 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
                     }
                 });
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage(), e);
         }
     }

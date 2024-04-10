@@ -15,11 +15,9 @@ public class BottomBar extends AppCompatActivity {
     }
 
     public void goToChats(View v) {
-        if(!(this instanceof AllChats)){
-            Intent intent = new Intent(this, AllChats.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, AllChats.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
     }
 
     public void goToMap(View v) {

@@ -1,16 +1,17 @@
 package com.example.friendlocation;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.friendlocation.databinding.ActivitySignUpBinding;
-import com.example.friendlocation.utils.FirebaseUtils;
+import com.example.friendlocation.util.FirebaseUtil;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -48,7 +49,7 @@ public class SignUp extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        googleSignInClient = GoogleSignIn.getClient(this,gso);
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         binding.signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +62,7 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent singInIntent = googleSignInClient.getSignInIntent();
-                startActivityForResult(singInIntent,RESULT_CODE_SINGIN);
+                startActivityForResult(singInIntent, RESULT_CODE_SINGIN);
             }
         });
 
@@ -88,8 +89,8 @@ public class SignUp extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            User user = new User(username, email);
-                            FirebaseUtils.getCurrentUserDetails().setValue(user);
+                            User user = new User(username, email, FirebaseUtil.getCurrentUserUID());
+                            FirebaseUtil.getCurrentUserDetails().setValue(user);
                             goToMainMap();
                         } else {
                             Exception exception = task.getException();
@@ -139,14 +140,13 @@ public class SignUp extends AppCompatActivity {
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Log.w(TAG, "Google auntification succeeded");
                     FirebaseUser firebaseUser = mAuth.getCurrentUser();
 //                  I check it dose not save user data one more time)
                     saveGoogleUserInDatabase(firebaseUser);
                     goToMainMap();
-                }
-                else {
+                } else {
                     Log.w(TAG, "Google auntification failed");
                 }
             }
@@ -156,12 +156,11 @@ public class SignUp extends AppCompatActivity {
     private void saveGoogleUserInDatabase(FirebaseUser firebaseUser) {
         String username = firebaseUser.getDisplayName();
         String email = firebaseUser.getEmail();
-        User user = new User(username, email);
-        FirebaseUtils.getCurrentUserDetails().setValue(user);
+        User user = new User(username, email, FirebaseUtil.getCurrentUserUID());
+        FirebaseUtil.getCurrentUserDetails().setValue(user);
         Log.w(TAG, "User was added to database");
     }
     // ------------------Google----------------------
-
 
 
     private void goToSignIn() {

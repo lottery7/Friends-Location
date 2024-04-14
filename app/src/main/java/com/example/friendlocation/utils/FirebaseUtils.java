@@ -10,6 +10,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
 
 public class FirebaseUtils {
     public static FirebaseDatabase getDatabase() {
@@ -18,13 +23,13 @@ public class FirebaseUtils {
         );
     }
 
-    public static String getCurrentUserUID() {
+    public static String getCurrentUserID() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     public static DatabaseReference getCurrentUserDetails(){
         return getDatabase().getReference("users")
-                .child(getCurrentUserUID());
+                .child(getCurrentUserID());
     }
 
     public static boolean addEvent(Event event) {
@@ -63,7 +68,7 @@ public class FirebaseUtils {
     }
 
     public static void makeEventsMarkers(GoogleMap mMap) {
-        String uid = getCurrentUserUID();
+        String uid = getCurrentUserID();
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
@@ -107,6 +112,40 @@ public class FirebaseUtils {
             }
         };
         getDatabase().getReference("users").child(uid).child("events").addChildEventListener(childEventListener);
+    }
+
+    public static FirebaseFirestore getFirestoreDatabase() {
+        return FirebaseFirestore.getInstance();
+    }
+
+    public static CollectionReference getChatroomsCollection() {
+        return getFirestoreDatabase().collection("chatrooms");
+    }
+
+    public static DocumentReference getChatroomReference(String id) {
+        return getChatroomsCollection().document(id);
+    }
+
+    public static CollectionReference getChatroomMessagesReference(String id) {
+        return getChatroomReference(id).collection("messages");
+    }
+
+    public static DatabaseReference getUserDetails(String id) {
+        return getUsersCollection().child(id);
+    }
+
+    public static DatabaseReference getOtherUserFromList(List<String> userIds) {
+        if (userIds.get(0).equals(getCurrentUserID())) {
+            return getUserDetails(userIds.get(1));
+        }
+        return getUserDetails(userIds.get(0));
+    }
+
+    public static String getChatroomId(String email1, String email2) {
+        if (email1.hashCode() < email2.hashCode()) {
+            return email1 + "_" + email2;
+        }
+        return email2 + "_" + email1;
     }
 
 }

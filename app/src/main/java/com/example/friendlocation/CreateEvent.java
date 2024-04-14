@@ -1,7 +1,7 @@
 package com.example.friendlocation;
 
 import static com.example.friendlocation.utils.Config.dateFormat;
-import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserUID;
+import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserID;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -72,7 +72,7 @@ public class CreateEvent extends AppCompatActivity {
         }
         UsersAdapterCreateEvent adapter = (UsersAdapterCreateEvent) binding.usersList.getAdapter();
         ev.membersUID = adapter.getUsersUID();
-        ev.membersUID.add(getCurrentUserUID());
+        ev.membersUID.add(getCurrentUserID());
         ev.place = place;
         FirebaseUtils.addEvent(ev);
         finish();
@@ -139,7 +139,7 @@ public class CreateEvent extends AppCompatActivity {
             User user = new User();
             user.name = data.getStringExtra("name");
             user.email = data.getStringExtra("mail");
-            user.uid = data.getStringExtra("uid");
+            user.id = data.getStringExtra("uid");
             UsersAdapterCreateEvent adapter = (UsersAdapterCreateEvent) binding.usersList.getAdapter();
             adapter.addUser(user);
         }

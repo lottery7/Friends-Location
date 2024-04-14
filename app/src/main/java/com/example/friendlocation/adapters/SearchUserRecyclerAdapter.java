@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.Chatroom;
 import com.example.friendlocation.R;
-import com.example.friendlocation.User;
-import com.example.friendlocation.util.FirebaseUtil;
+import com.example.friendlocation.utils.User;
+import com.example.friendlocation.utils.FirebaseUtils;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
@@ -28,7 +28,7 @@ public class SearchUserRecyclerAdapter extends FirebaseRecyclerAdapter<User, Sea
     @Override
     protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User user) {
         String username = user.name;
-        if (FirebaseUtil.getCurrentUserID().equals(user.id)) {
+        if (FirebaseUtils.getCurrentUserID().equals(user.id)) {
             username += " (me)";
         }
         holder.usernameTextView.setText(username);

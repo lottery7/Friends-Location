@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.friendlocation.Chatroom;
 import com.example.friendlocation.ChatroomModel;
 import com.example.friendlocation.R;
-import com.example.friendlocation.User;
-import com.example.friendlocation.util.FirebaseUtil;
+import com.example.friendlocation.utils.User;
+import com.example.friendlocation.utils.FirebaseUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
@@ -40,7 +40,7 @@ public class AllChatsRecyclerAdapter extends FirestoreRecyclerAdapter<ChatroomMo
 
         Log.v(this.getClass().toString(), format.format(chatroomModel.lastMessageDate.toDate()));
 
-        FirebaseUtil
+        FirebaseUtils
                 .getOtherUserFromList(chatroomModel.userIds)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -60,7 +60,7 @@ public class AllChatsRecyclerAdapter extends FirestoreRecyclerAdapter<ChatroomMo
 
         holder.lastMessageText.setText(chatroomModel.lastMessageText);
 
-        if (chatroomModel.lastMessageSenderId.equals(FirebaseUtil.getCurrentUserID())) {
+        if (chatroomModel.lastMessageSenderId.equals(FirebaseUtils.getCurrentUserID())) {
             holder.textBeforeLastMessage.setText("You:");
             holder.textBeforeLastMessage.setTextColor(context.getColor(R.color.primary));
             holder.textBeforeLastMessage.setVisibility(View.VISIBLE);

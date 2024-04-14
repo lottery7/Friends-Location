@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.adapters.SearchUserRecyclerAdapter;
-import com.example.friendlocation.util.FirebaseUtil;
+import com.example.friendlocation.utils.FirebaseUtils;
+import com.example.friendlocation.utils.User;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.Query;
 
@@ -40,7 +41,7 @@ public class SearchUser extends AppCompatActivity {
     }
 
     private void setupSearchRecyclerView(String searchTerm) {
-        Query query = FirebaseUtil
+        Query query = FirebaseUtils
                 .getUsersCollection()
                 .orderByChild("name")
                 .startAt(searchTerm)

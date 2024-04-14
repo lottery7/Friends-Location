@@ -42,7 +42,7 @@ public class UsersAdapterCreateEvent extends RecyclerView.Adapter<UsersAdapterCr
             @Override
             public void onClick(View v) {
                 for (int i = 0; i < users.size(); i++) {
-                    if (users.get(i).uid.equals(user.uid)) {
+                    if (users.get(i).id.equals(user.id)) {
                         users.remove(i);
                         notifyItemRemoved(i);
                         return;
@@ -53,7 +53,7 @@ public class UsersAdapterCreateEvent extends RecyclerView.Adapter<UsersAdapterCr
     }
 
     public void addUser(User user) {
-        if (users.stream().anyMatch((v)->v.uid.equals(user.uid))) {
+        if (users.stream().anyMatch((v)->v.id.equals(user.id))) {
             return;
         }
         users.add(user);
@@ -61,7 +61,7 @@ public class UsersAdapterCreateEvent extends RecyclerView.Adapter<UsersAdapterCr
     }
 
     public ArrayList<String> getUsersUID() {
-        return (ArrayList<String>) users.stream().map((v)->v.uid).collect(Collectors.toList());
+        return (ArrayList<String>) users.stream().map((v)->v.id).collect(Collectors.toList());
     }
     @Override
     public int getItemCount() {

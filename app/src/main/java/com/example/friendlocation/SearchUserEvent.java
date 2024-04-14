@@ -53,7 +53,7 @@ public class SearchUserEvent extends AppCompatActivity {
                 .setQuery(query, snapshot -> {
                     User user = snapshot.getValue(User.class);
                     if (user != null) {
-                        user.uid = snapshot.getKey(); // Присваиваем uid из ключа snapshot'а
+                        user.id = snapshot.getKey(); // Присваиваем uid из ключа snapshot'а
                     }
                     return user;
                 })
@@ -66,7 +66,7 @@ public class SearchUserEvent extends AppCompatActivity {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("name", user.name);
                 resultIntent.putExtra("mail", user.email);
-                resultIntent.putExtra("uid", user.uid);
+                resultIntent.putExtra("uid", user.id);
                 setResult(RESULT_OK, resultIntent);
                 finish();
             }

@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.adapters.ChatroomRecyclerAdapter;
-import com.example.friendlocation.util.FirebaseUtil;
+import com.example.friendlocation.utils.FirebaseUtils;
+import com.example.friendlocation.utils.User;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Query;
@@ -54,14 +55,14 @@ public class Chatroom extends AppCompatActivity {
             return;
         }
 
-        FirebaseUtil.getUsersCollection()
+        FirebaseUtils.getUsersCollection()
             .child(otherUserId)
             .get()
             .addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     otherUser = task.getResult().getValue(User.class);
                     otherUserName.setText(otherUser.name);
-                    chatroomId = FirebaseUtil.getChatroomId(FirebaseUtil.getCurrentUserID(), otherUser.id);
+                    chatroomId = FirebaseUtils.getChatroomId(FirebaseUtils.getCurrentUserID(), otherUser.id);
                     createChatroom();
                     setupChatRecyclerView();
                 } else {
@@ -71,7 +72,7 @@ public class Chatroom extends AppCompatActivity {
     }
 
     private void setupChatRecyclerView() {
-        Query query = FirebaseUtil
+        Query query = FirebaseUtils
                 .getChatroomMessagesReference(chatroomId)
                 .orderBy("date");
 
@@ -97,36 +98,36 @@ public class Chatroom extends AppCompatActivity {
 
     private void sendMessage(String message) {
         chatroomModel.lastMessageDate = Timestamp.now();
-        chatroomModel.lastMessageSenderId = FirebaseUtil.getCurrentUserID();
+        chatroomModel.lastMessageSenderId = FirebaseUtils.getCurrentUserID();
 
         ChatMessage chatMessage = new ChatMessage(
                 message,
-                FirebaseUtil.getCurrentUserID(),
+                FirebaseUtils.getCurrentUserID(),
                 chatroomModel.lastMessageDate
         );
 
-        FirebaseUtil.getChatroomMessagesReference(chatroomId).add(chatMessage)
+        FirebaseUtils.getChatroomMessagesReference(chatroomId).add(chatMessage)
                 .addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         messageInput.setText("");
                         chatroomModel.lastMessageText = message;
-                        FirebaseUtil.getChatroomReference(chatroomId).set(chatroomModel);
+                        FirebaseUtils.getChatroomReference(chatroomId).set(chatroomModel);
                     }
                 });
     }
 
     private void createChatroom() {
-        FirebaseUtil.getChatroomReference(chatroomId).get().addOnCompleteListener(task -> {
+        FirebaseUtils.getChatroomReference(chatroomId).get().addOnCompleteListener(task -> {
             chatroomModel = task.getResult().toObject(ChatroomModel.class);
             if (chatroomModel == null) {
                 chatroomModel = new ChatroomModel(
                         chatroomId,
-                        Arrays.asList(FirebaseUtil.getCurrentUserID(), otherUser.id),
+                        Arrays.asList(FirebaseUtils.getCurrentUserID(), otherUser.id),
                         null,
                         "",
                         ""
                 );
-                FirebaseUtil.getChatroomReference(chatroomId).set(chatroomModel);
+                FirebaseUtils.getChatroomReference(chatroomId).set(chatroomModel);
             }
         });
     }

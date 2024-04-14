@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.adapters.AllChatsRecyclerAdapter;
-import com.example.friendlocation.util.FirebaseUtil;
+import com.example.friendlocation.utils.FirebaseUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
-public class AllChats extends AppCompatActivity {
+public class AllChats extends BottomBar {
     private ImageButton searchButton;
     private RecyclerView recyclerView;
     private CardView noMessagesCardView;
@@ -37,9 +37,9 @@ public class AllChats extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        Query query = FirebaseUtil
+        Query query = FirebaseUtils
                 .getChatroomsCollection()
-                .whereArrayContains("userIds", FirebaseUtil.getCurrentUserID())
+                .whereArrayContains("userIds", FirebaseUtils.getCurrentUserID())
                 .orderBy("lastMessageDate")
                 .whereNotEqualTo("lastMessageDate", null);
 

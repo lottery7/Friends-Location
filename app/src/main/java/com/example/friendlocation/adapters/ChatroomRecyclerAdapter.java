@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.ChatMessage;
 import com.example.friendlocation.R;
-import com.example.friendlocation.util.FirebaseUtil;
+import com.example.friendlocation.utils.FirebaseUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
@@ -26,7 +26,7 @@ public class ChatroomRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessag
 
     @Override
     protected void onBindViewHolder(@NonNull ChatroomViewHolder holder, int position, @NonNull ChatMessage message) {
-        if (message.senderId.equals(FirebaseUtil.getCurrentUserID())) {
+        if (message.senderId.equals(FirebaseUtils.getCurrentUserID())) {
             holder.otherCardView.setVisibility(View.GONE);
             holder.cardView.setVisibility(View.VISIBLE);
             holder.messageText.setText(message.message);

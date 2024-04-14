@@ -3,7 +3,7 @@ package com.example.friendlocation.utils;
 public class User {
     public String name;
     public String email;
-    public String uid;
+    public String id;
     public int right;
 
     public User() {
@@ -14,14 +14,14 @@ public class User {
         this.email = email;
     }
 
-    public User(String name, String email, String uid) {
+    public User(String name, String email, String id) {
         this.name = name;
         this.email = email;
-        this.uid = uid;
+        this.id = id;
     }
 
-    public User(String uid, Integer right) {
-        this.uid = uid;
+    public User(String id, Integer right) {
+        this.id = id;
         this.right = right;
     }
 }

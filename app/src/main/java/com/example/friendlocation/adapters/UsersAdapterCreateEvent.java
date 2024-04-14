@@ -1,4 +1,4 @@
-package com.example.friendlocation.utils;
+package com.example.friendlocation.adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,29 +10,30 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.R;
+import com.example.friendlocation.utils.User;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UsersAdapterEvent extends RecyclerView.Adapter<UsersAdapterEvent.ViewHolder>{
+public class UsersAdapterCreateEvent extends RecyclerView.Adapter<UsersAdapterCreateEvent.ViewHolder>{
 
     private final LayoutInflater inflater;
     private final List<User> users;
 
-    public UsersAdapterEvent(Context context, List<User> users) {
+    public UsersAdapterCreateEvent(Context context, List<User> users) {
         this.users = users;
         this.inflater = LayoutInflater.from(context);
     }
     @Override
-    public UsersAdapterEvent.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public UsersAdapterCreateEvent.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = inflater.inflate(R.layout.user_adapter, parent, false);
+        View view = inflater.inflate(R.layout.user_adapter_event, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(UsersAdapterEvent.ViewHolder holder, int position) {
+    public void onBindViewHolder(UsersAdapterCreateEvent.ViewHolder holder, int position) {
         User user = users.get(position);
         holder.userIconView.setImageResource(R.drawable.ic_launcher_foreground);
         holder.nameView.setText(user.name);

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.friendlocation.databinding.ActivitySignUpBinding;
 import com.example.friendlocation.utils.FirebaseUtils;
+import com.example.friendlocation.utils.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;

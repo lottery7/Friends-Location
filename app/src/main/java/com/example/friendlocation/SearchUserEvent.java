@@ -11,20 +11,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.User;
-import com.example.friendlocation.utils.UserAdapterSearch;
+import com.example.friendlocation.adapters.UserAdapterSearchEvent;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.Query;
 
-public class SearchUser extends AppCompatActivity {
+public class SearchUserEvent extends AppCompatActivity {
     private EditText searchInput;
     private ImageButton searchButton;
     private RecyclerView recyclerView;
-    private UserAdapterSearch adapter;
+    private UserAdapterSearchEvent adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_user);
+        setContentView(R.layout.activity_search_user_event);
 
         searchInput = findViewById(R.id.search_user_input);
         searchInput.requestFocus();
@@ -59,8 +59,8 @@ public class SearchUser extends AppCompatActivity {
                 })
                 .build();
 
-        adapter = new UserAdapterSearch(options);
-        adapter.setOnUserClickListener(new UserAdapterSearch.OnUserClickListener() {
+        adapter = new UserAdapterSearchEvent(options);
+        adapter.setOnUserClickListener(new UserAdapterSearchEvent.OnUserClickListener() {
             @Override
             public void onUserClick(User user) {
                 Intent resultIntent = new Intent();

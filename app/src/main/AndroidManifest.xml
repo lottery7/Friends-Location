@@ -17,7 +17,7 @@
         android:theme="@style/Theme.FriendLocation"
         tools:targetApi="31">
         <activity
-            android:name=".SearchUser"
+            android:name=".SearchUserEvent"
             android:exported="false" />
         <activity
             android:name=".CreateEvent"

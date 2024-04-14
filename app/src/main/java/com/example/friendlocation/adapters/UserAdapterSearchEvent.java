@@ -1,4 +1,4 @@
-package com.example.friendlocation.utils;
+package com.example.friendlocation.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,17 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.R;
+import com.example.friendlocation.utils.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
-public class UserAdapterSearch extends FirebaseRecyclerAdapter<User, UserAdapterSearch.UserViewHolder> {
+public class UserAdapterSearchEvent extends FirebaseRecyclerAdapter<User, UserAdapterSearchEvent.UserViewHolder> {
 
     private OnUserClickListener onUserClickListener;
 
     public void setOnUserClickListener(OnUserClickListener listener) {
         this.onUserClickListener = listener;
     }
-    public UserAdapterSearch(@NonNull FirebaseRecyclerOptions<User> options) {
+    public UserAdapterSearchEvent(@NonNull FirebaseRecyclerOptions<User> options) {
         super(options);
     }
 
@@ -40,7 +41,7 @@ public class UserAdapterSearch extends FirebaseRecyclerAdapter<User, UserAdapter
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.user_adapter, parent, false);
+                .inflate(R.layout.user_adapter_event, parent, false);
         return new UserViewHolder(view);
     }
 

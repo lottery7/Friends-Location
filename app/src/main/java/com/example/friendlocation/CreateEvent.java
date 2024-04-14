@@ -25,12 +25,11 @@ import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.Pair;
 import com.example.friendlocation.utils.Place;
 import com.example.friendlocation.utils.User;
-import com.example.friendlocation.utils.UsersAdapterEvent;
+import com.example.friendlocation.adapters.UsersAdapterCreateEvent;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
-import java.util.Random;
 
 public class CreateEvent extends AppCompatActivity {
 
@@ -48,7 +47,7 @@ public class CreateEvent extends AppCompatActivity {
         setContentView(binding.getRoot());
         setInitialDateTime();
         ArrayList<User> users = new ArrayList<>();
-        UsersAdapterEvent adapter = new UsersAdapterEvent(this, users);
+        UsersAdapterCreateEvent adapter = new UsersAdapterCreateEvent(this, users);
         binding.usersList.setAdapter(adapter);
 
         binding.usersList.setLayoutManager(new LinearLayoutManager(this));
@@ -71,7 +70,7 @@ public class CreateEvent extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Empty fields are not allowed", Toast.LENGTH_SHORT).show();
             return;
         }
-        UsersAdapterEvent adapter = (UsersAdapterEvent) binding.usersList.getAdapter();
+        UsersAdapterCreateEvent adapter = (UsersAdapterCreateEvent) binding.usersList.getAdapter();
         ev.membersUID = adapter.getUsersUID();
         ev.membersUID.add(getCurrentUserUID());
         ev.place = place;
@@ -119,7 +118,7 @@ public class CreateEvent extends AppCompatActivity {
     };
 
     public void addUser(View v) {
-        Intent intent = new Intent(this, SearchUser.class);
+        Intent intent = new Intent(this, SearchUserEvent.class);
         startActivityForResult(intent, USER_REQUEST_CODE);
     }
 
@@ -141,7 +140,7 @@ public class CreateEvent extends AppCompatActivity {
             user.name = data.getStringExtra("name");
             user.email = data.getStringExtra("mail");
             user.uid = data.getStringExtra("uid");
-            UsersAdapterEvent adapter = (UsersAdapterEvent) binding.usersList.getAdapter();
+            UsersAdapterCreateEvent adapter = (UsersAdapterCreateEvent) binding.usersList.getAdapter();
             adapter.addUser(user);
         }
         else if (requestCode == PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) { // Проверка результата для MainMap

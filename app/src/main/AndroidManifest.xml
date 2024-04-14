@@ -32,7 +32,10 @@
             android:name=".Events"
             android:exported="false" />
         <activity
-            android:name=".ParticularChat"
+            android:name=".SearchUser"
+            android:exported="false" />
+        <activity
+            android:name=".Chatroom"
             android:exported="false" />
         <activity
             android:name=".AllChats"

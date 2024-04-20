@@ -46,17 +46,19 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_bar_ll">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/all_chats_no_messages"
             android:layout_width="300dp"
             android:layout_height="50dp"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="15dp"
-            app:cardElevation="@dimen/cardview_default_elevation"
-            app:cardBackgroundColor="@color/white">
+            app:cardElevation="@dimen/cardview_default_elevation">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -74,6 +76,68 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_bar_ll"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@color/main_menu"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/events_imgbtn"
+            android:layout_width="10dp"
+            android:layout_height="75dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/main_menu"
+            android:onClick="goToEvents"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/calendar" />
+
+        <ImageButton
+            android:id="@+id/chats_imgbtn"
+            android:layout_width="10dp"
+            android:layout_height="75dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/main_menu"
+            android:onClick="goToChats"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/chat" />
+
+        <ImageButton
+            android:id="@+id/map_imgbtn"
+            android:layout_width="10dp"
+            android:layout_height="75dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/main_menu"
+            android:onClick="goToMap"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/map" />
+
+        <ImageButton
+            android:id="@+id/friends_imgbtn"
+            android:layout_width="10dp"
+            android:layout_height="75dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/main_menu"
+            android:onClick="goToFriends"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/friends" />
+
+        <ImageButton
+            android:id="@+id/setting_imgbtn"
+            android:layout_width="10dp"
+            android:layout_height="75dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/main_menu"
+            android:onClick="goToSetting"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/setting" />
 
     </LinearLayout>
 

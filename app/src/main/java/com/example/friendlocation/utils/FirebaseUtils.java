@@ -76,6 +76,9 @@ public class FirebaseUtils {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Event ev = new Event();
+                        if (dataSnapshot.getValue() == null) {
+                            return;
+                        }
                         getEventFromSnapshot(dataSnapshot, ev);
                         MarkerOptions markerOptions = new MarkerOptions();
                         LatLng latLng = new LatLng(ev.place.coordinates.getFirst(), ev.place.coordinates.getSecond());

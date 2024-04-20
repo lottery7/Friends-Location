@@ -1,7 +1,13 @@
 package com.example.friendlocation.utils;
 
+import static java.lang.Math.min;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.util.Log;
+
+import com.example.friendlocation.Maps.MarkerIcon;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -15,6 +21,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+
 
 public class FirebaseUtils {
     public static FirebaseDatabase getDatabase() {
@@ -55,19 +62,7 @@ public class FirebaseUtils {
         return getDatabase().getReference("users");
     }
 
-    public static void getEventFromSnapshot(DataSnapshot dataSnapshot, Event ev){
-        // TODO: переписать на что-то более короткое, просто getValue(Event.class) не заполняет поля или падает с ошибкой
-        ev.name = dataSnapshot.child("name").getValue().toString();
-        ev.description = dataSnapshot.child("description").getValue().toString();
-        ev.uid = dataSnapshot.child("uid").getValue().toString();
-        ev.date = dataSnapshot.child("date").getValue().toString();
-        ev.place = new Place(dataSnapshot.child("place").child("description").getValue().toString());
-        Double lt = Double.valueOf(dataSnapshot.child("place").child("coordinates").child("first").getValue().toString());
-        Double lg = Double.valueOf(dataSnapshot.child("place").child("coordinates").child("second").getValue().toString());
-        ev.place.coordinates = new Pair<>(lt, lg);
-    }
-
-    public static void makeEventsMarkers(GoogleMap mMap) {
+    public static void makeEventsMarkers(GoogleMap mMap, Context context, Resources resources) {
         String uid = getCurrentUserID();
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -75,16 +70,19 @@ public class FirebaseUtils {
                 ValueEventListener postListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Event ev = new Event();
-                        if (dataSnapshot.getValue() == null) {
-                            return;
+                        try {
+                            Event ev = dataSnapshot.getValue(Event.class);
+
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.position(ev.getLatLng());
+                            MarkerIcon markerIcon = new MarkerIcon(ev, context, resources);
+                            markerOptions.icon(markerIcon.getBriefMarkerIcon());
+                            mMap.addMarker(markerOptions);
+                        } catch (Exception e) {
+                            Log.e("Making marker", e.getMessage());
                         }
-                        getEventFromSnapshot(dataSnapshot, ev);
-                        MarkerOptions markerOptions = new MarkerOptions();
-                        LatLng latLng = new LatLng(ev.place.coordinates.getFirst(), ev.place.coordinates.getSecond());
-                        markerOptions.position(latLng);
-                        mMap.addMarker(markerOptions);
                     }
+
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {

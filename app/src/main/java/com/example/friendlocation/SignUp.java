@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.friendlocation.Maps.MainMap;
 import com.example.friendlocation.databinding.ActivitySignUpBinding;
 import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.User;

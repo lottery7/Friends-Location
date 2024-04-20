@@ -19,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.friendlocation.Maps.MainMap;
 import com.example.friendlocation.databinding.ActivityCreateEventBinding;
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.FirebaseUtils;

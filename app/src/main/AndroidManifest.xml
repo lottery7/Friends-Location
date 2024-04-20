@@ -41,7 +41,7 @@
             android:name=".AllChats"
             android:exported="false" />
         <activity
-            android:name=".MainMap"
+            android:name=".Maps.MainMap"
             android:exported="false" />
         <activity
             android:name=".SignUp"

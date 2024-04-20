@@ -1,5 +1,7 @@
 package com.example.friendlocation.utils;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 public class Event {
@@ -32,5 +34,9 @@ public class Event {
     public Event(String uid, String name, String date, String description, Place place) {
         this(uid, name, date, description);
         this.place = place;
+    }
+
+    public LatLng getLatLng() {
+        return new LatLng(place.coordinates.getFirst(), place.coordinates.getSecond());
     }
 }

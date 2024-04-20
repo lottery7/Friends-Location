@@ -1,4 +1,4 @@
-package com.example.friendlocation;
+package com.example.friendlocation.Maps;
 
 import static com.example.friendlocation.utils.FirebaseUtils.makeEventsMarkers;
 
@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.friendlocation.BottomBar;
+import com.example.friendlocation.R;
 import com.example.friendlocation.utils.Pair;
 import com.example.friendlocation.utils.Place;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -123,7 +125,7 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
     }
 
     private void makeMapMarkers() {
-        makeEventsMarkers(mMap);
+        makeEventsMarkers(mMap, getApplicationContext(), getResources());
     }
 
     private void getLocationPermission() {

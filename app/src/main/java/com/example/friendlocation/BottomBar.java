@@ -5,6 +5,8 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.friendlocation.Maps.MainMap;
+
 public class BottomBar extends AppCompatActivity {
     public void goToEvents(View v) {
         if(!(this instanceof Events)){

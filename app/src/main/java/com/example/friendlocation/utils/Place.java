@@ -5,6 +5,8 @@ public class Place {
 
     public Pair<Double, Double> coordinates;
 
+    public Place(){}
+
     public Place(String place, Pair<Double, Double> coordinates) {
         this.description = place;
         this.coordinates = coordinates;

@@ -26,25 +26,25 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import java.text.ParseException;
 import java.util.Objects;
 
-public class MarkerIcon {
-    private final int BRIEF_BACKGROUND_HEIGHT;
-    private final int BRIEF_BACKGROUND_WIDTH;
-    private final float BRIEF_TOP_SPACE_PERCENT = 0.05F;
-    private final float BRIEF_ICON_HEIGHT_PERCENT = 0.42F;
-    private final float BRIEF_MIDDLE_HEIGHT_SPACE_PERCENT = 0.02F;
+public class BriefMarkerIcon {
+    private final int BACKGROUND_HEIGHT;
+    private final int BACKGROUND_WIDTH;
+    private final float TOP_SPACE_PERCENT = 0.05F;
+    private final float ICON_HEIGHT_PERCENT = 0.42F;
+    private final float MIDDLE_HEIGHT_SPACE_PERCENT = 0.02F;
     private final float TEXT_HEIGHT_PERCENT = 0.12F;
     Drawable mark;
     Event event;
     Context context;
     Resources resources;
 
-    public MarkerIcon(Event event, Context context, Resources resources) {
+    public BriefMarkerIcon(Event event, Context context, Resources resources) {
         this.event = event;
         this.context = context;
         this.resources = resources;
-        BRIEF_BACKGROUND_HEIGHT = round(70 * resources.getDisplayMetrics().density);
-        BRIEF_BACKGROUND_WIDTH = round(50 * resources.getDisplayMetrics().density);
-        this.mark = scaleImage(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.meating_mark)), BRIEF_BACKGROUND_WIDTH, BRIEF_BACKGROUND_HEIGHT);
+        BACKGROUND_HEIGHT = round(70 * resources.getDisplayMetrics().density);
+        BACKGROUND_WIDTH = round(50 * resources.getDisplayMetrics().density);
+        this.mark = scaleImage(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.brief_meating_mark)), BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
     }
 
     public void findTextSize(String text, Canvas canvas, Paint paint, int paintWidth, int paintHeight, float textHeightShiftPercent) {
@@ -87,22 +87,22 @@ public class MarkerIcon {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.BLACK);
         findTextSize(event.name, canvas, paint,
-                BRIEF_BACKGROUND_WIDTH, BRIEF_BACKGROUND_HEIGHT,
-                BRIEF_TOP_SPACE_PERCENT + BRIEF_ICON_HEIGHT_PERCENT+BRIEF_MIDDLE_HEIGHT_SPACE_PERCENT+TEXT_HEIGHT_PERCENT/2);
+                BACKGROUND_WIDTH, BACKGROUND_HEIGHT,
+                TOP_SPACE_PERCENT + ICON_HEIGHT_PERCENT + MIDDLE_HEIGHT_SPACE_PERCENT +TEXT_HEIGHT_PERCENT/2);
         findTextSize(makerDateFormat.format(Objects.requireNonNull(dateFormat.parse(event.date))),
-                canvas, paint, BRIEF_BACKGROUND_WIDTH, BRIEF_BACKGROUND_HEIGHT,
-                BRIEF_TOP_SPACE_PERCENT + BRIEF_ICON_HEIGHT_PERCENT+2*BRIEF_MIDDLE_HEIGHT_SPACE_PERCENT+TEXT_HEIGHT_PERCENT*3/2);
+                canvas, paint, BACKGROUND_WIDTH, BACKGROUND_HEIGHT,
+                TOP_SPACE_PERCENT + ICON_HEIGHT_PERCENT +2* MIDDLE_HEIGHT_SPACE_PERCENT +TEXT_HEIGHT_PERCENT*3/2);
 
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.plus_circle);
+        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.event_icon_mark);
         float scale = min(
-                (float) (BRIEF_BACKGROUND_WIDTH * (1 - BRIEF_TOP_SPACE_PERCENT)) /drawable.getIntrinsicWidth(),
-                BRIEF_BACKGROUND_HEIGHT*BRIEF_ICON_HEIGHT_PERCENT/drawable.getIntrinsicHeight()
+                (float) (BACKGROUND_WIDTH * (1 - TOP_SPACE_PERCENT)) /drawable.getIntrinsicWidth(),
+                BACKGROUND_HEIGHT * ICON_HEIGHT_PERCENT /drawable.getIntrinsicHeight()
         );
         drawable = scaleImage(drawable, round(drawable.getIntrinsicWidth()*scale), round(drawable.getIntrinsicHeight()*scale));
-        drawable.setBounds((BRIEF_BACKGROUND_WIDTH-drawable.getIntrinsicWidth())/2,
-                (int) round(BRIEF_BACKGROUND_HEIGHT*BRIEF_TOP_SPACE_PERCENT),
-                (BRIEF_BACKGROUND_WIDTH+drawable.getIntrinsicWidth())/2,
-                (int) (drawable.getIntrinsicHeight()+round(BRIEF_BACKGROUND_HEIGHT*BRIEF_TOP_SPACE_PERCENT)));
+        drawable.setBounds((BACKGROUND_WIDTH -drawable.getIntrinsicWidth())/2,
+                (int) round(BACKGROUND_HEIGHT * TOP_SPACE_PERCENT),
+                (BACKGROUND_WIDTH +drawable.getIntrinsicWidth())/2,
+                (int) (drawable.getIntrinsicHeight()+round(BACKGROUND_HEIGHT * TOP_SPACE_PERCENT)));
         drawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }

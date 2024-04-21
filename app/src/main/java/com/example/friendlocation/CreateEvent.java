@@ -71,6 +71,12 @@ public class CreateEvent extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Empty fields are not allowed", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (ev.countSeparatorsInDescription() <= Event.MAX_DESCRIPTION_LINES) {
+            Toast.makeText(getApplicationContext(), "The description has too much lines", Toast.LENGTH_SHORT).show();
+        }
+        if (ev.maxLineSizeInDescription() <= Event.MAX_DESCRIPTION_LINE_SIZE) {
+            Toast.makeText(getApplicationContext(), "The description has too big line", Toast.LENGTH_SHORT).show();
+        }
         UsersAdapterCreateEvent adapter = (UsersAdapterCreateEvent) binding.usersList.getAdapter();
         ev.membersUID = adapter.getUsersUID();
         ev.membersUID.add(getCurrentUserID());

@@ -8,7 +8,9 @@ import android.util.Log;
 
 import com.example.friendlocation.Maps.BriefMarkerIcon;
 import com.example.friendlocation.Maps.FullMarkerIcon;
+import com.example.friendlocation.Maps.MarkerIcon;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -73,12 +75,12 @@ public class FirebaseUtils {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         try {
                             Event ev = dataSnapshot.getValue(Event.class);
-
                             MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(ev.getLatLng());
-                            FullMarkerIcon briefMarkerIcon = new FullMarkerIcon(ev, context, resources);
-                            markerOptions.icon(briefMarkerIcon.getBriefMarkerIcon());
-                            mMap.addMarker(markerOptions);
+                            MarkerIcon markerIcon = new MarkerIcon(ev, context, resources);
+                            markerOptions.icon(markerIcon.getBriefMarkerIcon());
+                            Marker x = mMap.addMarker(markerOptions);
+                            x.setTag(markerIcon);
                         } catch (Exception e) {
                             Log.e("Making marker", e.getMessage());
                         }

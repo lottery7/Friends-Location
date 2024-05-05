@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class Event {
     public static long MAX_DESCRIPTION_LINES = 5;
-    public static long MAX_DESCRIPTION_LINE_SIZE = 30;
+    public static long MAX_DESCRIPTION_LINE_SIZE = 50;
     public String uid;
     public String name;
     public String date;
@@ -45,8 +45,9 @@ public class Event {
         return new LatLng(place.coordinates.getFirst(), place.coordinates.getSecond());
     }
 
-    public long countSeparatorsInDescription(){
-        return Arrays.stream(description.split(lineSeparator())).count();
+    public int countLinesInDescription(){
+        String[] x = description.split(lineSeparator());
+        return (int) Arrays.stream(description.split(lineSeparator())).count();
     }
 
     public long maxLineSizeInDescription(){

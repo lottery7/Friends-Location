@@ -30,11 +30,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -42,6 +44,7 @@ import java.util.Objects;
 public class MainMap extends BottomBar implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Marker lastMarker = null;
     private final String TAG = "MainMapTag";
     private String mapMode = "default";
     private Place place = new Place("place");
@@ -92,12 +95,45 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
         //   /--- new features for select mode ---/
 
     }
+
+    private void removeFullMarker(){
+        if (lastMarker != null) {
+            MarkerIcon markerIcon = (MarkerIcon) lastMarker.getTag();
+            try {
+                lastMarker.setIcon(markerIcon.getBriefMarkerIcon());
+                lastMarker = null;
+            } catch (ParseException e) {
+                Log.e("Map", "Can't make brief marker", e);
+            }
+        }
+
+    }
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         updateLocationUI();
         getDeviceLocation();
         makeMapMarkers();
+
+        mMap.setOnMarkerClickListener(marker -> {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), mMap.getCameraPosition().zoom));
+            removeFullMarker();
+            MarkerIcon markerIcon = (MarkerIcon) marker.getTag();
+            lastMarker = marker;
+            try {
+                marker.setIcon(markerIcon.getFullMarkerIcon());
+            } catch (ParseException e) {
+                Log.e("Map", "Can't make full marker", e);
+                return false;
+            }
+            return true;
+        });
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull LatLng latLng) {
+                removeFullMarker();
+            }
+        });
 
         // Select location mode
         if (Objects.equals(mapMode, "select_place")) {

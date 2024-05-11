@@ -32,14 +32,12 @@
             android:name=".Events"
             android:exported="false" />
         <activity
-            android:name=".SearchUser"
-            android:exported="false" />
-        <activity
             android:name=".Chatroom"
             android:exported="false" />
         <activity
             android:name=".AllChats"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name=".MainMap"
             android:exported="false" />

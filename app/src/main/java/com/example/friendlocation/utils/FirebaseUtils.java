@@ -65,59 +65,6 @@ public class FirebaseUtils {
         return getDatabase().getReference("users");
     }
 
-    public static void makeEventsMarkers(GoogleMap mMap, Context context, Resources resources) {
-        String uid = getCurrentUserID();
-        ChildEventListener childEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                ValueEventListener postListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        try {
-                            Event ev = dataSnapshot.getValue(Event.class);
-                            MarkerOptions markerOptions = new MarkerOptions();
-                            markerOptions.position(ev.getLatLng());
-                            MarkerIcon markerIcon = new MarkerIcon(ev, context, resources);
-                            markerOptions.icon(markerIcon.getBriefMarkerIcon());
-                            Marker x = mMap.addMarker(markerOptions);
-                            x.setTag(markerIcon);
-                        } catch (Exception e) {
-                            Log.e("Making marker", e.getMessage());
-                        }
-                    }
-
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                };
-                String uid = dataSnapshot.getKey();
-                getDatabase().getReference("events").child(uid).addValueEventListener(postListener);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                String commentKey = dataSnapshot.getKey();
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                String commentKey = dataSnapshot.getKey();
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
-                String commentKey = dataSnapshot.getKey();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                String commentKey = databaseError.getMessage();
-            }
-        };
-        getDatabase().getReference("users").child(uid).child("events").addChildEventListener(childEventListener);
-    }
-
     public static FirebaseFirestore getFirestoreDatabase() {
         return FirebaseFirestore.getInstance();
     }

@@ -1,4 +1,4 @@
-package com.example.friendlocation;
+package com.example.friendlocation.Events;
 
 import static com.example.friendlocation.utils.Config.dateFormat;
 import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserID;

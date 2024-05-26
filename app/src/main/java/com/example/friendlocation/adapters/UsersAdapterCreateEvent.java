@@ -28,7 +28,7 @@ public class UsersAdapterCreateEvent extends RecyclerView.Adapter<UsersAdapterCr
     @Override
     public UsersAdapterCreateEvent.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = inflater.inflate(R.layout.user_adapter_event, parent, false);
+        View view = inflater.inflate(R.layout.user_adapter_create_events, parent, false);
         return new ViewHolder(view);
     }
 
@@ -74,10 +74,10 @@ public class UsersAdapterCreateEvent extends RecyclerView.Adapter<UsersAdapterCr
         final ImageButton deleteBtn;
         ViewHolder(View view){
             super(view);
-            userIconView = view.findViewById(R.id.userIcon_imgv);
-            nameView = view.findViewById(R.id.userName_tv);
-            mailView = view.findViewById(R.id.userEmail_tv);
-            deleteBtn = view.findViewById(R.id.deleteUser_imgbtn);
+            userIconView = view.findViewById(R.id.eventIcon_imgv);
+            nameView = view.findViewById(R.id.eventName_tv);
+            mailView = view.findViewById(R.id.eventDate_tv);
+            deleteBtn = view.findViewById(R.id.deleteEvent_imgbtn);
         }
     }
 }

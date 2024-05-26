@@ -1,6 +1,6 @@
 package com.example.friendlocation.Maps;
 
-import static com.example.friendlocation.utils.FirebaseUtils.makeEventsMarkers;
+import static com.example.friendlocation.Maps.MarkerEventsListener.makeEventsMarkers;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -116,6 +116,10 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
         makeMapMarkers();
 
         mMap.setOnMarkerClickListener(marker -> {
+            if (marker.equals(lastMarker)) {
+                // TODO: make function to go to chat
+                return true;
+            }
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), mMap.getCameraPosition().zoom));
             removeFullMarker();
             MarkerIcon markerIcon = (MarkerIcon) marker.getTag();

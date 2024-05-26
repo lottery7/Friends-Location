@@ -5,6 +5,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.friendlocation.Events.Events;
 import com.example.friendlocation.Maps.MainMap;
 
 public class BottomBar extends AppCompatActivity {

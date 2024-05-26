@@ -7,7 +7,7 @@
     android:backgroundTint="#EEF8F8"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateEvent">
+    tools:context=".Events.CreateEvent">
 
     <ImageButton
         android:id="@+id/back_to_events_imgbtn"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginTop="5dp"
-        android:text="Crate event"
+        android:text="Create event"
         android:textColor="#F3578C"
         android:textSize="40sp"
         android:textStyle="bold"

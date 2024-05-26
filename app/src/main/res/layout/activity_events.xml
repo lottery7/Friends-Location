@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:verticalScrollbarPosition="defaultPosition"
-    tools:context=".Events">
+    tools:context=".Events.Events">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -20,24 +20,22 @@
             android:id="@+id/calendarView"
             style="@android:style/Widget.DeviceDefault.CalendarView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
+            android:layout_height="wrap_content"
             android:dateTextAppearance="@style/TextAppearance.AppCompat.Large"
             android:onClick="viewEvents"
+            android:layout_marginTop="20dp"
             android:selectedDateVerticalBar="@null"
             android:selectedWeekBackgroundColor="#F92C85"
             android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-        <ScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/events_rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="4">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </ScrollView>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:padding="10dp" />
 
         <Button
             android:id="@+id/button3"

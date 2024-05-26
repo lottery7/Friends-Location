@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.R;
 import com.example.friendlocation.utils.Event;
+import com.example.friendlocation.utils.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,14 @@ public class EventAdapterEvents extends RecyclerView.Adapter<EventAdapterEvents.
                 }
             }
         });
+    }
+
+    public void addEvent(Event event) {
+        if (events.stream().anyMatch((v)->v.uid.equals(event.uid))) {
+            return;
+        }
+        events.add(event);
+        notifyItemInserted(events.size()-1);
     }
     @Override
     public int getItemCount() {

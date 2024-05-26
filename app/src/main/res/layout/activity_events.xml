@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@color/black"
+    android:backgroundTint="#EEF8F8"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:verticalScrollbarPosition="defaultPosition"
     tools:context=".Events.Events">
 
     <LinearLayout
@@ -23,7 +24,6 @@
             android:layout_height="wrap_content"
             android:dateTextAppearance="@style/TextAppearance.AppCompat.Large"
             android:onClick="viewEvents"
-            android:layout_marginTop="20dp"
             android:selectedDateVerticalBar="@null"
             android:selectedWeekBackgroundColor="#F92C85"
             android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Medium" />

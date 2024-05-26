@@ -1,4 +1,6 @@
 package com.example.friendlocation.adapters;
+import static com.example.friendlocation.utils.Config.dateFormat;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +15,10 @@ import com.example.friendlocation.R;
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.User;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class EventAdapterEvents extends RecyclerView.Adapter<EventAdapterEvents.ViewHolder>{
@@ -53,9 +57,16 @@ public class EventAdapterEvents extends RecyclerView.Adapter<EventAdapterEvents.
         });
     }
 
-    public void addEvent(Event event) {
+    public void addEvent(Event event) throws ParseException {
         if (events.stream().anyMatch((v)->v.uid.equals(event.uid))) {
             return;
+        }
+        for (int i = 0 ; i < events.size(); i++) {
+            if (Objects.requireNonNull(dateFormat.parse(event.date)).before(dateFormat.parse(events.get(i).date))) {
+                events.add(i, event);
+                notifyItemInserted(i);
+                return;
+            }
         }
         events.add(event);
         notifyItemInserted(events.size()-1);

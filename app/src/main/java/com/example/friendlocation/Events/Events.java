@@ -5,6 +5,7 @@ import static com.example.friendlocation.Events.EventsListenerEvents.makeEventsL
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CalendarView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
@@ -21,6 +22,7 @@ import com.example.friendlocation.databinding.ActivityEventsBinding;
 import com.example.friendlocation.utils.Event;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Events extends BottomBar {
 
@@ -34,12 +36,13 @@ public class Events extends BottomBar {
             return insets;
         });
 
-        ArrayList<Event> events = new ArrayList<>();
+        LinkedList<Event> events = new LinkedList<>();
         EventAdapterEvents adapter = new EventAdapterEvents(this, events);
         RecyclerView eventsRv = findViewById(R.id.events_rv);
+        CalendarView calendarView = findViewById(R.id.calendarView);
         eventsRv.setAdapter(adapter);
         eventsRv.setLayoutManager(new LinearLayoutManager(this));
-        makeEventsList(adapter, getApplicationContext(), getResources());
+        makeEventsList(adapter, calendarView, getApplicationContext(), getResources());
     }
 
     public void createEvent(View v) {

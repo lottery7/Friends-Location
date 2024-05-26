@@ -1,11 +1,13 @@
 package com.example.friendlocation.Events;
 
+import static com.example.friendlocation.utils.Config.dateFormat;
 import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserID;
 import static com.example.friendlocation.utils.FirebaseUtils.getDatabase;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
+import android.widget.CalendarView;
 
 import com.example.friendlocation.Maps.MarkerIcon;
 import com.example.friendlocation.adapters.EventAdapterEvents;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 public class EventsListenerEvents {
 
 
-    public static void makeEventsList(EventAdapterEvents eventsAdapter, Context context, Resources resources) {
+    public static void makeEventsList(EventAdapterEvents eventsAdapter, CalendarView calendarView, Context context, Resources resources) {
         String uid = getCurrentUserID();
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override

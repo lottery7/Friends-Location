@@ -1,4 +1,4 @@
-package com.example.friendlocation;
+package com.example.friendlocation.Events;
 
 import static com.example.friendlocation.utils.Config.dateFormat;
 import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserID;
@@ -19,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.friendlocation.Maps.MainMap;
 import com.example.friendlocation.databinding.ActivityCreateEventBinding;
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.FirebaseUtils;
@@ -36,7 +37,7 @@ public class CreateEvent extends AppCompatActivity {
     private static final int PLACE_REQUEST_CODE = 666;
     private static final int USER_REQUEST_CODE = 999;
     private ActivityCreateEventBinding binding;
-    private Place place = new Place("default");
+    private Place place = new Place();
     private String TAG = "CreateEventTag";
     Calendar dateAndTime = Calendar.getInstance();
 
@@ -66,8 +67,26 @@ public class CreateEvent extends AppCompatActivity {
         ev.name = binding.titleEt.getText().toString();
         ev.date = dateFormat.format(dateAndTime.getTime());
         ev.description = binding.descriptionEt.getText().toString();
-        if (ev.name.isEmpty() || ev.date.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Empty fields are not allowed", Toast.LENGTH_SHORT).show();
+        if (ev.name.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Empty name are not allowed", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (ev.date.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Empty date are not allowed", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (Objects.equals(place.description, "default")) {
+            Toast.makeText(getApplicationContext(), "Empty place are not allowed", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (ev.countLinesInDescription() > Event.MAX_DESCRIPTION_LINES) {
+            Toast.makeText(getApplicationContext(), "The description has too much lines (" +
+                    ev.countLinesInDescription() + "/" + Event.MAX_DESCRIPTION_LINES + ")", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (ev.maxLineSizeInDescription() > Event.MAX_DESCRIPTION_LINE_SIZE) {
+            Toast.makeText(getApplicationContext(), "The description has too big line (" +
+                    ev.maxLineSizeInDescription() + "/" + Event.MAX_DESCRIPTION_LINE_SIZE + ")", Toast.LENGTH_SHORT).show();
             return;
         }
         UsersAdapterCreateEvent adapter = (UsersAdapterCreateEvent) binding.usersList.getAdapter();
@@ -100,7 +119,7 @@ public class CreateEvent extends AppCompatActivity {
                         | DateUtils.FORMAT_SHOW_TIME));
     }
 
-    TimePickerDialog.OnTimeSetListener t=new TimePickerDialog.OnTimeSetListener() {
+    TimePickerDialog.OnTimeSetListener t = new TimePickerDialog.OnTimeSetListener() {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
             dateAndTime.set(Calendar.MINUTE, minute);
@@ -108,7 +127,7 @@ public class CreateEvent extends AppCompatActivity {
         }
     };
 
-    DatePickerDialog.OnDateSetListener d=new DatePickerDialog.OnDateSetListener() {
+    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             dateAndTime.set(Calendar.YEAR, year);
             dateAndTime.set(Calendar.MONTH, monthOfYear);
@@ -128,6 +147,7 @@ public class CreateEvent extends AppCompatActivity {
         intent.putExtra("MAP_MODE", "select_place");
         startActivityForResult(intent, PLACE_REQUEST_CODE);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -142,8 +162,7 @@ public class CreateEvent extends AppCompatActivity {
             user.id = data.getStringExtra("uid");
             UsersAdapterCreateEvent adapter = (UsersAdapterCreateEvent) binding.usersList.getAdapter();
             adapter.addUser(user);
-        }
-        else if (requestCode == PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) { // Проверка результата для MainMap
+        } else if (requestCode == PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) { // Проверка результата для MainMap
             if (data != null) {
                 place.description = data.getStringExtra("PLACE_DESCRIPTION");
                 String lt = data.getStringExtra("PLACE_LATITUDE");

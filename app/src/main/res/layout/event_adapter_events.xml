@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/eventIcon_imgv"
+        android:src="@drawable/event_icon_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/eventName_tv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/eventName_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textSize="16sp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintStart_toEndOf="@+id/eventIcon_imgv"
+        app:layout_constraintBottom_toTopOf="@+id/eventDate_tv"
+        app:layout_constraintHorizontal_bias="0.234"
+        app:layout_constraintLeft_toRightOf="@+id/eventIcon_imgv"
+        app:layout_constraintRight_toLeftOf="@id/editEvent_imgbtn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/eventDate_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:textSize="16sp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintStart_toEndOf="@+id/eventIcon_imgv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/eventIcon_imgv"
+        app:layout_constraintRight_toLeftOf="@id/editEvent_imgbtn"
+        app:layout_constraintTop_toBottomOf="@+id/eventName_tv" />
+
+    <ImageButton
+        android:id="@+id/editEvent_imgbtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chatEvent_imgbtn"
+        app:layout_constraintLeft_toRightOf="@+id/eventName_tv"
+        app:layout_constraintRight_toLeftOf="@+id/chatEvent_imgbtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.444"
+        app:srcCompat="@drawable/quantum_ic_search_grey600_24"
+        tools:srcCompat="@drawable/baseline_search_24" />
+
+    <ImageButton
+        android:id="@+id/chatEvent_imgbtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="10dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/deleteEvent_imgbtn"
+        app:layout_constraintLeft_toRightOf="@+id/editEvent_imgbtn"
+        app:layout_constraintRight_toLeftOf="@+id/deleteEvent_imgbtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.437"
+        app:srcCompat="@drawable/chat"
+        tools:srcCompat="@drawable/chat" />
+
+    <ImageButton
+        android:id="@+id/deleteEvent_imgbtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/chatEvent_imgbtn"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="10dp"
+        app:layout_constraintVertical_bias="0.437"
+        app:srcCompat="@drawable/quantum_ic_clear_grey600_24" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

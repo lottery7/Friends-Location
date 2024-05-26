@@ -9,6 +9,9 @@ public class Pair<T, U> {
         this.second = second;
     }
 
+    public Pair() {
+    }
+
     public T getFirst() {
         return first;
     }

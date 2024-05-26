@@ -17,10 +17,10 @@
         android:theme="@style/Theme.FriendLocation"
         tools:targetApi="31">
         <activity
-            android:name=".SearchUserEvent"
+            android:name=".Events.SearchUserEvent"
             android:exported="false" />
         <activity
-            android:name=".CreateEvent"
+            android:name=".Events.CreateEvent"
             android:exported="false" />
         <activity
             android:name=".Setting"
@@ -29,7 +29,7 @@
             android:name=".Friends"
             android:exported="false" />
         <activity
-            android:name=".Events"
+            android:name=".Events.Events"
             android:exported="false" />
         <activity
             android:name=".SearchUser"
@@ -41,7 +41,7 @@
             android:name=".AllChats"
             android:exported="false" />
         <activity
-            android:name=".MainMap"
+            android:name=".Maps.MainMap"
             android:exported="false" />
         <activity
             android:name=".SignUp"

@@ -41,7 +41,7 @@ public class UserAdapterSearchEvent extends FirebaseRecyclerAdapter<User, UserAd
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.user_adapter_event, parent, false);
+                .inflate(R.layout.user_adapter_create_events, parent, false);
         return new UserViewHolder(view);
     }
 
@@ -52,9 +52,9 @@ public class UserAdapterSearchEvent extends FirebaseRecyclerAdapter<User, UserAd
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
-            usernameTextView = itemView.findViewById(R.id.userName_tv);
-            usermailTextView = itemView.findViewById(R.id.userEmail_tv);
-            itemView.findViewById(R.id.deleteUser_imgbtn).setVisibility(View.INVISIBLE);
+            usernameTextView = itemView.findViewById(R.id.eventName_tv);
+            usermailTextView = itemView.findViewById(R.id.eventDate_tv);
+            itemView.findViewById(R.id.deleteEvent_imgbtn).setVisibility(View.INVISIBLE);
         }
     }
 

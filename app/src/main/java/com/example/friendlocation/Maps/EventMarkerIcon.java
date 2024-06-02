@@ -8,22 +8,22 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 
 import java.text.ParseException;
 
-public class MarkerIcon {
-    private BriefMarkerIcon briefMarkerIcon;
-    private FullMarkerIcon fullMarkerIcon;
+public class EventMarkerIcon {
+    private BriefEventMarkerIcon briefEventMarkerIcon;
+    private FullEventMarkerIcon fullEventMarkerIcon;
     private int clickCount = 0;
 
-    public MarkerIcon(Event event, Context context, Resources resources) {
-        this.briefMarkerIcon = new BriefMarkerIcon(event, context, resources);
-        this.fullMarkerIcon = new FullMarkerIcon(event, context, resources);
+    public EventMarkerIcon(Event event, Context context, Resources resources) {
+        this.briefEventMarkerIcon = new BriefEventMarkerIcon(event, context, resources);
+        this.fullEventMarkerIcon = new FullEventMarkerIcon(event, context, resources);
     }
 
     public BitmapDescriptor getBriefMarkerIcon() throws ParseException {
-        return briefMarkerIcon.getBriefMarkerIcon();
+        return briefEventMarkerIcon.getBriefMarkerIcon();
     }
 
     public BitmapDescriptor getFullMarkerIcon() throws ParseException {
-        return fullMarkerIcon.getFullMarkerIcon();
+        return fullEventMarkerIcon.getFullMarkerIcon();
     }
 
     public int getClickCount() {

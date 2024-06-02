@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import java.text.ParseException;
 import java.util.Objects;
 
-public class FullMarkerIcon {
+public class FullEventMarkerIcon {
     private final int BACKGROUND_HEIGHT;
     private final int BACKGROUND_WIDTH;
     private final float TOP_SPACE_PERCENT = 0.05F;
@@ -38,7 +38,7 @@ public class FullMarkerIcon {
     Context context;
     Resources resources;
 
-    public FullMarkerIcon(Event event, Context context, Resources resources) {
+    public FullEventMarkerIcon(Event event, Context context, Resources resources) {
         this.event = event;
         this.context = context;
         this.resources = resources;

@@ -2,23 +2,9 @@ package com.example.friendlocation.utils;
 
 import static java.lang.Math.min;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.util.Log;
-
-import com.example.friendlocation.Maps.BriefMarkerIcon;
-import com.example.friendlocation.Maps.FullMarkerIcon;
-import com.example.friendlocation.Maps.MarkerIcon;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;

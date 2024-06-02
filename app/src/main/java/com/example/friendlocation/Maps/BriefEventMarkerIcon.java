@@ -26,7 +26,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import java.text.ParseException;
 import java.util.Objects;
 
-public class BriefMarkerIcon {
+public class BriefEventMarkerIcon {
     private final int BACKGROUND_HEIGHT;
     private final int BACKGROUND_WIDTH;
     private final float TOP_SPACE_PERCENT = 0.05F;
@@ -38,12 +38,12 @@ public class BriefMarkerIcon {
     Context context;
     Resources resources;
 
-    public BriefMarkerIcon(Event event, Context context, Resources resources) {
+    public BriefEventMarkerIcon(Event event, Context context, Resources resources) {
         this.event = event;
         this.context = context;
         this.resources = resources;
-        BACKGROUND_HEIGHT = round(70 * resources.getDisplayMetrics().density);
-        BACKGROUND_WIDTH = round(50 * resources.getDisplayMetrics().density);
+        BACKGROUND_HEIGHT = round(50 * resources.getDisplayMetrics().density);
+        BACKGROUND_WIDTH = round(35 * resources.getDisplayMetrics().density);
         this.mark = scaleImage(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.brief_meating_mark)), BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
     }
 

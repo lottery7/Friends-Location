@@ -1,4 +1,4 @@
-package com.example.friendlocation.Maps;
+package com.example.friendlocation.Maps.Listeners;
 
 import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserID;
 import static com.example.friendlocation.utils.FirebaseUtils.getDatabase;
@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
 
+import com.example.friendlocation.Maps.EventMarkerIcon;
 import com.example.friendlocation.utils.Event;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -31,10 +32,10 @@ public class MarkerEventsListener {
                             Event ev = dataSnapshot.getValue(Event.class);
                             MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(ev.getLatLng());
-                            MarkerIcon markerIcon = new MarkerIcon(ev, context, resources);
-                            markerOptions.icon(markerIcon.getBriefMarkerIcon());
+                            EventMarkerIcon eventMarkerIcon = new EventMarkerIcon(ev, context, resources);
+                            markerOptions.icon(eventMarkerIcon.getBriefMarkerIcon());
                             Marker x = mMap.addMarker(markerOptions);
-                            x.setTag(markerIcon);
+                            x.setTag(eventMarkerIcon);
                         } catch (Exception e) {
                             Log.e("Making marker", e.getMessage());
                         }

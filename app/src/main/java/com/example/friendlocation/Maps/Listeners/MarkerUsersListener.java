@@ -1,4 +1,4 @@
-package com.example.friendlocation.Events;
+package com.example.friendlocation.Maps.Listeners;
 
 import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserID;
 import static com.example.friendlocation.utils.FirebaseUtils.getDatabase;
@@ -6,19 +6,21 @@ import static com.example.friendlocation.utils.FirebaseUtils.getDatabase;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
-import android.widget.CalendarView;
 
-import com.example.friendlocation.adapters.EventAdapterEvents;
-import com.example.friendlocation.utils.Event;
+import com.example.friendlocation.utils.User;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-public class EventsListenerEvents {
+public class MarkerUsersListener {
 
 
-    public static void makeEventsList(EventAdapterEvents eventsAdapter, CalendarView calendarView, Context context, Resources resources) {
+    public static void makeUsersMarkers(GoogleMap mMap, Context context, Resources resources) {
         String uid = getCurrentUserID();
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
@@ -27,19 +29,25 @@ public class EventsListenerEvents {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         try {
-                            Event ev = dataSnapshot.getValue(Event.class);
-                            eventsAdapter.addEvent(ev);
+                            User user = dataSnapshot.getValue(User.class);
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.position(new LatLng(user.coordinates.getFirst(), user.coordinates.getSecond()));
+                            markerOptions.title(user.name);
+//                            MarkerIcon markerIcon = new MarkerIcon(user, context, resources);
+//                            markerOptions.icon(markerIcon.getBriefMarkerIcon());
+                            Marker x = mMap.addMarker(markerOptions);
                         } catch (Exception e) {
                             Log.e("Making marker", e.getMessage());
                         }
                     }
+
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 };
                 String uid = dataSnapshot.getKey();
-                getDatabase().getReference("events").child(uid).addValueEventListener(postListener);
+                getDatabase().getReference("users").child(uid).addValueEventListener(postListener);
             }
 
             @Override
@@ -62,6 +70,6 @@ public class EventsListenerEvents {
                 String commentKey = databaseError.getMessage();
             }
         };
-        getDatabase().getReference("users").child(uid).child("events").addChildEventListener(childEventListener);
+        getDatabase().getReference("users").child(uid).child("usersWithKnownLocationUID").addChildEventListener(childEventListener);
     }
 }

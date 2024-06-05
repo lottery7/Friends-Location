@@ -26,6 +26,8 @@ import androidx.core.content.ContextCompat;
 import com.example.friendlocation.BottomBar;
 import com.example.friendlocation.Maps.Listeners.LocListenerInterface;
 import com.example.friendlocation.Maps.Listeners.CurrentUserLocationListener;
+import com.example.friendlocation.Maps.Markers.EventMarkerIcon;
+import com.example.friendlocation.Maps.Markers.MarkerIcon;
 import com.example.friendlocation.R;
 import com.example.friendlocation.utils.Pair;
 import com.example.friendlocation.utils.Place;
@@ -105,9 +107,11 @@ public class MainMap extends BottomBar implements OnMapReadyCallback, LocListene
 
     private void removeFullMarker(){
         if (lastMarker != null) {
-            EventMarkerIcon eventMarkerIcon = (EventMarkerIcon) lastMarker.getTag();
+            MarkerIcon markerIcon = (MarkerIcon) lastMarker.getTag();
             try {
-                lastMarker.setIcon(eventMarkerIcon.getBriefMarkerIcon());
+                if (markerIcon.isEvent()) {
+                    lastMarker.setIcon(markerIcon.eventMarkerIcon.getBriefMarkerIcon());
+                }
                 lastMarker = null;
             } catch (ParseException e) {
                 Log.e("Map", "Can't make brief marker", e);
@@ -132,13 +136,15 @@ public class MainMap extends BottomBar implements OnMapReadyCallback, LocListene
             }
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), mMap.getCameraPosition().zoom));
             removeFullMarker();
-            EventMarkerIcon eventMarkerIcon = (EventMarkerIcon) marker.getTag();
-            if (eventMarkerIcon == null) {
+            MarkerIcon markerIcon = (MarkerIcon) marker.getTag();
+            if (markerIcon == null) {
                 return false;
             }
             lastMarker = marker;
             try {
-                marker.setIcon(eventMarkerIcon.getFullMarkerIcon());
+                if (markerIcon.isEvent()) {
+                    marker.setIcon(markerIcon.eventMarkerIcon.getFullMarkerIcon());
+                }
             } catch (ParseException e) {
                 Log.e("Map", "Can't make full marker", e);
                 return false;

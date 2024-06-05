@@ -1,4 +1,4 @@
-package com.example.friendlocation.Maps;
+package com.example.friendlocation.Maps.Markers;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -24,17 +24,5 @@ public class EventMarkerIcon {
 
     public BitmapDescriptor getFullMarkerIcon() throws ParseException {
         return fullEventMarkerIcon.getFullMarkerIcon();
-    }
-
-    public int getClickCount() {
-        return clickCount;
-    }
-
-    public void click(){
-        clickCount = 1;
-    }
-
-    public void reset(){
-        clickCount = 0;
     }
 }

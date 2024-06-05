@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
 
+import com.example.friendlocation.Maps.Markers.MarkerIcon;
 import com.example.friendlocation.utils.User;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -32,9 +33,8 @@ public class MarkerUsersListener {
                             User user = dataSnapshot.getValue(User.class);
                             MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(new LatLng(user.coordinates.getFirst(), user.coordinates.getSecond()));
-                            markerOptions.title(user.name);
-//                            MarkerIcon markerIcon = new MarkerIcon(user, context, resources);
-//                            markerOptions.icon(markerIcon.getBriefMarkerIcon());
+                            MarkerIcon markerIcon = new MarkerIcon(user, context, resources);
+                            markerOptions.icon(markerIcon.userMarkerIcon.getBriefMarkerIcon());
                             Marker x = mMap.addMarker(markerOptions);
                         } catch (Exception e) {
                             Log.e("Making marker", e.getMessage());

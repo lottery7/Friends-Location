@@ -7,7 +7,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.Log;
 
-import com.example.friendlocation.Maps.EventMarkerIcon;
+import com.example.friendlocation.Maps.Markers.EventMarkerIcon;
+import com.example.friendlocation.Maps.Markers.MarkerIcon;
 import com.example.friendlocation.utils.Event;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -32,10 +33,10 @@ public class MarkerEventsListener {
                             Event ev = dataSnapshot.getValue(Event.class);
                             MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(ev.getLatLng());
-                            EventMarkerIcon eventMarkerIcon = new EventMarkerIcon(ev, context, resources);
-                            markerOptions.icon(eventMarkerIcon.getBriefMarkerIcon());
+                            MarkerIcon markerIcon = new MarkerIcon(ev, context, resources);
+                            markerOptions.icon(markerIcon.eventMarkerIcon.getBriefMarkerIcon());
                             Marker x = mMap.addMarker(markerOptions);
-                            x.setTag(eventMarkerIcon);
+                            x.setTag(markerIcon);
                         } catch (Exception e) {
                             Log.e("Making marker", e.getMessage());
                         }

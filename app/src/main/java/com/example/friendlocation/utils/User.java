@@ -8,7 +8,6 @@ public class User {
     public String id;
     public int right;
     public Pair<Double, Double> coordinates = null;
-    public ArrayList<String> usersWithKnownLocationUID;
 
     public User() {
     }

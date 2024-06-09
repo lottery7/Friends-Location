@@ -41,6 +41,15 @@ public class FirebaseUtils {
         return true;
     }
 
+    public static boolean saveEvent(Event event) {
+        DatabaseReference mDatabase = getDatabase().getReference("events");
+        mDatabase.child(event.uid).setValue(event);
+        for (String userUID : event.membersUID){
+            addEventToUser(event.uid, userUID);
+        }
+        return true;
+    }
+
     public static boolean addEventToUser(String eventUID, String userUID) {
         DatabaseReference mDatabase = getDatabase().getReference("users");
         mDatabase.child(userUID).child("events").child(eventUID).setValue(true);

@@ -6,20 +6,26 @@ import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserID;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.TimePickerDialog;
 import android.text.format.DateUtils;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.friendlocation.Maps.MainMap;
+import com.example.friendlocation.R;
 import com.example.friendlocation.databinding.ActivityCreateEventBinding;
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.FirebaseUtils;
@@ -27,6 +33,9 @@ import com.example.friendlocation.utils.Pair;
 import com.example.friendlocation.utils.Place;
 import com.example.friendlocation.utils.User;
 import com.example.friendlocation.adapters.UsersAdapterCreateEvent;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,6 +48,7 @@ public class CreateEvent extends AppCompatActivity {
     private ActivityCreateEventBinding binding;
     private Place place = new Place();
     private String TAG = "CreateEventTag";
+    private String createMod = "CreateEvent";
     Calendar dateAndTime = Calendar.getInstance();
 
     @Override
@@ -60,10 +70,79 @@ public class CreateEvent extends AppCompatActivity {
             }
         });
 
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                createMod = null;
+            } else {
+                createMod = extras.getString("EDIT_MODE");
+            }
+        } else {
+            createMod = (String) savedInstanceState.getSerializable("EDIT_MODE");
+        }
+        Log.w(TAG, "Mode: " + createMod);
+
+        Button safeBtn = findViewById(R.id.create_event);
+        if (Objects.equals(createMod, "CreateEvent")){
+            safeBtn.setText("Create");
+            safeBtn.setOnClickListener(this::addEvent);
+        } else {
+            safeBtn.setText("Save");
+            safeBtn.setOnClickListener(this::saveEvent);
+
+            FirebaseUtils.getDatabase().getReference("events").child(createMod).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Event ev = snapshot.getValue(Event.class);
+                    try {
+                        ((TextView) findViewById(R.id.title_et)).setText(ev.name);
+                    } catch (Exception e) {
+                        Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                    }
+                    try {
+                        ((TextView) findViewById(R.id.description_et)).setText(ev.description);
+                    } catch (Exception e) {
+                        Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                    }
+                    try {
+                        ((TextView) findViewById(R.id.date_et)).setText(ev.date);
+                    } catch (Exception e) {
+                        Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                    }
+                    try {
+                        ((TextView) findViewById(R.id.place_et)).setText(ev.place.description);
+                        place = ev.place;
+                    } catch (Exception e) {
+                        Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                    }
+                    for (int i = 0; i < ev.membersUID.size(); i++ ){
+                        FirebaseUtils.getDatabase().getReference("users").child(ev.membersUID.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                User user = snapshot.getValue(User.class);
+                                assert user != null;
+                                if (!user.id.equals(getCurrentUserID())) {
+                                    adapter.addUser(user);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
     }
 
-    public void addEvent(View v) {
-        Event ev = new Event();
+    public void constructEvent(Event ev) {
         ev.name = binding.titleEt.getText().toString();
         ev.date = dateFormat.format(dateAndTime.getTime());
         ev.description = binding.descriptionEt.getText().toString();
@@ -93,6 +172,20 @@ public class CreateEvent extends AppCompatActivity {
         ev.membersUID = adapter.getUsersUID();
         ev.membersUID.add(getCurrentUserID());
         ev.place = place;
+        ev.owner = getCurrentUserID();
+    }
+
+    public void saveEvent(View v) {
+        Event ev = new Event();
+        ev.uid = createMod;
+        constructEvent(ev);
+        FirebaseUtils.saveEvent(ev);
+        finish();
+    }
+
+    public void addEvent(View v) {
+        Event ev = new Event();
+        constructEvent(ev);
         FirebaseUtils.addEvent(ev);
         finish();
     }

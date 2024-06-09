@@ -12,6 +12,7 @@ public class Event {
     public static long MAX_DESCRIPTION_LINE_SIZE = 50;
     public String uid;
     public String name;
+    public String owner;
     public String date;
     public String description;
 

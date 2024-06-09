@@ -58,8 +58,7 @@
         app:layout_constraintRight_toLeftOf="@+id/chatEvent_imgbtn"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.444"
-        app:srcCompat="@drawable/quantum_ic_search_grey600_24"
-        tools:srcCompat="@drawable/baseline_search_24" />
+        app:srcCompat="@drawable/setting" />
 
     <ImageButton
         android:id="@+id/chatEvent_imgbtn"

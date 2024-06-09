@@ -1,6 +1,7 @@
 package com.example.friendlocation.adapters;
 import static androidx.core.app.ActivityCompat.startActivityForResult;
 import static com.example.friendlocation.utils.Config.dateFormat;
+import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserID;
 
 import android.content.Context;
 import android.content.Intent;
@@ -56,7 +57,7 @@ public class EventAdapterEvents extends RecyclerView.Adapter<EventAdapterEvents.
         holder.editBtn.setOnClickListener(v -> {
             for (int i = 0; i < events.size(); i++) {
                 if (events.get(i).uid.equals(event.uid)) {
-                    if (!event.owner.equals(FirebaseUtils.getCurrentUserID())) {
+                    if (!event.owner.equals(getCurrentUserID())) {
                         Toast.makeText(context, "You should be an owner to edit event", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -67,6 +68,9 @@ public class EventAdapterEvents extends RecyclerView.Adapter<EventAdapterEvents.
                 }
             }
         });
+        if (!getCurrentUserID().equals(event.owner)) {
+            holder.editBtn.setVisibility(View.INVISIBLE);
+        }
         holder.deleteBtn.setOnClickListener(v -> {
             for (int i = 0; i < events.size(); i++) {
                 if (events.get(i).uid.equals(event.uid)) {

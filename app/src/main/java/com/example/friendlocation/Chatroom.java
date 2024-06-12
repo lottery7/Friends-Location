@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.adapters.ChatroomRecyclerAdapter;
+import com.example.friendlocation.utils.ChatroomUtils;
 import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.User;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -23,12 +24,10 @@ public class Chatroom extends AppCompatActivity {
     private User otherUser;
     private EditText messageInput;
     private ImageButton sendMessageButton;
-    private TextView otherUserName;
+    private TextView title;
     private RecyclerView recyclerView;
-
-    private String chatroomId;
+    private String chatroomID;
     private ChatroomModel chatroomModel;
-
     private ChatroomRecyclerAdapter adapter;
 
     @Override
@@ -38,7 +37,7 @@ public class Chatroom extends AppCompatActivity {
 
         messageInput = findViewById(R.id.chat_message_input);
         sendMessageButton = findViewById(R.id.chat_send_message_button);
-        otherUserName = findViewById(R.id.chat_username);
+        title = findViewById(R.id.chat_title);
         recyclerView = findViewById(R.id.chat_recycler_view);
 
         sendMessageButton.setOnClickListener(v -> {
@@ -49,31 +48,26 @@ public class Chatroom extends AppCompatActivity {
             sendMessage(message);
         });
 
-        String otherUserId = getIntent().getStringExtra("User id");
-        if (otherUserId == null) {
-            Log.v(this.getClass().toString(), "Other user id is not found in the intent");
-            return;
-        }
-
-        FirebaseUtils.getUsersCollection()
-            .child(otherUserId)
-            .get()
-            .addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    otherUser = task.getResult().getValue(User.class);
-                    otherUserName.setText(otherUser.name);
-                    chatroomId = FirebaseUtils.getChatroomId(FirebaseUtils.getCurrentUserID(), otherUser.id);
-                    createChatroom();
-                    setupChatRecyclerView();
-                } else {
-                    Log.v(this.getClass().toString(), "Other user id is not found in the database");
-                }
-            });
+        chatroomID = getIntent().getStringExtra("chatroomID");
+        FirebaseUtils.getChatroomReference(chatroomID).get().addOnSuccessListener(snapshot -> {
+            chatroomModel = snapshot.toObject(ChatroomModel.class);
+            if (chatroomModel == null) {
+                Log.v(this.getClass().toString(), chatroomID + " is not a chatroom ID");
+            }
+            if (chatroomModel.isGroup) {
+                title.setText(chatroomModel.title);
+            } else {
+                ChatroomUtils.getOtherUserFromChat(chatroomModel).child("name").get().addOnSuccessListener(snapshot1 -> {
+                    title.setText(snapshot1.getValue(String.class));
+                });
+            }
+            setupChatRecyclerView();
+        });
     }
 
     private void setupChatRecyclerView() {
         Query query = FirebaseUtils
-                .getChatroomMessagesReference(chatroomId)
+                .getChatroomMessagesReference(chatroomModel.id)
                 .orderBy("date");
 
         FirestoreRecyclerOptions<ChatMessage> options = new FirestoreRecyclerOptions
@@ -106,29 +100,13 @@ public class Chatroom extends AppCompatActivity {
                 chatroomModel.lastMessageDate
         );
 
-        FirebaseUtils.getChatroomMessagesReference(chatroomId).add(chatMessage)
+        FirebaseUtils.getChatroomMessagesReference(chatroomModel.id).add(chatMessage)
                 .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         messageInput.setText("");
                         chatroomModel.lastMessageText = message;
-                        FirebaseUtils.getChatroomReference(chatroomId).set(chatroomModel);
+                        FirebaseUtils.getChatroomReference(chatroomModel.id).set(chatroomModel);
                     }
                 });
-    }
-
-    private void createChatroom() {
-        FirebaseUtils.getChatroomReference(chatroomId).get().addOnCompleteListener(task -> {
-            chatroomModel = task.getResult().toObject(ChatroomModel.class);
-            if (chatroomModel == null) {
-                chatroomModel = new ChatroomModel(
-                        chatroomId,
-                        Arrays.asList(FirebaseUtils.getCurrentUserID(), otherUser.id),
-                        null,
-                        "",
-                        ""
-                );
-                FirebaseUtils.getChatroomReference(chatroomId).set(chatroomModel);
-            }
-        });
     }
 }

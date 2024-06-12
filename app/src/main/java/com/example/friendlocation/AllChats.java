@@ -18,6 +18,7 @@ import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.User;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.Query;
 
 public class AllChats extends BottomBar {
@@ -39,10 +40,12 @@ public class AllChats extends BottomBar {
 
         searchUserInput.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -108,6 +111,7 @@ public class AllChats extends BottomBar {
                 super.onItemRangeInserted(positionStart, itemCount);
                 noMessagesCardView.setVisibility(View.GONE);
             }
+
             @Override
             public void onItemRangeRemoved(int positionStart, int itemCount) {
                 super.onItemRangeRemoved(positionStart, itemCount);

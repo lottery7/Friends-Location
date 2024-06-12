@@ -1,29 +1,12 @@
 package com.example.friendlocation.utils;
 
-import static java.lang.Math.min;
-
-import android.content.Context;
-import android.content.res.Resources;
-import android.util.Log;
-
-import com.example.friendlocation.Maps.BriefMarkerIcon;
-import com.example.friendlocation.Maps.FullMarkerIcon;
-import com.example.friendlocation.Maps.MarkerIcon;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.List;
 
 
 public class FirebaseUtils {
@@ -37,7 +20,7 @@ public class FirebaseUtils {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    public static DatabaseReference getCurrentUserDetails(){
+    public static DatabaseReference getCurrentUserDetails() {
         return getDatabase().getReference("users")
                 .child(getCurrentUserID());
     }
@@ -49,7 +32,7 @@ public class FirebaseUtils {
             return false;
         }
         mDatabase.child(event.uid).setValue(event);
-        for (String userUID : event.membersUID){
+        for (String userUID : event.membersUID) {
             addEventToUser(event.uid, userUID);
         }
         return true;
@@ -84,19 +67,4 @@ public class FirebaseUtils {
     public static DatabaseReference getUserDetails(String id) {
         return getUsersCollection().child(id);
     }
-
-    public static DatabaseReference getOtherUserFromList(List<String> userIds) {
-        if (userIds.get(0).equals(getCurrentUserID())) {
-            return getUserDetails(userIds.get(1));
-        }
-        return getUserDetails(userIds.get(0));
-    }
-
-    public static String getChatroomId(String email1, String email2) {
-        if (email1.hashCode() < email2.hashCode()) {
-            return email1 + "_" + email2;
-        }
-        return email2 + "_" + email1;
-    }
-
 }

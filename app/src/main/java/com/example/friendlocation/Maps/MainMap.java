@@ -1,13 +1,17 @@
 package com.example.friendlocation.Maps;
 
-import static com.example.friendlocation.Maps.MarkerEventsListener.makeEventsMarkers;
+import static com.example.friendlocation.Maps.FirebaseMapPart.updateLocation;
+import static com.example.friendlocation.Maps.Listeners.MarkerEventsListener.makeEventsMarkers;
+import static com.example.friendlocation.Maps.Listeners.MarkerUsersListener.makeUsersMarkers;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +24,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.friendlocation.BottomBar;
+import com.example.friendlocation.Maps.Listeners.LocListenerInterface;
+import com.example.friendlocation.Maps.Listeners.CurrentUserLocationListener;
+import com.example.friendlocation.Maps.Markers.EventMarkerIcon;
+import com.example.friendlocation.Maps.Markers.MarkerIcon;
 import com.example.friendlocation.R;
 import com.example.friendlocation.utils.Pair;
 import com.example.friendlocation.utils.Place;
@@ -41,8 +49,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class MainMap extends BottomBar implements OnMapReadyCallback {
-
+public class MainMap extends BottomBar implements OnMapReadyCallback, LocListenerInterface {
     private GoogleMap mMap;
     private Marker lastMarker = null;
     private final String TAG = "MainMapTag";
@@ -52,6 +59,8 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Location lastKnownLocation;
+    private LocationManager locationManager;
+    private CurrentUserLocationListener currentUserLocationListener;
     private static final int DEFAULT_ZOOM = 15;
 
     // A default location (Sydney, Australia) and default zoom to use when location permission is
@@ -100,7 +109,9 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
         if (lastMarker != null) {
             MarkerIcon markerIcon = (MarkerIcon) lastMarker.getTag();
             try {
-                lastMarker.setIcon(markerIcon.getBriefMarkerIcon());
+                if (markerIcon.isEvent()) {
+                    lastMarker.setIcon(markerIcon.eventMarkerIcon.getBriefMarkerIcon());
+                }
                 lastMarker = null;
             } catch (ParseException e) {
                 Log.e("Map", "Can't make brief marker", e);
@@ -111,6 +122,9 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        currentUserLocationListener = new CurrentUserLocationListener();
+        currentUserLocationListener.setLocListenerInterface(this);
         updateLocationUI();
         getDeviceLocation();
         makeMapMarkers();
@@ -123,21 +137,21 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), mMap.getCameraPosition().zoom));
             removeFullMarker();
             MarkerIcon markerIcon = (MarkerIcon) marker.getTag();
+            if (markerIcon == null) {
+                return false;
+            }
             lastMarker = marker;
             try {
-                marker.setIcon(markerIcon.getFullMarkerIcon());
+                if (markerIcon.isEvent()) {
+                    marker.setIcon(markerIcon.eventMarkerIcon.getFullMarkerIcon());
+                }
             } catch (ParseException e) {
                 Log.e("Map", "Can't make full marker", e);
                 return false;
             }
             return true;
         });
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(@NonNull LatLng latLng) {
-                removeFullMarker();
-            }
-        });
+        mMap.setOnMapClickListener(latLng -> removeFullMarker());
 
         // Select location mode
         if (Objects.equals(mapMode, "select_place")) {
@@ -166,6 +180,7 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
 
     private void makeMapMarkers() {
         makeEventsMarkers(mMap, getApplicationContext(), getResources());
+        makeUsersMarkers(mMap, getApplicationContext(), getResources());
     }
 
     private void getLocationPermission() {
@@ -189,6 +204,7 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
             if (locationPermissionGranted) {
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 10, currentUserLocationListener);
             } else {
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
@@ -240,5 +256,9 @@ public class MainMap extends BottomBar implements OnMapReadyCallback {
     }
 
 
+    @Override
+    public void onLocationChanged(Location loc) {
+        updateLocation(new Pair<>(loc.getLatitude(), loc.getLongitude()));
+    }
 }
 

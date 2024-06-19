@@ -54,6 +54,7 @@ public class CreateEvent extends AppCompatActivity {
     private Place place = new Place();
     private String TAG = "CreateEventTag";
     private String createMod = "CreateEvent";
+    private String eventChatUID;
     Calendar dateAndTime = Calendar.getInstance();
 
     @Override
@@ -97,6 +98,11 @@ public class CreateEvent extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Event ev = snapshot.getValue(Event.class);
+                    try {
+                        eventChatUID = ev.chatUID;
+                    } catch (Exception e) {
+                        Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                    }
                     try {
                         ((TextView) findViewById(R.id.title_et)).setText(ev.name);
                     } catch (Exception e) {
@@ -148,6 +154,7 @@ public class CreateEvent extends AppCompatActivity {
     }
 
     public void constructEvent(Event ev) {
+        ev.chatUID = eventChatUID;
         ev.name = binding.titleEt.getText().toString();
         ev.date = dateFormat.format(dateAndTime.getTime());
         ev.description = binding.descriptionEt.getText().toString();
@@ -185,8 +192,7 @@ public class CreateEvent extends AppCompatActivity {
         ev.uid = createMod;
         constructEvent(ev);
         FirebaseUtils.saveEvent(ev);
-        FirebaseUtils.getChatroomReference(ev.chatUID).update("title", ev.name);
-        FirebaseUtils.getChatroomReference(ev.chatUID).update("userIds", ev.membersUID);
+        FirebaseUtils.getChatroomReference(ev.chatUID).update("title", ev.name, "userIds", ev.membersUID);
         finish();
     }
 

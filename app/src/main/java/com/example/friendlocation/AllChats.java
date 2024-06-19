@@ -82,7 +82,8 @@ public class AllChats extends BottomBar {
         SearchUserRecyclerAdapter adapter = new SearchUserRecyclerAdapter(options, getApplicationContext());
         adapter.startListening();
         recyclerView.setAdapter(adapter);
-        layoutManager.setReverseLayout(false);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
     }
 
     private void setupRecentChatsRecyclerView() {
@@ -100,6 +101,7 @@ public class AllChats extends BottomBar {
         AllChatsRecyclerAdapter adapter = getAllChatsRecyclerAdapter(options);
         recyclerView.setAdapter(adapter);
         layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
     }
 
     @NonNull
@@ -107,16 +109,12 @@ public class AllChats extends BottomBar {
         AllChatsRecyclerAdapter adapter = new AllChatsRecyclerAdapter(options, getApplicationContext());
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                super.onItemRangeInserted(positionStart, itemCount);
-                noMessagesCardView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onItemRangeRemoved(int positionStart, int itemCount) {
-                super.onItemRangeRemoved(positionStart, itemCount);
-                if (itemCount == 1) {
+            public void onItemRangeChanged(int positionStart, int itemCount) {
+                super.onItemRangeChanged(positionStart, itemCount);
+                if (adapter.getItemCount() == 0) {
                     noMessagesCardView.setVisibility(View.VISIBLE);
+                } else {
+                    noMessagesCardView.setVisibility(View.GONE);
                 }
             }
         });

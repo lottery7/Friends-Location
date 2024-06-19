@@ -15,7 +15,6 @@ import com.example.friendlocation.Chatroom;
 import com.example.friendlocation.ChatroomModel;
 import com.example.friendlocation.R;
 import com.example.friendlocation.utils.ChatroomUtils;
-import com.example.friendlocation.utils.User;
 import com.example.friendlocation.utils.FirebaseUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -52,9 +51,9 @@ public class AllChatsRecyclerAdapter extends FirestoreRecyclerAdapter<ChatroomMo
                     .getOtherUserFromChat(chatroomModel)
                     .child("name")
                     .get()
-                    .addOnSuccessListener(snapshot1 -> {
-                holder.title.setText(snapshot1.getValue(String.class));
-            });
+                    .addOnSuccessListener(snapshot ->
+                            holder.title.setText(snapshot.getValue(String.class))
+                    );
         }
         holder.lastMessageText.setText(chatroomModel.lastMessageText);
         holder.textBeforeLastMessage.setTextColor(context.getColor(R.color.primary));
@@ -66,12 +65,16 @@ public class AllChatsRecyclerAdapter extends FirestoreRecyclerAdapter<ChatroomMo
             holder.textBeforeLastMessage.setVisibility(View.VISIBLE);
             holder.textBeforeLastMessage.setText("You:");
         } else {
-            FirebaseUtils.getUserDetails(lastUID).get().addOnSuccessListener(dataSnapshot -> {
-                User lastUser = dataSnapshot.getValue(User.class);
-                holder.textBeforeLastMessage.setVisibility(View.VISIBLE);
-                assert lastUser != null;
-                holder.textBeforeLastMessage.setText(lastUser.name.concat(":"));
-            });
+            FirebaseUtils
+                    .getUserDetails(lastUID)
+                    .child("name")
+                    .get().addOnSuccessListener(dataSnapshot -> {
+                        String lastUserName = dataSnapshot.getValue(String.class);
+                        if (lastUserName != null) {
+                            holder.textBeforeLastMessage.setVisibility(View.VISIBLE);
+                            holder.textBeforeLastMessage.setText(lastUserName.concat(":"));
+                        }
+                    });
         }
 
     }
@@ -85,7 +88,7 @@ public class AllChatsRecyclerAdapter extends FirestoreRecyclerAdapter<ChatroomMo
         return new ChatroomViewHolder(view);
     }
 
-    static class ChatroomViewHolder extends RecyclerView.ViewHolder {
+    public static class ChatroomViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         TextView textBeforeLastMessage;
         TextView lastMessageText;

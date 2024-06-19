@@ -21,7 +21,7 @@ import com.google.firebase.firestore.Query;
 import java.util.Arrays;
 
 public class Chatroom extends AppCompatActivity {
-    private User otherUser;
+    private ImageButton addFriendBtn;
     private EditText messageInput;
     private ImageButton sendMessageButton;
     private TextView title;
@@ -29,12 +29,14 @@ public class Chatroom extends AppCompatActivity {
     private String chatroomID;
     private ChatroomModel chatroomModel;
     private ChatroomRecyclerAdapter adapter;
+    private ChatroomRecyclerAdapter.ChatroomViewHolder prevViewHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_particular_chat);
 
+        addFriendBtn = findViewById(R.id.chat_add_friend);
         messageInput = findViewById(R.id.chat_message_input);
         sendMessageButton = findViewById(R.id.chat_send_message_button);
         title = findViewById(R.id.chat_title);
@@ -57,8 +59,17 @@ public class Chatroom extends AppCompatActivity {
             if (chatroomModel.isGroup) {
                 title.setText(chatroomModel.title);
             } else {
-                ChatroomUtils.getOtherUserFromChat(chatroomModel).child("name").get().addOnSuccessListener(snapshot1 -> {
-                    title.setText(snapshot1.getValue(String.class));
+                ChatroomUtils.getOtherUserFromChat(chatroomModel).get().addOnSuccessListener(snapshot1 -> {
+                    User otherUser = snapshot1.getValue(User.class);
+                    if (otherUser == null)
+                        return;
+
+                    if (otherUser.name != null)
+                        title.setText(otherUser.name);
+
+                    addFriendBtn.setOnClickListener(view ->
+                            FirebaseUtils.getCurrentUserDetails().child("usersWithKnownLocationUID/".concat(otherUser.id)).setValue(true)
+                    );
                 });
             }
             setupChatRecyclerView();
@@ -85,7 +96,7 @@ public class Chatroom extends AppCompatActivity {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
-                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                recyclerView.smoothScrollToPosition(adapter.getItemCount() - itemCount);
             }
         });
     }
@@ -105,8 +116,8 @@ public class Chatroom extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         messageInput.setText("");
                         chatroomModel.lastMessageText = message;
-                        FirebaseUtils.getChatroomReference(chatroomModel.id).set(chatroomModel);
                     }
                 });
+        FirebaseUtils.getChatroomReference(chatroomModel.id).set(chatroomModel);
     }
 }

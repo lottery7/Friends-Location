@@ -1,9 +1,11 @@
 package com.example.friendlocation.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import com.example.friendlocation.R;
 import com.example.friendlocation.utils.FirebaseUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.Firebase;
 
 public class ChatroomRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessage, ChatroomRecyclerAdapter.ChatroomViewHolder> {
     private final Context context;
@@ -27,13 +30,28 @@ public class ChatroomRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessag
     @Override
     protected void onBindViewHolder(@NonNull ChatroomViewHolder holder, int position, @NonNull ChatMessage message) {
         if (message.senderId.equals(FirebaseUtils.getCurrentUserID())) {
-            holder.otherCardView.setVisibility(View.GONE);
-            holder.cardView.setVisibility(View.VISIBLE);
             holder.messageText.setText(message.message);
+
+            holder.cardView.setVisibility(View.VISIBLE);
+            holder.otherCardView.setVisibility(View.GONE);
+            holder.otherProfilePictureLayout.setVisibility(View.GONE);
+            holder.otherUserName.setVisibility(View.GONE);
         } else {
+            holder.otherMessageText.setText(message.message);
+
             holder.cardView.setVisibility(View.GONE);
             holder.otherCardView.setVisibility(View.VISIBLE);
-            holder.otherMessageText.setText(message.message);
+            holder.otherProfilePictureLayout.setVisibility(View.VISIBLE);
+            FirebaseUtils
+                    .getUserDetails(message.senderId)
+                    .child("name")
+                    .get()
+                    .addOnSuccessListener(dataSnapshot -> {
+                                String otherUserName = dataSnapshot.getValue(String.class);
+                                holder.otherUserName.setText(otherUserName);
+                                holder.otherUserName.setVisibility(View.VISIBLE);
+                            }
+                    );
         }
     }
 
@@ -46,9 +64,10 @@ public class ChatroomRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessag
         return new ChatroomViewHolder(view);
     }
 
-    static class ChatroomViewHolder extends RecyclerView.ViewHolder {
+    public static class ChatroomViewHolder extends RecyclerView.ViewHolder {
         CardView cardView, otherCardView;
-        TextView messageText, otherMessageText;
+        RelativeLayout otherProfilePictureLayout;
+        TextView messageText, otherMessageText, otherUserName;
 
         public ChatroomViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -56,8 +75,10 @@ public class ChatroomRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessag
             cardView = itemView.findViewById(R.id.user_message_cardview);
             messageText = itemView.findViewById(R.id.user_message_text);
 
+            otherProfilePictureLayout = itemView.findViewById(R.id.other_message_profile_picture);
             otherCardView = itemView.findViewById(R.id.other_user_message_cardview);
             otherMessageText = itemView.findViewById(R.id.other_user_message_text);
+            otherUserName = itemView.findViewById(R.id.other_user_name);
         }
     }
 }

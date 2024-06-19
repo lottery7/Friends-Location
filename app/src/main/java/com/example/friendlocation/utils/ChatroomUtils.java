@@ -1,7 +1,13 @@
 package com.example.friendlocation.utils;
 
+import androidx.annotation.NonNull;
+
+import com.example.friendlocation.ChatMessage;
 import com.example.friendlocation.ChatroomModel;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +41,29 @@ public class ChatroomUtils {
         );
     }
 
-    public static ChatroomModel createGroupModel(List<String> ids) {
+//    public static Task<DocumentReference> sendMessage(@NonNull ChatroomModel chatroom, @NonNull String senderID, @NonNull String message) {
+//        chatroom.lastMessageText = message;
+//        chatroom.lastMessageDate = Timestamp.now();
+//        chatroom.lastMessageSenderId = FirebaseUtils.getCurrentUserID();
+//
+//        ChatMessage chatMessage = new ChatMessage(
+//                message,
+//                senderID,
+//                chatroom.lastMessageDate
+//        );
+//
+//        return FirebaseUtils
+//                .getChatroomMessagesReference(chatroom.id)
+//                .add(chatMessage)
+//                .addOnSuccessListener(
+//                        task -> FirebaseUtils
+//                                .getChatroomReference(chatroom.id)
+//                                .set(chatroom)
+//                );
+//
+//    }
+
+    public static ChatroomModel createGroupModel(@NonNull List<String> ids) {
         return new ChatroomModel(
                 UUID.randomUUID().toString()
                 , true

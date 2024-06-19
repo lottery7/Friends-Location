@@ -2,10 +2,10 @@ package com.example.friendlocation.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,25 +20,31 @@ import com.example.friendlocation.utils.ChatroomUtils;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
-public class SearchUserRecyclerAdapter extends FirebaseRecyclerAdapter<User, SearchUserRecyclerAdapter.UserViewHolder> {
+public class FriendsRecyclerAdapter extends FirebaseRecyclerAdapter<String, FriendsRecyclerAdapter.UIDViewHolder> {
     private final Context context;
 
-    public SearchUserRecyclerAdapter(@NonNull FirebaseRecyclerOptions<User> options, Context context) {
+    public FriendsRecyclerAdapter(@NonNull FirebaseRecyclerOptions<String> options, Context context) {
         super(options);
         this.context = context;
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User user) {
-        String username = user.name;
-        if (FirebaseUtils.getCurrentUserID().equals(user.id)) {
-            username += " (me)";
-        }
-        holder.usernameTextView.setText(username);
-        holder.emailTextView.setText(user.email);
+    protected void onBindViewHolder(@NonNull UIDViewHolder holder, int position, @NonNull String uid) {
+        FirebaseUtils.getUserDetails(uid).get().addOnSuccessListener(dataSnapshot -> {
+            User user = dataSnapshot.getValue(User.class);
+            if (user == null) {
+                return;
+            }
 
-        holder.itemView.setOnClickListener(view -> {
-            goToChatWith(user);
+            String username = user.name;
+            holder.usernameTextView.setText(username);
+            holder.emailTextView.setText(user.email);
+            holder.itemView.setOnClickListener(view -> {
+                goToChatWith(user);
+            });
+            holder.removeFromFriends.setOnClickListener(view -> {
+                FirebaseUtils.getCurrentUserDetails().child("usersWithKnownLocationUID/".concat(uid)).removeValue();
+            });
         });
     }
 
@@ -73,21 +79,25 @@ public class SearchUserRecyclerAdapter extends FirebaseRecyclerAdapter<User, Sea
 
     @NonNull
     @Override
-    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public UIDViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.search_user_recycler_row, parent, false);
-        return new UserViewHolder(view);
+                .inflate(R.layout.friend_recycler_row, parent, false);
+        return new UIDViewHolder(view);
     }
 
-    static class UserViewHolder extends RecyclerView.ViewHolder {
+    public static class UIDViewHolder extends RecyclerView.ViewHolder {
         TextView usernameTextView;
         TextView emailTextView;
+//        ImageButton addToFriends;
+        ImageButton removeFromFriends;
 
-        public UserViewHolder(@NonNull View itemView) {
+        public UIDViewHolder(@NonNull View itemView) {
             super(itemView);
-            usernameTextView = itemView.findViewById(R.id.search_user_row_username);
-            emailTextView = itemView.findViewById(R.id.search_user_row_email);
+            usernameTextView = itemView.findViewById(R.id.friend_row_username);
+            emailTextView = itemView.findViewById(R.id.friend_row_email);
+//            addToFriends = itemView.findViewById(R.id.friend_row_add);
+            removeFromFriends = itemView.findViewById(R.id.friend_row_remove);
         }
     }
 }

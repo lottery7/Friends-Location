@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,6 +9,7 @@
     tools:context=".AllChats">
 
     <RelativeLayout
+        android:id="@+id/all_chats_header"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:paddingHorizontal="15dp"
@@ -61,15 +62,17 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/all_chats_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/all_chats_header"
+        android:layout_above="@id/bottom_bar_ll"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_below="@id/all_chats_header"
+        android:layout_above="@id/bottom_bar_ll"
         android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_bar_ll">
+        android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/all_chats_no_messages"
@@ -77,7 +80,7 @@
             android:layout_height="50dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="15dp"
-            app:cardElevation="@dimen/cardview_default_elevation">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -104,9 +107,7 @@
         android:layout_height="75dp"
         android:background="@color/main_menu"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_alignParentBottom="true">
 
         <ImageButton
             android:id="@+id/events_imgbtn"
@@ -161,4 +162,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

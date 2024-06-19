@@ -18,7 +18,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 public class MarkerUsersListener {
+    private static HashMap<String, Marker> mapMarkers = new HashMap<>();
 
 
     public static void makeUsersMarkers(GoogleMap mMap, Context context, Resources resources) {
@@ -31,11 +34,18 @@ public class MarkerUsersListener {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         try {
                             User user = dataSnapshot.getValue(User.class);
+                            if (!user.isVisible) {
+                                if (mapMarkers.containsKey(user.id)) {
+                                    mapMarkers.get(user.id).remove();
+                                    mapMarkers.remove(user.id);
+                                }
+                                return;
+                            }
                             MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(new LatLng(user.coordinates.getFirst(), user.coordinates.getSecond()));
                             MarkerIcon markerIcon = new MarkerIcon(user, context, resources);
                             markerOptions.icon(markerIcon.userMarkerIcon.getBriefMarkerIcon());
-                            Marker x = mMap.addMarker(markerOptions);
+                            mapMarkers.put(user.id, mMap.addMarker(markerOptions));
                         } catch (Exception e) {
                             Log.e("Making marker", e.getMessage());
                         }

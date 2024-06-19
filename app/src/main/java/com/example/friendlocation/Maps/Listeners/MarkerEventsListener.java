@@ -50,7 +50,6 @@ public class MarkerEventsListener {
                             markerOptions.icon(markerIcon.eventMarkerIcon.getBriefMarkerIcon());
                             Marker x = mMap.addMarker(markerOptions);
                             x.setTag(markerIcon);
-                            ValueEventListener valueEventListener = this;
                             mapMarkers.put(ev.uid, x);
                             mapMarkersIsDelete.put(ev.uid, false);
                         } catch (Exception e) {

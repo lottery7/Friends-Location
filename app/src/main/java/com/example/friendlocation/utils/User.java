@@ -8,6 +8,7 @@ public class User {
     public String email;
     public String id;
     public int right;
+    public boolean isVisible = true;
     public Pair<Double, Double> coordinates = null;
 
     public User() {

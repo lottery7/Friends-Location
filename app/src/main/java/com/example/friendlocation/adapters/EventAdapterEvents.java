@@ -1,5 +1,6 @@
 package com.example.friendlocation.adapters;
-import static androidx.core.app.ActivityCompat.startActivityForResult;
+
+import static com.example.friendlocation.utils.ChatroomUtils.createGroupModel;
 import static com.example.friendlocation.utils.Config.dateFormat;
 import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserID;
 
@@ -17,17 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.Events.CreateEvent;
 import com.example.friendlocation.Events.FirebaseEventPart;
-import com.example.friendlocation.Maps.MainMap;
 import com.example.friendlocation.R;
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.FirebaseUtils;
-import com.example.friendlocation.utils.User;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class EventAdapterEvents extends RecyclerView.Adapter<EventAdapterEvents.ViewHolder>{
 
@@ -80,6 +77,10 @@ public class EventAdapterEvents extends RecyclerView.Adapter<EventAdapterEvents.
                     return;
                 }
             }
+        });
+        holder.chatBtn.setOnClickListener(v -> {
+            // TODO: make function to go to chat
+            com.example.friendlocation.ChatroomModel chatroomModel = createGroupModel(event.membersUID);
         });
     }
 

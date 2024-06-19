@@ -10,10 +10,12 @@ public class MarkerIcon {
     public EventMarkerIcon eventMarkerIcon;
     public UserMarkerIcon userMarkerIcon;
     private MarkerType markerType;
+    public Event event;
 
     public MarkerIcon(Event event, Context context, Resources resources) {
         this.eventMarkerIcon = new EventMarkerIcon(event, context, resources);
         markerType = MarkerType.EVENT;
+        this.event = event;
     }
 
     public MarkerIcon(User user, Context context, Resources resources) {

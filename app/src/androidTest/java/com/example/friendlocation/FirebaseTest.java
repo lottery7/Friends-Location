@@ -8,9 +8,7 @@ import static org.junit.Assert.assertTrue;
 import static java.lang.Thread.sleep;
 
 import androidx.annotation.NonNull;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.friendlocation.Events.FirebaseEventPart;
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.Pair;
@@ -21,10 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +30,7 @@ import java.util.HashMap;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class ExampleInstrumentedTest {
+public class FirebaseTest {
     int userCount = 4;
     Integer globalUserId;
     Integer globalEventId;

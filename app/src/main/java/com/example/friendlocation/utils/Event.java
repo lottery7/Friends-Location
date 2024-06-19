@@ -18,6 +18,8 @@ public class Event {
     public String description;
 
     public Place place;
+
+    public String chatUID;
     public ArrayList<String> membersUID;
 
     public Event() {
@@ -61,11 +63,11 @@ public class Event {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return Objects.equals(uid, event.uid) && Objects.equals(name, event.name) && Objects.equals(owner, event.owner) && Objects.equals(date, event.date) && Objects.equals(description, event.description) && Objects.equals(place, event.place) && Objects.equals(membersUID, event.membersUID);
+        return Objects.equals(uid, event.uid) && Objects.equals(chatUID, event.chatUID) && Objects.equals(name, event.name) && Objects.equals(owner, event.owner) && Objects.equals(date, event.date) && Objects.equals(description, event.description) && Objects.equals(place, event.place) && Objects.equals(membersUID, event.membersUID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uid, name, owner, date, description, place, membersUID);
+        return Objects.hash(uid, name, owner, date, description, place, chatUID, membersUID);
     }
 }

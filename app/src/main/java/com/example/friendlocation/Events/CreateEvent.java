@@ -24,9 +24,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.friendlocation.ChatroomModel;
 import com.example.friendlocation.Maps.MainMap;
 import com.example.friendlocation.R;
 import com.example.friendlocation.databinding.ActivityCreateEventBinding;
+import com.example.friendlocation.utils.ChatroomUtils;
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.Pair;
@@ -40,6 +42,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.UUID;
 
 public class CreateEvent extends AppCompatActivity {
 
@@ -72,9 +75,7 @@ public class CreateEvent extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if (extras == null) {
-                createMod = null;
-            } else {
+            if (extras != null) {
                 createMod = extras.getString("EDIT_MODE");
             }
         } else {
@@ -180,12 +181,17 @@ public class CreateEvent extends AppCompatActivity {
         ev.uid = createMod;
         constructEvent(ev);
         FirebaseUtils.saveEvent(ev);
+        // TODO: make function to update chat
         finish();
     }
 
     public void addEvent(View v) {
         Event ev = new Event();
         constructEvent(ev);
+        ChatroomModel chatroomModel = ChatroomUtils.createGroupModel(ev.membersUID);
+        chatroomModel.title = ev.name;
+        ev.chatUID = chatroomModel.id;
+        FirebaseUtils.getChatroomReference(ev.chatUID).set(chatroomModel);
         FirebaseUtils.addEvent(ev);
         finish();
     }

@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.friendlocation.ChatMessage;
 import com.example.friendlocation.ChatroomModel;
 import com.example.friendlocation.Maps.MainMap;
 import com.example.friendlocation.R;
@@ -35,6 +36,7 @@ import com.example.friendlocation.utils.Pair;
 import com.example.friendlocation.utils.Place;
 import com.example.friendlocation.utils.User;
 import com.example.friendlocation.adapters.UsersAdapterCreateEvent;
+import com.google.firebase.Timestamp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -121,7 +123,9 @@ public class CreateEvent extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 User user = snapshot.getValue(User.class);
-                                assert user != null;
+                                if (user == null) {
+                                    return;
+                                }
                                 if (!user.id.equals(getCurrentUserID())) {
                                     adapter.addUser(user);
                                 }
@@ -181,7 +185,8 @@ public class CreateEvent extends AppCompatActivity {
         ev.uid = createMod;
         constructEvent(ev);
         FirebaseUtils.saveEvent(ev);
-        // TODO: make function to update chat
+        FirebaseUtils.getChatroomReference(ev.chatUID).update("title", ev.name);
+        FirebaseUtils.getChatroomReference(ev.chatUID).update("userIds", ev.membersUID);
         finish();
     }
 
@@ -191,7 +196,17 @@ public class CreateEvent extends AppCompatActivity {
         ChatroomModel chatroomModel = ChatroomUtils.createGroupModel(ev.membersUID);
         chatroomModel.title = ev.name;
         ev.chatUID = chatroomModel.id;
+        chatroomModel.lastMessageDate = Timestamp.now();
+        chatroomModel.lastMessageSenderId = FirebaseUtils.getCurrentUserID();
+        chatroomModel.lastMessageText = "Create the group";
         FirebaseUtils.getChatroomReference(ev.chatUID).set(chatroomModel);
+        ChatMessage chatMessage = new ChatMessage(
+                chatroomModel.lastMessageText,
+                FirebaseUtils.getCurrentUserID(),
+                chatroomModel.lastMessageDate
+        );
+
+        FirebaseUtils.getChatroomMessagesReference(chatroomModel.id).add(chatMessage);
         FirebaseUtils.addEvent(ev);
         finish();
     }

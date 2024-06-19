@@ -16,8 +16,11 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.friendlocation.Chatroom;
+import com.example.friendlocation.ChatroomModel;
 import com.example.friendlocation.Events.CreateEvent;
 import com.example.friendlocation.Events.FirebaseEventPart;
+import com.example.friendlocation.Maps.Markers.MarkerIcon;
 import com.example.friendlocation.R;
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.FirebaseUtils;
@@ -79,8 +82,17 @@ public class EventAdapterEvents extends RecyclerView.Adapter<EventAdapterEvents.
             }
         });
         holder.chatBtn.setOnClickListener(v -> {
-            // TODO: make function to go to chat
-            com.example.friendlocation.ChatroomModel chatroomModel = createGroupModel(event.membersUID);
+            FirebaseUtils.getChatroomReference(event.chatUID)
+                    .get()
+                    .addOnCompleteListener(snapshot -> {
+                        ChatroomModel chatroomModel = snapshot.getResult().toObject(ChatroomModel.class);
+                        if (chatroomModel != null) {
+                            Intent intent = new Intent(context, Chatroom.class)
+                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    .putExtra("chatroomID", event.chatUID);
+                            context.startActivity(intent);
+                        }
+                    });
         });
     }
 

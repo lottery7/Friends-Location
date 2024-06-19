@@ -72,9 +72,7 @@ public class CreateEvent extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if (extras == null) {
-                createMod = null;
-            } else {
+            if (extras != null) {
                 createMod = extras.getString("EDIT_MODE");
             }
         } else {

@@ -23,6 +23,15 @@ public class FirebaseUtils {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
+    public static DocumentReference getCurrentUserDocumentDetails(){
+        return FirebaseFirestore.getInstance().collection("users").document(getCurrentUserID());
+    }
+
+
+    public static DocumentReference currentUserDocumentDetails(){
+        return FirebaseFirestore.getInstance().collection("users").document(getCurrentUserID());
+    }
+
     public static DatabaseReference getCurrentUserDetails() {
         return getDatabase().getReference("users")
                 .child(getCurrentUserID());

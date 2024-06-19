@@ -22,6 +22,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -117,12 +120,29 @@ public class Setting extends BottomBar {
     }
 
     private void getUserData() {
-        FirebaseUtils.getCurrentUserDocumentDetails().get().addOnCompleteListener(task -> {
-            currentUser = task.getResult().toObject(User.class);
-            binding.userNameEt.setText(firebaseCurrentUser.getDisplayName());
-            currentUserName=firebaseCurrentUser.getDisplayName();
-            binding.userEmailEt.setText(firebaseCurrentUser.getEmail());
+        FirebaseUtils.getCurrentUserDetails().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                currentUser = snapshot.getValue(User.class);
+                if (currentUser == null) {
+                    return;
+                }
+                binding.userNameEt.setText(currentUser.name);
+                currentUserName=currentUser.name;
+                binding.userEmailEt.setText(firebaseCurrentUser.getEmail());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
+//        FirebaseUtils.getCurrentUserDocumentDetails().get().addOnCompleteListener(task -> {
+//            currentUser = task.getResult().toObject(User.class);
+//            binding.userNameEt.setText(firebaseCurrentUser.getDisplayName());
+//            currentUserName=firebaseCurrentUser.getDisplayName();
+//            binding.userEmailEt.setText(firebaseCurrentUser.getEmail());
+//        });
     }
 
     private void updateUser(){

@@ -13,10 +13,18 @@ import java.util.List;
 
 
 public class FirebaseUtils {
+    static FirebaseDatabase firebaseDatabase;
     public static FirebaseDatabase getDatabase() {
-        return FirebaseDatabase.getInstance(
-                "https://friendloc-e7399-default-rtdb.europe-west1.firebasedatabase.app/"
-        );
+        if (firebaseDatabase == null){
+            return FirebaseDatabase.getInstance(
+                    "https://friendloc-e7399-default-rtdb.europe-west1.firebasedatabase.app/"
+            );
+        }
+        return firebaseDatabase;
+    }
+
+    public static void setFirebaseDatabase(FirebaseDatabase newFirebaseDatabase) {
+        firebaseDatabase = newFirebaseDatabase;
     }
 
     public static String getCurrentUserID() {
@@ -30,7 +38,9 @@ public class FirebaseUtils {
 
     public static boolean addEvent(Event event) {
         DatabaseReference mDatabase = getDatabase().getReference("events");
-        event.uid = mDatabase.push().getKey();
+        if (event.uid == null) {
+            event.uid = mDatabase.push().getKey();
+        }
         if (event.uid == null) {
             return false;
         }

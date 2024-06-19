@@ -28,7 +28,6 @@ public class BottomBar extends AppCompatActivity {
     public void goToMap(View v) {
         if(!(this instanceof MainMap)){
             Intent intent = new Intent(this, MainMap.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
         }
     }

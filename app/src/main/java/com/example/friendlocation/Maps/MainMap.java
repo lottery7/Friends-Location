@@ -84,6 +84,7 @@ public class MainMap extends BottomBar implements OnMapReadyCallback, LocListene
         mapFragment.getMapAsync(this);
 
         //   --- new features for select mode ---
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
@@ -98,9 +99,10 @@ public class MainMap extends BottomBar implements OnMapReadyCallback, LocListene
             Button selectPlaceBtn = findViewById(R.id.select_place_btn);
             selectPlaceBtn.setVisibility(View.VISIBLE);
 
-            LinearLayout BottomBar = findViewById(R.id.bottom_bar);
+            BottomNavigationView BottomBar = findViewById(R.id.bottom_bar);
             BottomBar.setVisibility(View.INVISIBLE);
         }
+
         //   /--- new features for select mode ---/
 
         //   /--- Bottom Bar ---/

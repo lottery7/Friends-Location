@@ -12,14 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:paddingHorizontal="15dp"
-        android:paddingVertical="9dp">
+        android:paddingVertical="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="Friends"
-            android:textColor="#f8709a"
+            android:textColor="@color/light_pink"
             android:textSize="40sp"
             android:textStyle="bold" />
 

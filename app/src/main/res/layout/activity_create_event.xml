@@ -3,11 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@color/black"
-    android:backgroundTint="#EEF8F8"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Events.CreateEvent">
+    
+    <View
+        android:layout_width="1000dp"
+        android:layout_height="1000dp"
+        android:background="@drawable/circle_light_yellow"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="-200dp"
+        android:layout_marginStart="-200dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+
+    <View
+        android:layout_width="1000dp"
+        android:layout_height="1000dp"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="200dp"
+        android:background="@drawable/circle_light_cyan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.520"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageButton
         android:id="@+id/back_to_events_imgbtn"
@@ -28,163 +53,206 @@
         android:layout_centerVertical="true"
         android:layout_marginTop="5dp"
         android:text="Create event"
-        android:textColor="#F3578C"
+        android:textColor="@color/light_pink"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/title_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:backgroundTint="#BF155F"
-        android:colorControlNormal="#BF155F"
-        android:ems="10"
-        android:fontFamily="@font/roboto"
-        android:hint="Title"
-        android:inputType="text"
-        android:maxLength="15"
-        android:textColor="#BF155F"
-        android:textColorHint="#D0CF5D8E"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/create_event_tv" />
-
-    <EditText
-        android:id="@+id/description_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#BF155F"
-        android:colorControlNormal="#BF155F"
-        android:ems="10"
-        android:fontFamily="@font/roboto"
-        android:gravity="start|top"
-        android:hint="Description"
-        android:inputType="textMultiLine"
-        android:maxHeight="200dp"
-        android:textColor="#BF155F"
-        android:textColorHint="#D0CF5D8E"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_et" />
-
-    <EditText
-        android:id="@+id/date_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:enabled="false"
-        android:hint="Date"
-        android:textColor="#BF155F"
-        android:textColorHint="#D0CF5D8E"
-        android:backgroundTint="#BF155F"
-        android:colorControlNormal="#BF155F"
-        android:fontFamily="@font/roboto"
-        android:inputType="date"
-        app:layout_constraintTop_toBottomOf="@+id/description_et" />
-
     <LinearLayout
-        android:id="@+id/date_ll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="60dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_et">
+        app:layout_constraintTop_toBottomOf="@+id/back_to_events_imgbtn"
+        android:layout_marginBottom="60dp">
 
-        <Button
-            android:id="@+id/change_date_btn"
+        <EditText
+            android:id="@+id/title_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@color/gray_60"
+            android:colorControlNormal="@color/gray_60"
+            android:ems="10"
+            android:fontFamily="@font/roboto"
+            android:hint="Title"
+            android:inputType="text"
+            android:maxLength="15"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray_60"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/description_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray_60"
+            android:colorControlNormal="@color/black"
+            android:ems="10"
+            android:fontFamily="@font/roboto"
+            android:gravity="start|top"
+            android:hint="Description"
+            android:inputType="textMultiLine"
+            android:maxHeight="200dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/gray_60"
+            android:textColorHint="@color/gray_60"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_et" />
+
+        <EditText
+            android:id="@+id/date_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray_60"
+            android:colorControlNormal="@color/black"
+            android:ems="10"
+            android:enabled="false"
+            android:fontFamily="@font/roboto"
+            android:hint="Date"
+            android:layout_marginTop="5dp"
+            android:inputType="date"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray_60"
+            app:layout_constraintTop_toBottomOf="@+id/description_et" />
+
+        <LinearLayout
+            android:id="@+id/date_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="setDate"
-            android:backgroundTint="#F92C85"
-            android:fontFamily="@font/roboto_bold"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:text="Change Date" />
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date_et">
+
+            <Button
+                android:id="@+id/change_date_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/muted_cyan"
+                android:fontFamily="@font/roboto_bold"
+                android:onClick="setDate"
+                android:text="Change\nDate"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:layout_marginEnd="5dp"/>
+
+            <Button
+                android:id="@+id/change_time_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/muted_cyan"
+                android:fontFamily="@font/roboto_bold"
+                android:onClick="setTime"
+                android:text="Change\nTime"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/place_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:colorControlNormal="@color/black"
+            android:ems="10"
+            android:layout_marginTop="5dp"
+            android:enabled="false"
+            android:fontFamily="@font/roboto"
+            android:gravity="start|top"
+            android:hint="Place"
+            android:inputType="none"
+            android:maxHeight="200dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray_60"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/date_ll" />
+
 
         <Button
-            android:id="@+id/change_time_btn"
+            android:id="@+id/place_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/muted_cyan"
+            android:fontFamily="@font/roboto_bold"
+            android:onClick="selectPlace"
+            android:text="Select Place"
+            android:textColor="@color/white"
+            android:layout_marginTop="5dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/place_et" />
+
+        <Button
+            android:id="@+id/member_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/muted_cyan"
+            android:fontFamily="@font/roboto_bold"
+            android:onClick="addUser"
+            android:text="Invite member"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/place_btn" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="5dp"
+            android:id="@+id/users_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="setTime"
-            android:backgroundTint="#F92C85"
+            android:layout_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/member_btn" />
+
+        <Button
+            android:id="@+id/create_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_pink"
             android:fontFamily="@font/roboto_bold"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:text="Change Time" />
+            android:text="Create"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/place_et"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#BF155F"
-        android:colorControlNormal="#BF155F"
-        android:ems="10"
-        android:enabled="false"
-        android:fontFamily="@font/roboto"
-        android:gravity="start|top"
-        android:hint="Place"
-        android:inputType="none"
-        android:maxHeight="200dp"
-        android:textColor="#BF155F"
-        android:textColorHint="#D0CF5D8E"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_ll" />
-
-
-    <Button
-        android:id="@+id/place_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#F92C85"
-        android:fontFamily="@font/roboto_bold"
-        android:onClick="selectPlace"
-        android:text="Select Place"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/place_et" />
-
-    <Button
-        android:id="@+id/member_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="addUser"
-        android:text="Invite member"
-        android:backgroundTint="#F92C85"
-        android:fontFamily="@font/roboto_bold"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/place_btn" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/users_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/member_btn" />
-
-    <Button
-        android:id="@+id/create_event"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#F92C85"
-        android:fontFamily="@font/roboto_bold"
-        android:text="Create"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/gradient_bottom_bar"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_menu"
+        style="@style/BottomNavStyle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

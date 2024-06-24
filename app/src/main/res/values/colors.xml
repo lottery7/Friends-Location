@@ -2,11 +2,26 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
     <color name="main_menu">#CCF9FF</color>
     <color name="primary">#FF69B4</color>
     <color name="user_message">@color/primary</color>
     <color name="other_user_message">@color/white</color>
     <color name="light_dark_text">#505050</color>
+    <color name="gray_60">#99000000</color>
+    <color name="bright_pink">#F92C85</color>
+    <color name="bright_pink_80">#CCF92C85</color>
+    <color name="bright_pink_60">#99F92C85</color>
+    <color name="light_pink">#f8709a</color>
+    <color name="light_light_pink">#ABF8709A</color>
+    <color name="bright_cyan">#48C2CA</color>
+    <color name="bright_center_cyan">#B548C2CA</color>
     <color name="muted_cyan">#5EC4C4</color>
-    <color name="light_cyan">#C9F0EE</color>
+    <color name="light_cyan">#C6A5EFEB</color>
+    <color name="muted_yellow">#E8E19F</color>
+    <color name="light_yellow">#FDF5DF</color>
+
+    <color name="pale">#00FFFFFF</color>
+
+
 </resources>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="BottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="android:layout_height">56dp</item>
@@ -16,4 +17,45 @@
     <style name="BottomNavInactiveTextStyle" parent="TextAppearance.AppCompat.Caption">
         <item name="android:textSize">12sp</item>
     </style>
+
+
+    <style name="CustomCalendarViewStyle" parent="@android:style/Widget.DeviceDefault.CalendarView">
+        <item name="android:background">@color/white_20</item>
+        <item name="android:weekDayTextAppearance">@style/CustomWeekDayTextAppearance</item>
+        <item name="android:dateTextAppearance">@style/CustomDateTextAppearance</item>
+        <item name="android:selectedDateVerticalBar">@color/bright_pink</item>
+        <item name="android:selectedWeekBackgroundColor">@color/bright_pink_60</item>
+        <item name="android:yearListItemTextAppearance">@style/CustomYearListItemTextAppearance</item>
+        <item name="android:navigationBarColor">@color/gray_60</item>
+        <item name="android:textAppearance">@style/CustomMonthYearTextAppearance</item>
+        <item name="android:focusedMonthDateColor">@color/gray_60 </item>
+    </style>
+
+    <style name="CustomWeekDayTextAppearance" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/muted_cyan</item>
+    </style>
+
+    <style name="CustomDateTextAppearance" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textColor">@color/gray_60</item>
+    </style>
+
+    <style name="CustomYearListItemTextAppearance" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/gray_60</item>
+    </style>
+
+    <style name="CustomMonthListItemTextAppearance" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/gray_60</item>
+    </style>
+
+    <style name="CustomMonthYearTextAppearance" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/gray_60</item>
+    </style>
+
+
+
+
+
+
+
+
 </resources>

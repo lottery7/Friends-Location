@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.friendlocation.BottomBar;
 import com.example.friendlocation.ChatMessage;
 import com.example.friendlocation.ChatroomModel;
 import com.example.friendlocation.Maps.MainMap;
@@ -36,6 +37,7 @@ import com.example.friendlocation.utils.Pair;
 import com.example.friendlocation.utils.Place;
 import com.example.friendlocation.utils.User;
 import com.example.friendlocation.adapters.UsersAdapterCreateEvent;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,7 +48,7 @@ import java.util.Calendar;
 import java.util.Objects;
 import java.util.UUID;
 
-public class CreateEvent extends AppCompatActivity {
+public class CreateEvent extends BottomBar {
 
     private static final int PLACE_REQUEST_CODE = 666;
     private static final int USER_REQUEST_CODE = 999;
@@ -151,46 +153,77 @@ public class CreateEvent extends AppCompatActivity {
                 }
             });
         }
+
+        //   /--- Bottom Bar ---/
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
+        bottomNavigationView.setSelectedItemId(R.id.events_case);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.events_case) {
+                // Stay in the current Event activity
+                return true;
+            } else if (itemId == R.id.chats_case) {
+                goToChats();
+                return true;
+            } else if (itemId == R.id.map_case) {
+                goToMap();
+                return true;
+            } else if (itemId == R.id.friends_case) {
+                goToFriends();
+                return true;
+            } else if (itemId == R.id.settings_case) {
+                goToSetting();
+                return true;
+            } else {
+                return false;
+            }
+        });
+        //   /--- Bottom Bar ---/
+
+
     }
 
-    public void constructEvent(Event ev) {
+    public boolean constructEvent(Event ev) {
         ev.chatUID = eventChatUID;
         ev.name = binding.titleEt.getText().toString();
         ev.date = dateFormat.format(dateAndTime.getTime());
         ev.description = binding.descriptionEt.getText().toString();
         if (ev.name.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Empty name are not allowed", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         if (ev.date.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Empty date are not allowed", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         if (Objects.equals(place.description, "default")) {
             Toast.makeText(getApplicationContext(), "Empty place are not allowed", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         if (ev.countLinesInDescription() > Event.MAX_DESCRIPTION_LINES) {
             Toast.makeText(getApplicationContext(), "The description has too much lines (" +
                     ev.countLinesInDescription() + "/" + Event.MAX_DESCRIPTION_LINES + ")", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         if (ev.maxLineSizeInDescription() > Event.MAX_DESCRIPTION_LINE_SIZE) {
             Toast.makeText(getApplicationContext(), "The description has too big line (" +
                     ev.maxLineSizeInDescription() + "/" + Event.MAX_DESCRIPTION_LINE_SIZE + ")", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         UsersAdapterCreateEvent adapter = (UsersAdapterCreateEvent) binding.usersList.getAdapter();
         ev.membersUID = adapter.getUsersUID();
         ev.membersUID.add(getCurrentUserID());
         ev.place = place;
         ev.owner = getCurrentUserID();
+        return true;
     }
 
     public void saveEvent(View v) {
         Event ev = new Event();
         ev.uid = createMod;
-        constructEvent(ev);
+        if (!constructEvent(ev)) {
+            return;
+        }
         FirebaseUtils.saveEvent(ev);
         FirebaseUtils.getChatroomReference(ev.chatUID).update("title", ev.name, "userIds", ev.membersUID);
         finish();
@@ -198,7 +231,9 @@ public class CreateEvent extends AppCompatActivity {
 
     public void addEvent(View v) {
         Event ev = new Event();
-        constructEvent(ev);
+        if (!constructEvent(ev)) {
+            return;
+        }
         ChatroomModel chatroomModel = ChatroomUtils.createGroupModel(ev.membersUID);
         chatroomModel.title = ev.name;
         ev.chatUID = chatroomModel.id;

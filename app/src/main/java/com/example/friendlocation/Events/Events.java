@@ -2,12 +2,15 @@ package com.example.friendlocation.Events;
 
 import static com.example.friendlocation.Events.EventsListenerEvents.makeEventsList;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CalendarView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -32,6 +35,9 @@ public class Events extends BottomBar {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_events);
+
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.muted_cyan));
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -42,6 +48,8 @@ public class Events extends BottomBar {
         EventAdapterEvents adapter = new EventAdapterEvents(this, events);
         RecyclerView eventsRv = findViewById(R.id.events_rv);
         CalendarView calendarView = findViewById(R.id.calendarView);
+        calendarView.setHeaderTextColor(ContextCompat.getColor(this, R.color.black));
+
         eventsRv.setAdapter(adapter);
         eventsRv.setLayoutManager(new LinearLayoutManager(this));
         makeEventsList(adapter, calendarView, getApplicationContext(), getResources());

@@ -61,9 +61,8 @@ public class Setting extends BottomBar {
 
         mAuth = FirebaseAuth.getInstance();
         firebaseCurrentUser = mAuth.getCurrentUser();
-
-//        Toast.makeText(getApplicationContext(), "Hello, " + currentUser.getDisplayName() + "!", Toast.LENGTH_SHORT).show();
         getUserData();
+
 
         //   /--- Log Out ---/
         binding.logOutBtn.setOnClickListener((v) -> {
@@ -91,7 +90,7 @@ public class Setting extends BottomBar {
                 if (s.length() > 2 && !binding.userNameEt.getText().toString().equals(currentUserName)) {
                     binding.saveNameIv.setVisibility(View.VISIBLE);
                 } else {
-                    binding.saveNameIv.setVisibility(View.GONE);
+                    binding.saveNameIv.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -105,17 +104,9 @@ public class Setting extends BottomBar {
             public void onClick(View v) {
                 currentUser.name = binding.userNameEt.getText().toString();
                 updateUser();
-                binding.saveNameIv.setVisibility(View.GONE);
+                binding.saveNameIv.setVisibility(View.INVISIBLE);
             }
         });
-
-//        binding.userVisibilityTs.setOnCheckedChangeListener((switch_, isChecked) -> {
-//            if (isChecked) {
-//                //
-//            } else {
-//                //
-//            }
-//        };
 
         //   /--- Bottom Bar ---/
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
@@ -155,6 +146,7 @@ public class Setting extends BottomBar {
                     return;
                 }
                 binding.userNameEt.setText(currentUser.name);
+                binding.saveNameIv.setVisibility(View.INVISIBLE);
                 currentUserName=currentUser.name;
                 binding.userEmailEt.setText(firebaseCurrentUser.getEmail());
             }
@@ -183,5 +175,6 @@ public class Setting extends BottomBar {
 //                    }
 //                });
     }
+
 
 }

@@ -1,6 +1,7 @@
 package com.example.friendlocation;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -21,7 +22,7 @@ public class RestorePassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityRestorePasswordBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
         mAuth = FirebaseAuth.getInstance();
 
         binding.restorePasswordBtn.setOnClickListener(new View.OnClickListener() {

@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.friendlocation.BottomBar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.friendlocation.Chatroom;
 import com.example.friendlocation.ChatroomModel;
 import com.example.friendlocation.Maps.Listeners.LocListenerInterface;
@@ -83,7 +84,6 @@ public class MainMap extends BottomBar implements OnMapReadyCallback, LocListene
         mapFragment.getMapAsync(this);
 
         //   --- new features for select mode ---
-
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
@@ -98,11 +98,36 @@ public class MainMap extends BottomBar implements OnMapReadyCallback, LocListene
             Button selectPlaceBtn = findViewById(R.id.select_place_btn);
             selectPlaceBtn.setVisibility(View.VISIBLE);
 
-            LinearLayout BottomBarLL = findViewById(R.id.bottom_bar_ll);
-            BottomBarLL.setVisibility(View.INVISIBLE);
+            LinearLayout BottomBar = findViewById(R.id.bottom_bar);
+            BottomBar.setVisibility(View.INVISIBLE);
         }
-
         //   /--- new features for select mode ---/
+
+        //   /--- Bottom Bar ---/
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
+        bottomNavigationView.setSelectedItemId(R.id.map_case);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.events_case) {
+                goToEvents();
+                return true;
+            } else if (itemId == R.id.chats_case) {
+                goToChats();
+                return true;
+            } else if (itemId == R.id.map_case) {
+                // Stay in the current MainMap activity
+                return true;
+            } else if (itemId == R.id.friends_case) {
+                goToFriends();
+                return true;
+            } else if (itemId == R.id.settings_case) {
+                goToSetting();
+                return true;
+            } else {
+                return false;
+            }
+        });
+        //   /--- Bottom Bar ---/
 
     }
 

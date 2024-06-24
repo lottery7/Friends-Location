@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/events_case"
+        android:icon="@drawable/events_icon"
+        android:title="Events"
+        />
+    <item
+        android:id="@+id/chats_case"
+        android:icon="@drawable/chats_icon"
+        android:title="Chats"
+        />
+    <item
+        android:id="@+id/map_case"
+        android:icon="@drawable/map_fu_fu_fu_icon"
+        android:title="Map"
+        />
+    <item
+        android:id="@+id/friends_case"
+        android:icon="@drawable/friends_icon"
+        android:title="Friends"
+        />
+    <item
+        android:id="@+id/settings_case"
+        android:icon="@drawable/settings_icon"
+        android:title="Settings"
+        />
+
+</menu>

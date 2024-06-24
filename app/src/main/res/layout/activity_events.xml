@@ -48,67 +48,20 @@
             android:textColor="#FFFFFF"
             android:textSize="18sp"/>
 
-        <LinearLayout
-            android:id="@+id/bottom_bar_ll"
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_bar"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:background="@color/main_menu"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/gradient_bottom_bar"
+            app:itemIconTint="@color/black"
+            app:itemTextColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_menu"
+            style="@style/BottomNavStyle" />
 
-            <ImageButton
-                android:id="@+id/events_imgbtn"
-                android:layout_width="10dp"
-                android:layout_height="75dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/main_menu"
-                android:onClick="goToEvents"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/calendar" />
-
-            <ImageButton
-                android:id="@+id/chats_imgbtn"
-                android:layout_width="10dp"
-                android:layout_height="75dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/main_menu"
-                android:onClick="goToChats"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/chat" />
-
-            <ImageButton
-                android:id="@+id/map_imgbtn"
-                android:layout_width="10dp"
-                android:layout_height="75dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/main_menu"
-                android:onClick="goToMap"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/map" />
-
-            <ImageButton
-                android:id="@+id/friends_imgbtn"
-                android:layout_width="10dp"
-                android:layout_height="75dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/main_menu"
-                android:onClick="goToFriends"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/friends" />
-
-            <ImageButton
-                android:id="@+id/setting_imgbtn"
-                android:layout_width="10dp"
-                android:layout_height="75dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/main_menu"
-                android:onClick="goToSetting"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/setting" />
-
-        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

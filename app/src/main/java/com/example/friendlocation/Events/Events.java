@@ -20,6 +20,7 @@ import com.example.friendlocation.adapters.EventAdapterEvents;
 import com.example.friendlocation.databinding.ActivityCreateEventBinding;
 import com.example.friendlocation.databinding.ActivityEventsBinding;
 import com.example.friendlocation.utils.Event;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -44,6 +45,33 @@ public class Events extends BottomBar {
         eventsRv.setAdapter(adapter);
         eventsRv.setLayoutManager(new LinearLayoutManager(this));
         makeEventsList(adapter, calendarView, getApplicationContext(), getResources());
+
+        //   /--- Bottom Bar ---/
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
+        bottomNavigationView.setSelectedItemId(R.id.events_case);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.events_case) {
+                // Stay in the current Event activity
+                return true;
+            } else if (itemId == R.id.chats_case) {
+                goToChats();
+                return true;
+            } else if (itemId == R.id.map_case) {
+                goToMap();
+                return true;
+            } else if (itemId == R.id.friends_case) {
+                goToFriends();
+                return true;
+            } else if (itemId == R.id.settings_case) {
+                goToSetting();
+                return true;
+            } else {
+                return false;
+            }
+        });
+        //   /--- Bottom Bar ---/
+
     }
 
     public void createEvent(View v) {

@@ -11,87 +11,40 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".MapsActivity" />
 
-    <LinearLayout
-        android:id="@+id/bottom_bar_ll"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:background="@color/main_menu"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageButton
-            android:id="@+id/events_imgbtn"
-            android:layout_width="10dp"
-            android:layout_height="75dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/main_menu"
-            android:onClick="goToEvents"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/calendar" />
-
-        <ImageButton
-            android:id="@+id/chats_imgbtn"
-            android:layout_width="10dp"
-            android:layout_height="75dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/main_menu"
-            android:onClick="goToChats"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/chat" />
-
-        <ImageButton
-            android:id="@+id/map_imgbtn"
-            android:layout_width="10dp"
-            android:layout_height="75dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/main_menu"
-            android:onClick="goToMap"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/map" />
-
-        <ImageButton
-            android:id="@+id/friends_imgbtn"
-            android:layout_width="10dp"
-            android:layout_height="75dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/main_menu"
-            android:onClick="goToFriends"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/friends" />
-
-        <ImageButton
-            android:id="@+id/setting_imgbtn"
-            android:layout_width="10dp"
-            android:layout_height="75dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/main_menu"
-            android:onClick="goToSetting"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/setting" />
-
-    </LinearLayout>
-
     <Button
         android:id="@+id/select_place_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="#F92C85"
+        android:layout_gravity="bottom"
+        android:fontFamily="@font/roboto_bold"
         android:onClick="acceptPlace"
         android:text="Select Place"
-        android:backgroundTint="#F92C85"
-        android:fontFamily="@font/roboto_bold"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/bottom_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/gradient_bottom_bar"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible"/>
-
+        app:menu="@menu/bottom_menu"
+        style="@style/BottomNavStyle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

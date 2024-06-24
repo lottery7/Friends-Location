@@ -1,0 +1,19 @@
+<resources>
+    <style name="BottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:layout_height">56dp</item>
+        <item name="itemIconSize">38dp</item>
+        <item name="itemPaddingTop">2dp</item>
+        <item name="itemPaddingBottom">8dp</item>
+        <item name="itemTextAppearanceActive">@style/BottomNavActiveTextStyle</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavInactiveTextStyle</item>
+    </style>
+
+    <style name="BottomNavActiveTextStyle" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BottomNavInactiveTextStyle" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">12sp</item>
+    </style>
+</resources>

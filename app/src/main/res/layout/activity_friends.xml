@@ -26,7 +26,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_alignParentBottom="true"
             android:background="@drawable/search_box_bg"
             android:orientation="horizontal">
@@ -58,11 +57,18 @@
 
     </RelativeLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friends_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_bar"
+        android:layout_below="@id/friends_header" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/bottom_bar"
         android:layout_below="@id/friends_header"
-        android:layout_above="@id/bottom_bar_ll"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -93,72 +99,15 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/friends_recycler_view"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_bar_ll"
-        android:layout_below="@id/friends_header" />
-
-    <LinearLayout
-        android:id="@+id/bottom_bar_ll"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/main_menu"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/events_imgbtn"
-            android:layout_width="10dp"
-            android:layout_height="75dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/main_menu"
-            android:onClick="goToEvents"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/calendar" />
-
-        <ImageButton
-            android:id="@+id/chats_imgbtn"
-            android:layout_width="10dp"
-            android:layout_height="75dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/main_menu"
-            android:onClick="goToChats"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/chat" />
-
-        <ImageButton
-            android:id="@+id/map_imgbtn"
-            android:layout_width="10dp"
-            android:layout_height="75dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/main_menu"
-            android:onClick="goToMap"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/map" />
-
-        <ImageButton
-            android:id="@+id/friends_imgbtn"
-            android:layout_width="10dp"
-            android:layout_height="75dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/main_menu"
-            android:onClick="goToFriends"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/friends" />
-
-        <ImageButton
-            android:id="@+id/setting_imgbtn"
-            android:layout_width="10dp"
-            android:layout_height="75dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/main_menu"
-            android:onClick="goToSetting"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/setting" />
-
-    </LinearLayout>
-
+        android:background="@drawable/gradient_bottom_bar"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
+        app:menu="@menu/bottom_menu"
+        style="@style/BottomNavStyle" />
 
 </RelativeLayout>

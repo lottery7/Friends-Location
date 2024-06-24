@@ -18,6 +18,7 @@ import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.User;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.Query;
 
@@ -65,6 +66,33 @@ public class AllChats extends BottomBar {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         setupRecentChatsRecyclerView();
+
+        //   /--- Bottom Bar ---/
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
+        bottomNavigationView.setSelectedItemId(R.id.chats_case);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.events_case) {
+                goToEvents();
+                return true;
+            } else if (itemId == R.id.chats_case) {
+                // Stay in the current Chats activity
+                return true;
+            } else if (itemId == R.id.map_case) {
+                goToMap();
+                return true;
+            } else if (itemId == R.id.friends_case) {
+                goToFriends();
+                return true;
+            } else if (itemId == R.id.settings_case) {
+                goToSetting();
+                return true;
+            } else {
+                return false;
+            }
+        });
+        //   /--- Bottom Bar ---/
+
     }
 
     private void setupSearchRecyclerView(String searchTerm) {

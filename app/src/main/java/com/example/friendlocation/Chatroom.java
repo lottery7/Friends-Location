@@ -113,10 +113,10 @@ public class Chatroom extends AppCompatActivity {
         FirebaseUtils.getChatroomMessagesReference(chatroomModel.id).add(chatMessage)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        messageInput.setText("");
                         chatroomModel.lastMessageText = message;
+                        FirebaseUtils.getChatroomReference(chatroomModel.id).set(chatroomModel);
+                        messageInput.setText("");
                     }
                 });
-        FirebaseUtils.getChatroomReference(chatroomModel.id).set(chatroomModel);
     }
 }

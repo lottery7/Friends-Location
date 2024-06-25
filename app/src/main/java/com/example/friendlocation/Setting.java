@@ -1,5 +1,7 @@
 package com.example.friendlocation;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,14 +12,17 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.friendlocation.databinding.ActivitySettingBinding;
+import com.example.friendlocation.utils.AndroidUtils;
 import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.User;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -53,6 +58,19 @@ public class Setting extends BottomBar {
         binding = ActivitySettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        imgPickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null && data.getData() != null) {
+                            selectedImgUrl = data.getData();
+                            AndroidUtils.setProfilePic(this,selectedImgUrl, binding.photoIv);
+                            storeProfilePic(this, selectedImgUrl);
+                        }
+                    }
+                });
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.settings), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -63,6 +81,15 @@ public class Setting extends BottomBar {
         firebaseCurrentUser = mAuth.getCurrentUser();
         getUserData();
 
+
+        //   /--- Pick Photo ---/
+        binding.editPhotoIv.setOnClickListener((v) -> {
+            ImagePicker.with(this).cropSquare().compress(512).maxResultSize(512, 512)
+                    .createIntent(intent -> {
+                        imgPickLauncher.launch(intent);
+                        return null;
+                    });
+        });
 
         //   /--- Log Out ---/
         binding.logOutBtn.setOnClickListener((v) -> {
@@ -103,6 +130,7 @@ public class Setting extends BottomBar {
             @Override
             public void onClick(View v) {
                 currentUser.name = binding.userNameEt.getText().toString();
+                Toast.makeText(Setting.this, currentUser.name, Toast.LENGTH_SHORT).show();
                 updateUser();
                 binding.saveNameIv.setVisibility(View.INVISIBLE);
             }
@@ -132,12 +160,18 @@ public class Setting extends BottomBar {
                 return false;
             }
         });
-        //   /--- Bottom Bar ---/
 
 
     }
 
     private void getUserData() {
+        FirebaseUtils.getProfilePicStorageRef().getDownloadUrl()
+                        .addOnCompleteListener(task->{
+                            if (task.isSuccessful()){
+                                Uri uri = task.getResult();
+                                AndroidUtils.setProfilePic(this,uri,binding.photoIv);
+                            }
+                        });
         FirebaseUtils.getCurrentUserDetails().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -156,25 +190,32 @@ public class Setting extends BottomBar {
 
             }
         });
-//        FirebaseUtils.getCurrentUserDocumentDetails().get().addOnCompleteListener(task -> {
-//            currentUser = task.getResult().toObject(User.class);
-//            binding.userNameEt.setText(firebaseCurrentUser.getDisplayName());
-//            currentUserName=firebaseCurrentUser.getDisplayName();
-//            binding.userEmailEt.setText(firebaseCurrentUser.getEmail());
-//        });
     }
 
     private void updateUser(){
-//        FirebaseUtils.currentUserDocumentDetails().set(currentUser)
-//                .addOnCompleteListener(task->{
-//                    if (task.isSuccessful()){
-//                        Toast.makeText(getApplicationContext(), "User name updated successfully", Toast.LENGTH_SHORT).show();
-//                    }
-//                    else{
-//                        Toast.makeText(getApplicationContext(), "Error updating user profile.", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+        FirebaseUtils.currentUserDetails().set(currentUser)
+                .addOnCompleteListener(task->{
+                    if (task.isSuccessful()){
+                        Toast.makeText(getApplicationContext(), "User name updated successfully", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Error updating user profile.", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
+    public static void storeProfilePic(Context context, Uri imgUri){
+        FirebaseUtils.getProfilePicStorageRef().putFile(imgUri)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(context, "Profile picture updated successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Failed to update profile picture", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(context, "Error uploading profile picture: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
 
 }

@@ -48,7 +48,6 @@ public class Events extends BottomBar {
         EventAdapterEvents adapter = new EventAdapterEvents(this, events);
         RecyclerView eventsRv = findViewById(R.id.events_rv);
         CalendarView calendarView = findViewById(R.id.calendarView);
-        calendarView.setHeaderTextColor(ContextCompat.getColor(this, R.color.black));
 
         eventsRv.setAdapter(adapter);
         eventsRv.setLayoutManager(new LinearLayoutManager(this));

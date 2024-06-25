@@ -26,6 +26,7 @@
     <string name="restore_password">Restore password</string>
     <string name="restore_password_btn">Send mail</string>
     <string name="restore_password_tv">Enter the email you specified during registration and we will send you a recovery mail</string>
+    <string name="title_activity_test">Test</string>
 
 
 </resources>

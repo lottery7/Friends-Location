@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="15dp">
+
     <ImageView
         android:id="@+id/eventIcon_imgv"
         android:src="@drawable/event_icon_mark"
@@ -19,74 +23,70 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <TextView
-        android:id="@+id/eventName_tv"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name"
-        android:textSize="16sp"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintStart_toEndOf="@+id/eventIcon_imgv"
-        app:layout_constraintBottom_toTopOf="@+id/eventDate_tv"
-        app:layout_constraintHorizontal_bias="0.234"
-        app:layout_constraintLeft_toRightOf="@+id/eventIcon_imgv"
-        app:layout_constraintRight_toLeftOf="@id/editEvent_imgbtn"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="11dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/eventDate_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date"
-        android:textSize="16sp"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintStart_toEndOf="@+id/eventIcon_imgv"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/eventIcon_imgv"
-        app:layout_constraintRight_toLeftOf="@id/editEvent_imgbtn"
-        app:layout_constraintTop_toBottomOf="@+id/eventName_tv" />
+        <TextView
+            android:id="@+id/eventName_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4sp"
+            android:text="Name"
+            android:textColor="@color/light_dark_text"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <ImageButton
-        android:id="@+id/editEvent_imgbtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/chatEvent_imgbtn"
-        app:layout_constraintLeft_toRightOf="@+id/eventName_tv"
-        app:layout_constraintRight_toLeftOf="@+id/chatEvent_imgbtn"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.444"
-        app:srcCompat="@drawable/setting" />
+        <TextView
+            android:id="@+id/eventDate_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textColor="@color/light_dark_text"
+            android:textSize="16sp"
+            android:textStyle="normal" />
 
-    <ImageButton
-        android:id="@+id/chatEvent_imgbtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginRight="10dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/deleteEvent_imgbtn"
-        app:layout_constraintLeft_toRightOf="@+id/editEvent_imgbtn"
-        app:layout_constraintRight_toLeftOf="@+id/deleteEvent_imgbtn"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.437"
-        app:srcCompat="@drawable/chat"
-        tools:srcCompat="@drawable/chat" />
+    </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/deleteEvent_imgbtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/chatEvent_imgbtn"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="10dp"
-        app:layout_constraintVertical_bias="0.437"
-        app:srcCompat="@drawable/quantum_ic_clear_grey600_24" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+
+        <ImageButton
+            android:id="@+id/editEvent_imgbtn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="15dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/settings_pink_icon" />
+
+        <ImageButton
+            android:id="@+id/chatEvent_imgbtn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="15dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/chats_pink_icon" />
+
+        <ImageButton
+            android:id="@+id/deleteEvent_imgbtn"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/cross_pink_icon" />
+    </LinearLayout>
+
+</LinearLayout>

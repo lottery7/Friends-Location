@@ -22,6 +22,7 @@ import com.example.friendlocation.R;
 import com.example.friendlocation.adapters.EventAdapterEvents;
 import com.example.friendlocation.databinding.ActivityCreateEventBinding;
 import com.example.friendlocation.databinding.ActivityEventsBinding;
+import com.example.friendlocation.databinding.ActivitySettingBinding;
 import com.example.friendlocation.utils.Event;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -30,15 +31,15 @@ import java.util.LinkedList;
 
 public class Events extends BottomBar {
 
+    private ActivityEventsBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_events);
+        binding = ActivityEventsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.muted_cyan));
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.events, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -46,18 +47,16 @@ public class Events extends BottomBar {
 
         LinkedList<Event> events = new LinkedList<>();
         EventAdapterEvents adapter = new EventAdapterEvents(this, events);
-        RecyclerView eventsRv = findViewById(R.id.events_rv);
-        CalendarView calendarView = findViewById(R.id.calendarView);
-        calendarView.setHeaderTextColor(ContextCompat.getColor(this, R.color.black));
+//        calendarView.setHeaderTextColor(ContextCompat.getColor(this, R.color.black));
+//        binding.calendarView.setDateTextAppearance(ContextCompat.getColor(this, R.color.bright_pink));
 
-        eventsRv.setAdapter(adapter);
-        eventsRv.setLayoutManager(new LinearLayoutManager(this));
-        makeEventsList(adapter, calendarView, getApplicationContext(), getResources());
+        binding.eventsRv.setAdapter(adapter);
+        binding.eventsRv.setLayoutManager(new LinearLayoutManager(this));
+        makeEventsList(adapter, binding.calendarView, getApplicationContext(), getResources());
 
         //   /--- Bottom Bar ---/
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
-        bottomNavigationView.setSelectedItemId(R.id.events_case);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
+        binding.bottomBar.setSelectedItemId(R.id.events_case);
+        binding.bottomBar.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.events_case) {
                 // Stay in the current Event activity

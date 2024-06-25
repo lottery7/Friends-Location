@@ -19,38 +19,20 @@
     </style>
 
 
-    <style name="CustomCalendarViewStyle" parent="@android:style/Widget.DeviceDefault.CalendarView">
-        <item name="android:background">@color/white_20</item>
-        <item name="android:weekDayTextAppearance">@style/CustomWeekDayTextAppearance</item>
-        <item name="android:dateTextAppearance">@style/CustomDateTextAppearance</item>
-        <item name="android:selectedDateVerticalBar">@color/bright_pink</item>
-        <item name="android:selectedWeekBackgroundColor">@color/bright_pink_60</item>
-        <item name="android:yearListItemTextAppearance">@style/CustomYearListItemTextAppearance</item>
+    <style name="CalenderViewCustom" parent="Theme.AppCompat">
+        <item name="android:focusedMonthDateColor">@color/gray_60</item>
         <item name="android:navigationBarColor">@color/gray_60</item>
-        <item name="android:textAppearance">@style/CustomMonthYearTextAppearance</item>
-        <item name="android:focusedMonthDateColor">@color/gray_60 </item>
+        <item name="colorAccent">@color/muted_cyan</item>
+        <item name="android:textColorPrimary">@color/gray_60</item>
     </style>
 
-    <style name="CustomWeekDayTextAppearance" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:textColor">@color/muted_cyan</item>
-    </style>
-
-    <style name="CustomDateTextAppearance" parent="TextAppearance.AppCompat.Large">
+    <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Large">
         <item name="android:textColor">@color/gray_60</item>
     </style>
 
-    <style name="CustomYearListItemTextAppearance" parent="TextAppearance.AppCompat.Medium">
+    <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Medium">
         <item name="android:textColor">@color/gray_60</item>
     </style>
-
-    <style name="CustomMonthListItemTextAppearance" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:textColor">@color/gray_60</item>
-    </style>
-
-    <style name="CustomMonthYearTextAppearance" parent="TextAppearance.AppCompat.Medium">
-        <item name="android:textColor">@color/gray_60</item>
-    </style>
-
 
 
 

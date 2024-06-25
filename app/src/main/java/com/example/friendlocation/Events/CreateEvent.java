@@ -133,13 +133,17 @@ public class CreateEvent extends BottomBar {
                     } catch (Exception e) {
                         Log.e(TAG, Objects.requireNonNull(e.getMessage()));
                     }
-                    FirebaseUtils.getEventProfilePicStorageRef(eventUID).getDownloadUrl()
-                            .addOnCompleteListener(task->{
-                                if (task.isSuccessful()){
-                                    Uri uri = task.getResult();
-                                    AndroidUtils.setProfilePic(context,uri,binding.photoIv);
-                                }
-                            });
+                    try {
+                        FirebaseUtils.getEventProfilePicStorageRef(eventUID).getDownloadUrl()
+                                .addOnCompleteListener(task->{
+                                    if (task.isSuccessful()){
+                                        Uri uri = task.getResult();
+                                        AndroidUtils.setProfilePic(context,uri,binding.photoIv);
+                                    }
+                                });
+                    } catch (Exception e){
+                        Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                    }
                     try {
                         eventChatUID = ev.chatUID;
                     } catch (Exception e) {

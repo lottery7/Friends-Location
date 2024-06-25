@@ -1,5 +1,7 @@
 package com.example.friendlocation;
 
+import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserID;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -91,7 +93,7 @@ public class SignUp extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            User user = new User(username, email);
+                            User user = new User(username, email, getCurrentUserID());
                             FirebaseUtils.getCurrentUserDetails().setValue(user);
                             goToMainMap();
                         } else {

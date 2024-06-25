@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.friendlocation.Chatroom;
 import com.example.friendlocation.ChatroomModel;
 import com.example.friendlocation.R;
+import com.example.friendlocation.utils.AndroidUtils;
 import com.example.friendlocation.utils.User;
 import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.ChatroomUtils;
@@ -43,8 +45,28 @@ public class FriendsRecyclerAdapter extends FirebaseRecyclerAdapter<String, Frie
                 goToChatWith(user);
             });
             holder.removeFromFriends.setOnClickListener(view -> {
-                FirebaseUtils.getCurrentUserDetails().child("usersWithKnownLocationUID/".concat(uid)).removeValue();
+                FirebaseUtils
+                        .getCurrentUserDetails()
+                        .child("usersWhoKnowsLocationUID/".concat(uid))
+                        .removeValue();
+
+                FirebaseUtils
+                        .getUserDetails(uid)
+                        .child(
+                                "usersWithKnownLocationUID/".concat(FirebaseUtils.getCurrentUserID())
+                        ).removeValue();
             });
+
+            FirebaseUtils
+                    .getProfilePicStorageRefByUid(user.id)
+                    .getDownloadUrl()
+                    .addOnSuccessListener(
+                            uri -> AndroidUtils.setProfilePic(
+                                    this.context
+                                    , uri
+                                    , holder.profilePic
+                            )
+                    );
         });
     }
 
@@ -89,8 +111,9 @@ public class FriendsRecyclerAdapter extends FirebaseRecyclerAdapter<String, Frie
     public static class UIDViewHolder extends RecyclerView.ViewHolder {
         TextView usernameTextView;
         TextView emailTextView;
-//        ImageButton addToFriends;
+        //        ImageButton addToFriends;
         ImageButton removeFromFriends;
+        ImageView profilePic;
 
         public UIDViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -98,6 +121,7 @@ public class FriendsRecyclerAdapter extends FirebaseRecyclerAdapter<String, Frie
             emailTextView = itemView.findViewById(R.id.friend_row_email);
 //            addToFriends = itemView.findViewById(R.id.friend_row_add);
             removeFromFriends = itemView.findViewById(R.id.friend_row_remove);
+            profilePic = itemView.findViewById(R.id.user_photo_iv);
         }
     }
 }

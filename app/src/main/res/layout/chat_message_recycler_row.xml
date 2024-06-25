@@ -10,7 +10,7 @@
         android:layout_height="wrap_content">
 
         <include
-            android:id="@+id/other_message_profile_picture"
+            android:id="@+id/other_user_profile_picture"
             layout="@layout/profile_picture_view"
             android:layout_width="50dp"
             android:layout_height="50dp"

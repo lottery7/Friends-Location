@@ -15,8 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            android:src="@drawable/baseline_person_24"
-            app:tint="#808080" />
+            android:src="@drawable/baseline_person_24" />
 
     </androidx.cardview.widget.CardView>
 

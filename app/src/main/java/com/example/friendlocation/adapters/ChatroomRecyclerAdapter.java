@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.friendlocation.ChatMessage;
 import com.example.friendlocation.R;
+import com.example.friendlocation.utils.AndroidUtils;
 import com.example.friendlocation.utils.FirebaseUtils;
+import com.example.friendlocation.utils.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Firebase;
@@ -32,26 +35,33 @@ public class ChatroomRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessag
         if (message.senderId.equals(FirebaseUtils.getCurrentUserID())) {
             holder.messageText.setText(message.message);
 
-            holder.cardView.setVisibility(View.VISIBLE);
-            holder.otherCardView.setVisibility(View.GONE);
-            holder.otherProfilePictureLayout.setVisibility(View.GONE);
-            holder.otherUserName.setVisibility(View.GONE);
+            holder.showCurrentUser();
+            holder.hideOtherUser();
         } else {
+            holder.hideCurrentUser();
+            holder.showOtherUser();
             holder.otherMessageText.setText(message.message);
-
-            holder.cardView.setVisibility(View.GONE);
-            holder.otherCardView.setVisibility(View.VISIBLE);
-            holder.otherProfilePictureLayout.setVisibility(View.VISIBLE);
             FirebaseUtils
                     .getUserDetails(message.senderId)
-                    .child("name")
                     .get()
-                    .addOnSuccessListener(dataSnapshot -> {
-                                String otherUserName = dataSnapshot.getValue(String.class);
-                                holder.otherUserName.setText(otherUserName);
-                                holder.otherUserName.setVisibility(View.VISIBLE);
-                            }
-                    );
+                    .addOnSuccessListener(snapshot -> {
+                        User otherUser = snapshot.getValue(User.class);
+                        if (otherUser == null) {
+                            return;
+                        }
+
+                        holder.otherUserName.setText(otherUser.name);
+                        FirebaseUtils
+                                .getProfilePicStorageRefByUid(otherUser.id)
+                                .getDownloadUrl()
+                                .addOnSuccessListener(
+                                        uri -> AndroidUtils.setProfilePic(
+                                                this.context
+                                                , uri
+                                                , holder.otherUserProfilePic
+                                        )
+                                );
+                    });
         }
     }
 
@@ -66,8 +76,34 @@ public class ChatroomRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessag
 
     public static class ChatroomViewHolder extends RecyclerView.ViewHolder {
         CardView cardView, otherCardView;
-        RelativeLayout otherProfilePictureLayout;
+        ImageView otherUserProfilePic;
+        RelativeLayout otherUserProfilePicLayout;
         TextView messageText, otherMessageText, otherUserName;
+
+        private void changeOtherUserVisibility(int visibility) {
+            otherCardView.setVisibility(visibility);
+            otherUserProfilePicLayout.setVisibility(visibility);
+        }
+
+        private void changeCurrentUserVisibility(int visibility) {
+            cardView.setVisibility(visibility);
+        }
+
+        public void hideOtherUser() {
+            changeOtherUserVisibility(View.GONE);
+        }
+
+        public void showOtherUser() {
+            changeOtherUserVisibility(View.VISIBLE);
+        }
+
+        public void hideCurrentUser() {
+            changeCurrentUserVisibility(View.GONE);
+        }
+
+        public void showCurrentUser() {
+            changeCurrentUserVisibility(View.VISIBLE);
+        }
 
         public ChatroomViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,10 +111,11 @@ public class ChatroomRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessag
             cardView = itemView.findViewById(R.id.user_message_cardview);
             messageText = itemView.findViewById(R.id.user_message_text);
 
-            otherProfilePictureLayout = itemView.findViewById(R.id.other_message_profile_picture);
+            otherUserProfilePic = itemView.findViewById(R.id.user_photo_iv);
             otherCardView = itemView.findViewById(R.id.other_user_message_cardview);
             otherMessageText = itemView.findViewById(R.id.other_user_message_text);
             otherUserName = itemView.findViewById(R.id.other_user_name);
+            otherUserProfilePicLayout = itemView.findViewById(R.id.other_user_profile_picture);
         }
     }
 }

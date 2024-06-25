@@ -1,7 +1,5 @@
 package com.example.friendlocation.utils;
 
-import static java.lang.Math.min;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseAuth;

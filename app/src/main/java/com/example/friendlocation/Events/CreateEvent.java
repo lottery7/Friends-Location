@@ -86,7 +86,7 @@ public class CreateEvent extends BottomBar {
                         Intent data = result.getData();
                         if (data != null && data.getData() != null) {
                             selectedImgUrl = data.getData();
-                            AndroidUtils.setProfilePic(this,selectedImgUrl, binding.photoIv);
+                            AndroidUtils.setProfilePic(this, selectedImgUrl, binding.photoIv);
                             storeProfilePic(this, selectedImgUrl);
                         }
                     }
@@ -117,7 +117,7 @@ public class CreateEvent extends BottomBar {
         Log.w(TAG, "Mode: " + createMod);
 
         Button safeBtn = findViewById(R.id.create_event);
-        if (Objects.equals(createMod, "CreateEvent")){
+        if (Objects.equals(createMod, "CreateEvent")) {
             safeBtn.setText("Create");
             safeBtn.setOnClickListener(this::addEvent);
         } else {
@@ -135,13 +135,13 @@ public class CreateEvent extends BottomBar {
                     }
                     try {
                         FirebaseUtils.getEventProfilePicStorageRef(eventUID).getDownloadUrl()
-                                .addOnCompleteListener(task->{
-                                    if (task.isSuccessful()){
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
                                         Uri uri = task.getResult();
-                                        AndroidUtils.setProfilePic(context,uri,binding.photoIv);
+                                        AndroidUtils.setProfilePic(context, uri, binding.photoIv);
                                     }
                                 });
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         Log.e(TAG, Objects.requireNonNull(e.getMessage()));
                     }
                     try {
@@ -170,7 +170,7 @@ public class CreateEvent extends BottomBar {
                     } catch (Exception e) {
                         Log.e(TAG, Objects.requireNonNull(e.getMessage()));
                     }
-                    for (int i = 0; i < ev.membersUID.size(); i++ ){
+                    for (int i = 0; i < ev.membersUID.size(); i++) {
                         getDatabase().getReference("users").child(ev.membersUID.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -368,10 +368,11 @@ public class CreateEvent extends BottomBar {
             if (data == null) {
                 return;
             }
-            User user = new User();
-            user.name = data.getStringExtra("name");
-            user.email = data.getStringExtra("mail");
-            user.id = data.getStringExtra("uid");
+            User user = new User(
+                    data.getStringExtra("name"),
+                    data.getStringExtra("mail"),
+                    data.getStringExtra("uid")
+            );
             UsersAdapterCreateEvent adapter = (UsersAdapterCreateEvent) binding.usersList.getAdapter();
             adapter.addUser(user);
         } else if (requestCode == PLACE_REQUEST_CODE && resultCode == Activity.RESULT_OK) { // Проверка результата для MainMap
@@ -391,7 +392,7 @@ public class CreateEvent extends BottomBar {
         finish();
     }
 
-    public void storeProfilePic(Context context, Uri imgUri){
+    public void storeProfilePic(Context context, Uri imgUri) {
         FirebaseUtils.getEventProfilePicStorageRef(eventUID).putFile(imgUri)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

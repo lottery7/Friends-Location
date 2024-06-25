@@ -8,6 +8,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -29,6 +31,10 @@ public class FirebaseUtils {
 
     public static String getCurrentUserID() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    public static DocumentReference currentUserDetails(){
+        return FirebaseFirestore.getInstance().collection("users").document(getCurrentUserID());
     }
 
     public static DatabaseReference getCurrentUserDetails() {
@@ -102,6 +108,16 @@ public class FirebaseUtils {
             return email1 + "_" + email2;
         }
         return email2 + "_" + email1;
+    }
+
+    public static StorageReference getProfilePicStorageRef(){
+        return FirebaseStorage.getInstance().getReference().child("profile_pic")
+                .child(FirebaseUtils.getCurrentUserID());
+    }
+
+    public static StorageReference getProfilePicStorageRefByUid(String UserUid){
+        return FirebaseStorage.getInstance().getReference().child("profile_pic")
+                .child(UserUid);
     }
 
 }

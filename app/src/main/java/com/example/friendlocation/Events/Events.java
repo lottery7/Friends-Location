@@ -47,8 +47,6 @@ public class Events extends BottomBar {
 
         LinkedList<Event> events = new LinkedList<>();
         EventAdapterEvents adapter = new EventAdapterEvents(this, events);
-//        calendarView.setHeaderTextColor(ContextCompat.getColor(this, R.color.black));
-//        binding.calendarView.setDateTextAppearance(ContextCompat.getColor(this, R.color.bright_pink));
 
         binding.eventsRv.setAdapter(adapter);
         binding.eventsRv.setLayoutManager(new LinearLayoutManager(this));

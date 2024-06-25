@@ -29,7 +29,6 @@ public class Chatroom extends AppCompatActivity {
     private String chatroomID;
     private ChatroomModel chatroomModel;
     private ChatroomRecyclerAdapter adapter;
-    private ChatroomRecyclerAdapter.ChatroomViewHolder prevViewHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

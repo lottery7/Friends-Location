@@ -5,8 +5,8 @@
     <color name="white_20">#33FFFFFF</color>
     <color name="main_menu">#CCF9FF</color>
     <color name="primary">#FF69B4</color>
-    <color name="user_message">@color/primary</color>
-    <color name="other_user_message">@color/white</color>
+    <color name="user_message">#AFFF69B4</color>
+    <color name="other_user_message">#af98d6d2</color>
     <color name="light_dark_text">#505050</color>
     <color name="gray_60">#99000000</color>
     <color name="bright_pink">#F92C85</color>

@@ -42,6 +42,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <ImageButton
             android:id="@+id/friend_row_remove"
             android:layout_width="32dp"
@@ -51,16 +56,6 @@
             android:layout_marginEnd="2dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/baseline_cancel_24" />
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/friend_row_add"-->
-<!--            android:layout_width="32dp"-->
-<!--            android:layout_height="32dp"-->
-<!--            android:layout_centerVertical="true"-->
-<!--            android:layout_alignParentEnd="true"-->
-<!--            android:layout_marginEnd="2dp"-->
-<!--            android:background="?attr/selectableItemBackgroundBorderless"-->
-<!--            android:src="@drawable/baseline_cancel_24" />-->
 
     </RelativeLayout>
 

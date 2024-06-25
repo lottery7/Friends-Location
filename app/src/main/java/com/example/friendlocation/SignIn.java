@@ -57,7 +57,7 @@ public class SignIn extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        googleSignInClient = GoogleSignIn.getClient(this,gso);
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         binding.signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +70,7 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent singInIntent = googleSignInClient.getSignInIntent();
-                startActivityForResult(singInIntent,RESULT_CODE_SINGIN);
+                startActivityForResult(singInIntent, RESULT_CODE_SINGIN);
             }
         });
 
@@ -141,13 +141,12 @@ public class SignIn extends AppCompatActivity {
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Log.w(TAG, "Google auntification succeeded");
                     FirebaseUser firebaseUser = mAuth.getCurrentUser();
                     saveGoogleUserInDatabase(firebaseUser);
                     goToMainMap();
-                }
-                else {
+                } else {
                     Exception e = task.getException();
                     Log.w(TAG, "signInResult:failed " + e.toString());
                 }
@@ -156,9 +155,11 @@ public class SignIn extends AppCompatActivity {
     }
 
     private void saveGoogleUserInDatabase(FirebaseUser firebaseUser) {
-        String username = firebaseUser.getDisplayName();
-        String email = firebaseUser.getEmail();
-        User user = new User(username, email);
+        User user = new User(
+                firebaseUser.getDisplayName()
+                , firebaseUser.getEmail()
+                , firebaseUser.getUid()
+        );
         FirebaseUtils.getCurrentUserDetails().setValue(user);
         Log.w(TAG, "User was added to database");
     }

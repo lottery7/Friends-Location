@@ -119,7 +119,7 @@ public class Friends extends BottomBar {
     private void setupFriendsRecyclerView() {
         Query query = FirebaseUtils
                 .getCurrentUserDetails()
-                .child("usersWithKnownLocationUID");
+                .child("usersWhoKnowsLocationUID");
 
         FirebaseRecyclerOptions<String> options = new FirebaseRecyclerOptions
                 .Builder<String>()

@@ -159,9 +159,11 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void saveGoogleUserInDatabase(FirebaseUser firebaseUser) {
-        String username = firebaseUser.getDisplayName();
-        String email = firebaseUser.getEmail();
-        User user = new User(username, email);
+        User user = new User(
+                firebaseUser.getDisplayName()
+                , firebaseUser.getEmail()
+                , firebaseUser.getUid()
+        );
         FirebaseUtils.getCurrentUserDetails().setValue(user);
         Log.w(TAG, "User was added to database");
     }

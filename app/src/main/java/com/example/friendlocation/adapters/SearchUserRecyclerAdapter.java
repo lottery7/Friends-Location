@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.friendlocation.Chatroom;
 import com.example.friendlocation.ChatroomModel;
 import com.example.friendlocation.R;
+import com.example.friendlocation.utils.AndroidUtils;
 import com.example.friendlocation.utils.User;
 import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.ChatroomUtils;
@@ -40,6 +42,17 @@ public class SearchUserRecyclerAdapter extends FirebaseRecyclerAdapter<User, Sea
         holder.itemView.setOnClickListener(view -> {
             goToChatWith(user);
         });
+
+        FirebaseUtils
+                .getProfilePicStorageRefByUid(user.id)
+                .getDownloadUrl()
+                .addOnSuccessListener(
+                        uri -> AndroidUtils.setProfilePic(
+                                this.context
+                                , uri
+                                , holder.profilePic
+                        )
+                );
     }
 
     private void goToChatWith(User user) {
@@ -83,11 +96,13 @@ public class SearchUserRecyclerAdapter extends FirebaseRecyclerAdapter<User, Sea
     static class UserViewHolder extends RecyclerView.ViewHolder {
         TextView usernameTextView;
         TextView emailTextView;
+        ImageView profilePic;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             usernameTextView = itemView.findViewById(R.id.search_user_row_username);
             emailTextView = itemView.findViewById(R.id.search_user_row_email);
+            profilePic = itemView.findViewById(R.id.user_photo_iv);
         }
     }
 }

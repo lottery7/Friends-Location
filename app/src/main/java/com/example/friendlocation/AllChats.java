@@ -38,6 +38,7 @@ public class AllChats extends BottomBar {
         searchUserInput = findViewById(R.id.search_user_input);
         recyclerView = findViewById(R.id.all_chats_recycler_view);
         noMessagesCardView = findViewById(R.id.all_chats_no_messages);
+        noMessagesCardView.setVisibility(View.GONE);
 
         searchUserInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -136,14 +137,27 @@ public class AllChats extends BottomBar {
     private AllChatsRecyclerAdapter getAllChatsRecyclerAdapter(FirestoreRecyclerOptions<ChatroomModel> options) {
         AllChatsRecyclerAdapter adapter = new AllChatsRecyclerAdapter(options, getApplicationContext());
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+
             @Override
-            public void onItemRangeChanged(int positionStart, int itemCount) {
-                super.onItemRangeChanged(positionStart, itemCount);
-                if (adapter.getItemCount() == 0) {
-                    noMessagesCardView.setVisibility(View.VISIBLE);
-                } else {
-                    noMessagesCardView.setVisibility(View.GONE);
-                }
+            public void onChanged() {
+                super.onChanged();
+                checkEmpty();
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                checkEmpty();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                checkEmpty();
+            }
+
+            void checkEmpty() {
+                noMessagesCardView.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
             }
         });
         adapter.startListening();

@@ -77,8 +77,7 @@
             android:layout_width="280dp"
             android:layout_height="50dp"
             app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="15dp"
-            android:visibility="gone">
+            app:cardCornerRadius="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"

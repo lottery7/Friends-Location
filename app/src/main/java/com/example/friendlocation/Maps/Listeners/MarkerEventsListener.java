@@ -5,12 +5,23 @@ import static com.example.friendlocation.utils.FirebaseUtils.getDatabase;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.friendlocation.Maps.Markers.EventMarkerIcon;
 import com.example.friendlocation.Maps.Markers.MarkerIcon;
+import com.example.friendlocation.R;
 import com.example.friendlocation.utils.Event;
+import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.Pair;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -20,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -46,16 +58,50 @@ public class MarkerEventsListener {
                             }
                             MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(ev.getLatLng());
-                            MarkerIcon markerIcon = new MarkerIcon(ev, context, resources);
-                            markerOptions.icon(markerIcon.eventMarkerIcon.getBriefMarkerIcon());
-                            Marker x = mMap.addMarker(markerOptions);
-                            x.setTag(markerIcon);
-                            mapMarkers.put(ev.uid, x);
-                            mapMarkersIsDelete.put(ev.uid, false);
+                            FirebaseUtils.getEventProfilePicStorageRef(ev.uid).getDownloadUrl()
+                                    .addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            Uri uri = task.getResult();
+                                            Glide.with(context)
+                                                    .load(uri)
+                                                    .into(new CustomTarget<Drawable>() {
+                                                        @Override
+                                                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                                            MarkerIcon markerIcon = new MarkerIcon(ev, context, resources, resource);
+                                                            try {
+                                                                markerOptions.icon(markerIcon.eventMarkerIcon.getBriefMarkerIcon());
+                                                            } catch (ParseException e) {
+                                                                throw new RuntimeException(e);
+                                                            }
+                                                            Marker x = mMap.addMarker(markerOptions);
+                                                            x.setTag(markerIcon);
+                                                            mapMarkers.put(ev.uid, x);
+                                                            mapMarkersIsDelete.put(ev.uid, false);
+                                                        }
+
+                                                        @Override
+                                                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                                                            // Handle cleanup if necessary
+                                                        }
+                                                    });
+                                        } else {
+                                            MarkerIcon markerIcon = new MarkerIcon(ev, context, resources, ContextCompat.getDrawable(context, R.drawable.event_icon_mark));
+                                            try {
+                                                markerOptions.icon(markerIcon.eventMarkerIcon.getBriefMarkerIcon());
+                                            } catch (ParseException e) {
+                                                throw new RuntimeException(e);
+                                            }
+                                            Marker x = mMap.addMarker(markerOptions);
+                                            x.setTag(markerIcon);
+                                            mapMarkers.put(ev.uid, x);
+                                            mapMarkersIsDelete.put(ev.uid, false);
+                                        }
+                                    });
                         } catch (Exception e) {
                             Log.e("Making marker", e.getMessage());
                         }
                     }
+
 
 
                     @Override

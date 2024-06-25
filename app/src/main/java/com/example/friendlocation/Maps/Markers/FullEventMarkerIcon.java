@@ -37,8 +37,9 @@ public class FullEventMarkerIcon {
     Event event;
     Context context;
     Resources resources;
+    Drawable icon;
 
-    public FullEventMarkerIcon(Event event, Context context, Resources resources) {
+    public FullEventMarkerIcon(Event event, Context context, Resources resources, Drawable icon) {
         this.event = event;
         this.context = context;
         this.resources = resources;
@@ -47,6 +48,7 @@ public class FullEventMarkerIcon {
         int spaceCount = 4 + event.countLinesInDescription();
         ICON_HEIGHT_PERCENT = (1F - 3 * TOP_SPACE_PERCENT - spaceCount * MIDDLE_HEIGHT_SPACE_PERCENT - spaceCount * TEXT_HEIGHT_PERCENT);
         this.mark = scaleImage(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.full_meating_mark)), BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+        this.icon = icon;
     }
 
     public void findTextSize(String text, Canvas canvas, Paint paint, int paintWidth, int paintHeight, float textHeightShiftPercent) {
@@ -110,7 +112,7 @@ public class FullEventMarkerIcon {
                 TOP_SPACE_PERCENT + ICON_HEIGHT_PERCENT + (4 + index) * MIDDLE_HEIGHT_SPACE_PERCENT + TEXT_HEIGHT_PERCENT * (7 + 2 * index) / 2);
 
 
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.event_icon_mark);
+        Drawable drawable = icon;
         float scale = min(
                 (float) (BACKGROUND_WIDTH * (1 - TOP_SPACE_PERCENT)) / drawable.getIntrinsicWidth(),
                 BACKGROUND_HEIGHT * ICON_HEIGHT_PERCENT / drawable.getIntrinsicHeight()

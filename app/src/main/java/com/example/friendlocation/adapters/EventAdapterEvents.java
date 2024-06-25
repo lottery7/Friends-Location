@@ -6,6 +6,7 @@ import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserID;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.example.friendlocation.Events.CreateEvent;
 import com.example.friendlocation.Events.FirebaseEventPart;
 import com.example.friendlocation.Maps.Markers.MarkerIcon;
 import com.example.friendlocation.R;
+import com.example.friendlocation.utils.AndroidUtils;
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.FirebaseUtils;
 
@@ -51,7 +53,17 @@ public class EventAdapterEvents extends RecyclerView.Adapter<EventAdapterEvents.
     @Override
     public void onBindViewHolder(EventAdapterEvents.ViewHolder holder, int position) {
         Event event = events.get(position);
-        holder.eventIconView.setImageResource(R.drawable.event_icon_mark);
+
+        FirebaseUtils.getEventProfilePicStorageRef(event.uid).getDownloadUrl()
+                .addOnCompleteListener(task->{
+                    if (task.isSuccessful()){
+                        Uri uri = task.getResult();
+                        AndroidUtils.setProfilePic(context,uri,holder.eventIconView);
+                    } else {
+                        holder.eventIconView.setImageResource(R.drawable.event_icon_mark);
+                    }
+                });
+
         holder.nameView.setText(event.name);
         holder.dateView.setText(event.date);
         holder.editBtn.setOnClickListener(v -> {

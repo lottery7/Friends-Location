@@ -2,6 +2,7 @@ package com.example.friendlocation.Maps.Markers;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 
 import com.example.friendlocation.utils.Event;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -13,9 +14,9 @@ public class EventMarkerIcon {
     private FullEventMarkerIcon fullEventMarkerIcon;
     private int clickCount = 0;
 
-    public EventMarkerIcon(Event event, Context context, Resources resources) {
-        this.briefEventMarkerIcon = new BriefEventMarkerIcon(event, context, resources);
-        this.fullEventMarkerIcon = new FullEventMarkerIcon(event, context, resources);
+    public EventMarkerIcon(Event event, Context context, Resources resources, Drawable icon) {
+        this.briefEventMarkerIcon = new BriefEventMarkerIcon(event, context, resources, icon);
+        this.fullEventMarkerIcon = new FullEventMarkerIcon(event, context, resources, icon);
     }
 
     public BitmapDescriptor getBriefMarkerIcon() throws ParseException {

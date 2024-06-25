@@ -8,21 +8,28 @@ import static java.lang.Math.round;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 
 import androidx.core.content.ContextCompat;
 
 import com.example.friendlocation.R;
+import com.example.friendlocation.utils.AndroidUtils;
 import com.example.friendlocation.utils.Event;
+import com.example.friendlocation.utils.FirebaseUtils;
 import com.example.friendlocation.utils.User;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.Objects;
 
@@ -37,14 +44,16 @@ public class UserMarkerIcon {
     User user;
     Context context;
     Resources resources;
+    Drawable icon;
 
-    public UserMarkerIcon(User user, Context context, Resources resources) {
+    public UserMarkerIcon(User user, Context context, Resources resources, Drawable icon) {
         this.user = user;
         this.context = context;
         this.resources = resources;
         BACKGROUND_HEIGHT = round(50 * resources.getDisplayMetrics().density);
         BACKGROUND_WIDTH = round(35 * resources.getDisplayMetrics().density);
         this.mark = scaleImage(Objects.requireNonNull(ContextCompat.getDrawable(context, R.drawable.brief_user_mark)), BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+        this.icon = icon;
     }
 
     public void findTextSize(String text, Canvas canvas, Paint paint, int paintWidth, int paintHeight, float textHeightShiftPercent) {
@@ -89,8 +98,7 @@ public class UserMarkerIcon {
         findTextSize(user.name, canvas, paint,
                 BACKGROUND_WIDTH, BACKGROUND_HEIGHT,
                 TOP_SPACE_PERCENT + ICON_HEIGHT_PERCENT + MIDDLE_HEIGHT_SPACE_PERCENT +TEXT_HEIGHT_PERCENT/2);
-
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.event_icon_mark);
+        Drawable drawable = icon;
         float scale = min(
                 (float) (BACKGROUND_WIDTH * (1 - 2 * TOP_SPACE_PERCENT)) /drawable.getIntrinsicWidth(),
                 BACKGROUND_HEIGHT * ICON_HEIGHT_PERCENT /drawable.getIntrinsicHeight()

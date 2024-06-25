@@ -2,6 +2,7 @@ package com.example.friendlocation.Maps.Markers;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.User;
@@ -12,14 +13,14 @@ public class MarkerIcon {
     private MarkerType markerType;
     public Event event;
 
-    public MarkerIcon(Event event, Context context, Resources resources) {
-        this.eventMarkerIcon = new EventMarkerIcon(event, context, resources);
+    public MarkerIcon(Event event, Context context, Resources resources, Drawable icon) {
+        this.eventMarkerIcon = new EventMarkerIcon(event, context, resources, icon);
         markerType = MarkerType.EVENT;
         this.event = event;
     }
 
-    public MarkerIcon(User user, Context context, Resources resources) {
-        this.userMarkerIcon = new UserMarkerIcon(user, context, resources);
+    public MarkerIcon(User user, Context context, Resources resources, Drawable icon) {
+        this.userMarkerIcon = new UserMarkerIcon(user, context, resources, icon);
         markerType = MarkerType.USER;
     }
 

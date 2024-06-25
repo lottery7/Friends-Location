@@ -1,16 +1,22 @@
 package com.example.friendlocation.Events;
 
+import static com.example.friendlocation.Setting.storeProfilePic;
 import static com.example.friendlocation.utils.Config.dateFormat;
 import static com.example.friendlocation.utils.FirebaseUtils.getCurrentUserID;
+import static com.example.friendlocation.utils.FirebaseUtils.getDatabase;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +36,7 @@ import com.example.friendlocation.ChatroomModel;
 import com.example.friendlocation.Maps.MainMap;
 import com.example.friendlocation.R;
 import com.example.friendlocation.databinding.ActivityCreateEventBinding;
+import com.example.friendlocation.utils.AndroidUtils;
 import com.example.friendlocation.utils.ChatroomUtils;
 import com.example.friendlocation.utils.Event;
 import com.example.friendlocation.utils.FirebaseUtils;
@@ -37,6 +44,7 @@ import com.example.friendlocation.utils.Pair;
 import com.example.friendlocation.utils.Place;
 import com.example.friendlocation.utils.User;
 import com.example.friendlocation.adapters.UsersAdapterCreateEvent;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.database.DataSnapshot;
@@ -53,17 +61,37 @@ public class CreateEvent extends BottomBar {
     private static final int PLACE_REQUEST_CODE = 666;
     private static final int USER_REQUEST_CODE = 999;
     private ActivityCreateEventBinding binding;
+    ActivityResultLauncher<Intent> imgPickLauncher;
+    Uri selectedImgUrl;
     private Place place = new Place();
     private String TAG = "CreateEventTag";
     private String createMod = "CreateEvent";
     private String eventChatUID;
     Calendar dateAndTime = Calendar.getInstance();
+    Context context;
+
+    String eventUID = getDatabase().getReference("events").push().getKey();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCreateEventBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        context = getApplicationContext();
+
+
+        imgPickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        if (data != null && data.getData() != null) {
+                            selectedImgUrl = data.getData();
+                            AndroidUtils.setProfilePic(this,selectedImgUrl, binding.photoIv);
+                            storeProfilePic(this, selectedImgUrl);
+                        }
+                    }
+                });
+
         setInitialDateTime();
         ArrayList<User> users = new ArrayList<>();
         UsersAdapterCreateEvent adapter = new UsersAdapterCreateEvent(this, users);
@@ -96,10 +124,22 @@ public class CreateEvent extends BottomBar {
             safeBtn.setText("Save");
             safeBtn.setOnClickListener(this::saveEvent);
 
-            FirebaseUtils.getDatabase().getReference("events").child(createMod).addListenerForSingleValueEvent(new ValueEventListener() {
+            getDatabase().getReference("events").child(createMod).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Event ev = snapshot.getValue(Event.class);
+                    try {
+                        eventUID = ev.uid;
+                    } catch (Exception e) {
+                        Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                    }
+                    FirebaseUtils.getEventProfilePicStorageRef(eventUID).getDownloadUrl()
+                            .addOnCompleteListener(task->{
+                                if (task.isSuccessful()){
+                                    Uri uri = task.getResult();
+                                    AndroidUtils.setProfilePic(context,uri,binding.photoIv);
+                                }
+                            });
                     try {
                         eventChatUID = ev.chatUID;
                     } catch (Exception e) {
@@ -127,7 +167,7 @@ public class CreateEvent extends BottomBar {
                         Log.e(TAG, Objects.requireNonNull(e.getMessage()));
                     }
                     for (int i = 0; i < ev.membersUID.size(); i++ ){
-                        FirebaseUtils.getDatabase().getReference("users").child(ev.membersUID.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        getDatabase().getReference("users").child(ev.membersUID.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 User user = snapshot.getValue(User.class);
@@ -152,7 +192,17 @@ public class CreateEvent extends BottomBar {
 
                 }
             });
+
+
         }
+        //   /--- Pick Photo ---/
+        binding.editPhotoIv.setOnClickListener((v) -> {
+            ImagePicker.with(this).cropSquare().compress(512).maxResultSize(512, 512)
+                    .createIntent(intent -> {
+                        imgPickLauncher.launch(intent);
+                        return null;
+                    });
+        });
 
         //   /--- Bottom Bar ---/
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_bar);
@@ -184,6 +234,9 @@ public class CreateEvent extends BottomBar {
     }
 
     public boolean constructEvent(Event ev) {
+        if (ev.uid == null) {
+            ev.uid = eventUID;
+        }
         ev.chatUID = eventChatUID;
         ev.name = binding.titleEt.getText().toString();
         ev.date = dateFormat.format(dateAndTime.getTime());
@@ -332,6 +385,20 @@ public class CreateEvent extends BottomBar {
 
     private void backToEvents() {
         finish();
+    }
+
+    public void storeProfilePic(Context context, Uri imgUri){
+        FirebaseUtils.getEventProfilePicStorageRef(eventUID).putFile(imgUri)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(context, "Profile picture updated successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Failed to update profile picture", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(context, "Error uploading profile picture: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 
 }

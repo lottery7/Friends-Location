@@ -115,6 +115,11 @@ public class FirebaseUtils {
                 .child(FirebaseUtils.getCurrentUserID());
     }
 
+    public static StorageReference getEventProfilePicStorageRef(String uid){
+        return FirebaseStorage.getInstance().getReference().child("profile_pic")
+                .child("Event" + uid);
+    }
+
     public static StorageReference getProfilePicStorageRefByUid(String UserUid){
         return FirebaseStorage.getInstance().getReference().child("profile_pic")
                 .child(UserUid);

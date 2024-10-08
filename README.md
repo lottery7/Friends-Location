@@ -1,5 +1,8 @@
 # FriendsLocation
 
+## Презентация
+https://drive.google.com/drive/folders/1YXwlM9l5gTs7h3bXr-j8bwSWRA1eBRNz
+
 ## Запуск
 Необходимо в local properties, создаваемых при открытие проекта в android studio дописать строчку (иначе будет ошибка сборки проекта):
 
